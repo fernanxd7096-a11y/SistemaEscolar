@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cargando...</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      width: 420px;
+      height: 340px;
+      background: transparent;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .tarjeta {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(145deg, #1E3A5F 0%, #2D6A9F 60%, #1a4f80 100%);
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Decoración de fondo */
+    .tarjeta::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.05);
+    }
+
+    .tarjeta::after {
+      content: '';
+      position: absolute;
+      bottom: -40px;
+      left: -40px;
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+    }
+
+    /* Ícono */
+    .icono {
+      width: 90px;
+      height: 90px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid rgba(255,255,255,0.2);
+      backdrop-filter: blur(10px);
+    }
+
+    .icono svg {
+      width: 48px;
+      height: 48px;
+      fill: #F59E0B;
+    }
+
+    /* Textos */
+    .textos {
+      text-align: center;
+      color: white;
+      z-index: 1;
+    }
+
+    .subtitulo {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 3px;
+      color: #F59E0B;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .titulo {
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .version {
+      font-size: 11px;
+      color: rgba(255,255,255,0.5);
+      margin-top: 6px;
+    }
+
+    /* Barra de carga */
+    .carga-contenedor {
+      width: 260px;
+      z-index: 1;
+    }
+
+    .carga-texto {
+      color: rgba(255,255,255,0.7);
+      font-size: 12px;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .barra-fondo {
+      width: 100%;
+      height: 4px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .barra-progreso {
+      height: 100%;
+      background: linear-gradient(90deg, #F59E0B, #fbbf24);
+      border-radius: 4px;
+      animation: cargando 2.5s ease-in-out infinite;
+    }
+
+    @keyframes cargando {
+      0%   { width: 0%; opacity: 1; }
+      50%  { width: 75%; opacity: 1; }
+      90%  { width: 95%; opacity: 1; }
+      100% { width: 100%; opacity: 0; }
+    }
+
+    /* Puntos animados */
+    .puntos span {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.5);
+      margin: 0 3px;
+      animation: pulso 1.2s ease-in-out infinite;
+    }
+    .puntos span:nth-child(2) { animation-delay: 0.2s; }
+    .puntos span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes pulso {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50%       { transform: scale(1.4); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="tarjeta">
+    <div class="icono">
+      <!-- Ícono escolar SVG -->
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
+      </svg>
+    </div>
+
+    <div class="textos">
+      <p class="subtitulo">Colegio</p>
+      <h1 class="titulo">Milagroso<br/>San Judas Tadeo</h1>
+      <p class="version">Sistema de Gestión Escolar v1.0</p>
+    </div>
+
+    <div class="carga-contenedor">
+      <p class="carga-texto">Iniciando el sistema <span class="puntos"><span></span><span></span><span></span></span></p>
+      <div class="barra-fondo">
+        <div class="barra-progreso"></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,101 @@
+{
+  "name": "sistema-escolar-sjt",
+  "productName": "Sistema Escolar San Judas Tadeo",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Sistema de Gestión Escolar - Milagroso San Judas Tadeo",
+  "author": "Colegio Milagroso San Judas Tadeo",
+  "main": "electron/main.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "electron:dev": "concurrently \"cross-env NODE_ENV=development vite\" \"wait-on http://localhost:5173 && cross-env NODE_ENV=development electron .\"",
+    "electron:build": "npm run build && electron-builder --win --x64",
+    "electron:preview": "cross-env NODE_ENV=production electron ."
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.4.0",
+    "@tanstack/react-query": "^5.101.4",
+    "autoprefixer": "^10.5.4",
+    "axios": "^1.18.1",
+    "date-fns": "^4.4.0",
+    "lucide-react": "^1.25.0",
+    "postcss": "^8.5.21",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-hook-form": "^7.82.0",
+    "react-router-dom": "^7.18.1",
+    "react-toastify": "^11.1.0",
+    "recharts": "^3.10.0",
+    "tailwindcss": "^3.4.19",
+    "zod": "^4.4.3",
+    "zustand": "^5.0.14"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.2",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.3",
+    "concurrently": "^10.0.4",
+    "cross-env": "^10.1.0",
+    "electron": "^43.2.0",
+    "electron-builder": "^26.15.3",
+    "oxlint": "^1.71.0",
+    "typescript": "~6.0.2",
+    "vite": "^8.1.1",
+    "wait-on": "^9.1.0"
+  },
+  "build": {
+    "appId": "pe.edu.sanjudastadeo.sistema",
+    "productName": "Sistema Escolar SJT",
+    "copyright": "Copyright © 2025 Milagroso San Judas Tadeo",
+    "directories": {
+      "output": "dist-electron"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "node_modules/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "../backend",
+        "to": "backend",
+        "filter": [
+          "**/*",
+          "!vendor/**",
+          "!node_modules/**",
+          "!.git/**",
+          "!storage/logs/**"
+        ]
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "electron/icons/icon.ico",
+      "requestedExecutionLevel": "asInvoker"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "electron/icons/icon.ico",
+      "uninstallerIcon": "electron/icons/icon.ico",
+      "installerHeaderIcon": "electron/icons/icon.ico",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Sistema Escolar SJT",
+      "installerLanguages": [
+        "es_MX"
+      ],
+      "language": "3082"
+    }
+  }
+}

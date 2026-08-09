@@ -1,0 +1,204 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-primario: 30 58 95;
+    --color-acento: 245 158 11;
+    --sidebar-width: 260px;
+    --sidebar-collapsed: 72px;
+    --topbar-height: 64px;
+  }
+
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    @apply bg-gray-50 text-gray-900;
+  }
+
+  .dark body {
+    @apply bg-gray-950 text-gray-100;
+  }
+
+  * {
+    @apply border-gray-200;
+  }
+
+  .dark * {
+    @apply border-gray-700;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 dark:bg-gray-600 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-400 dark:bg-gray-500;
+  }
+}
+
+@layer components {
+  /* Tarjetas */
+  .tarjeta {
+    @apply bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 shadow-card;
+  }
+
+  .tarjeta-hover {
+    @apply tarjeta transition-all duration-200 hover:shadow-card-md hover:-translate-y-0.5;
+  }
+
+  /* Botones */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium text-sm
+           transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-primario {
+    @apply btn bg-primario-700 hover:bg-primario-800 text-white focus:ring-primario-500
+           dark:bg-primario-600 dark:hover:bg-primario-700;
+  }
+
+  .btn-secundario {
+    @apply btn bg-gray-100 hover:bg-gray-200 text-gray-700 focus:ring-gray-400
+           dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-200;
+  }
+
+  .btn-peligro {
+    @apply btn bg-red-500 hover:bg-red-600 text-white focus:ring-red-400;
+  }
+
+  .btn-exito {
+    @apply btn bg-emerald-500 hover:bg-emerald-600 text-white focus:ring-emerald-400;
+  }
+
+  .btn-contorno {
+    @apply btn border border-primario-700 text-primario-700 hover:bg-primario-50
+           dark:border-primario-400 dark:text-primario-400 dark:hover:bg-primario-900/30;
+  }
+
+  .btn-icono {
+    @apply p-2 rounded-lg transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-700;
+  }
+
+  /* Campos de formulario */
+  .campo {
+    @apply w-full px-3 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600
+           bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
+           placeholder-gray-400 dark:placeholder-gray-500
+           focus:outline-none focus:ring-2 focus:ring-primario-500 focus:border-transparent
+           transition-colors duration-200 text-sm;
+  }
+
+  .campo-error {
+    @apply campo border-red-400 focus:ring-red-400;
+  }
+
+  .etiqueta {
+    @apply block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5;
+  }
+
+  /* Badges / Insignias */
+  .insignia {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .insignia-exito {
+    @apply insignia bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400;
+  }
+
+  .insignia-peligro {
+    @apply insignia bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400;
+  }
+
+  .insignia-alerta {
+    @apply insignia bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400;
+  }
+
+  .insignia-info {
+    @apply insignia bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-400;
+  }
+
+  .insignia-gris {
+    @apply insignia bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400;
+  }
+
+  /* Tabla */
+  .tabla-contenedor {
+    @apply w-full overflow-x-auto rounded-xl border border-gray-100 dark:border-gray-700;
+  }
+
+  .tabla {
+    @apply w-full text-sm text-left;
+  }
+
+  .tabla thead {
+    @apply bg-gray-50 dark:bg-gray-700/50;
+  }
+
+  .tabla thead th {
+    @apply px-4 py-3 font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wide text-xs;
+  }
+
+  .tabla tbody tr {
+    @apply border-t border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/30
+           transition-colors duration-150;
+  }
+
+  .tabla tbody td {
+    @apply px-4 py-3 text-gray-700 dark:text-gray-300;
+  }
+
+  /* Sidebar */
+  .nav-item {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
+           transition-all duration-200 cursor-pointer;
+  }
+
+  .nav-item-activo {
+    @apply nav-item bg-white/15 text-white;
+  }
+
+  .nav-item-inactivo {
+    @apply nav-item text-white/70 hover:bg-white/10 hover:text-white;
+  }
+
+  /* Animaciones de carga */
+  .skeleton {
+    @apply animate-pulse bg-gray-200 dark:bg-gray-700 rounded;
+  }
+
+  /* Gradiente institucional */
+  .gradiente-institucional {
+    background: linear-gradient(135deg, #1E3A5F 0%, #2D6A9F 60%, #3a7bcd 100%);
+  }
+
+  /* Separador */
+  .separador {
+    @apply border-t border-gray-100 dark:border-gray-700 my-4;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .scrollbar-thin {
+    scrollbar-width: thin;
+  }
+}

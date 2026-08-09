@@ -1,0 +1,96 @@
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+import { 
+  LayoutDashboard, Users, GraduationCap, BookOpen, 
+  BookMarked, Calendar, ClipboardCheck, FileText, 
+  Bell, BarChart2, Settings, ChevronLeft, ChevronRight,
+  School
+} from 'lucide-react';
+
+interface SidebarProps {
+  collapsed: boolean;
+  onToggle: () => void;
+  mobileOpen: boolean;
+  setMobileOpen: (open: boolean) => void;
+}
+
+const navItems = [
+  { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { path: '/alumnos', label: 'Alumnos', icon: Users },
+  { path: '/docentes', label: 'Docentes', icon: GraduationCap },
+  { path: '/grados', label: 'Grados', icon: BookOpen },
+  { path: '/cursos', label: 'Cursos', icon: BookMarked },
+  { path: '/horarios', label: 'Horarios', icon: Calendar },
+  { path: '/asistencia', label: 'Asistencia', icon: ClipboardCheck },
+  { path: '/notas', label: 'Notas', icon: FileText },
+  { path: '/comunicados', label: 'Comunicados', icon: Bell },
+  { path: '/reportes', label: 'Reportes', icon: BarChart2 },
+  { path: '/configuracion', label: 'Configuración', icon: Settings },
+];
+
+export const Sidebar = ({ collapsed, onToggle, mobileOpen, setMobileOpen }: SidebarProps) => {
+  return (
+    <>
+      {/* Mobile overlay */}
+      {mobileOpen && (
+        <div 
+          className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+          onClick={() => setMobileOpen(false)}
+        />
+      )}
+      
+      <aside className={`fixed top-0 left-0 z-50 h-screen transition-all duration-300 flex flex-col gradiente-institucional
+        ${collapsed ? 'w-20' : 'w-64'} 
+        ${mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+      `}>
+        <div className="flex h-16 items-center justify-center border-b border-white/10 shrink-0">
+          <div className="flex items-center gap-3 px-4">
+            <School className="w-8 h-8 text-acento-500 shrink-0" />
+            {!collapsed && (
+              <div className="flex flex-col truncate text-white">
+                <span className="text-xs text-white/70 font-medium">Milagroso</span>
+                <span className="text-sm font-bold truncate">San Judas Tadeo</span>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="flex-1 overflow-y-auto py-4 custom-scrollbar">
+          <nav className="space-y-1 px-3">
+            {navItems.map((item) => (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                className={({ isActive }) => 
+                  `flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors group relative
+                  ${isActive 
+                    ? 'bg-white/10 text-acento-500 font-medium' 
+                    : 'text-white/80 hover:bg-white/5 hover:text-white'}`
+                }
+                title={collapsed ? item.label : undefined}
+                onClick={() => setMobileOpen(false)}
+              >
+                <item.icon className={`w-5 h-5 shrink-0`} />
+                {!collapsed && <span className="truncate">{item.label}</span>}
+                {collapsed && (
+                  <div className="absolute left-full ml-2 px-2 py-1 bg-gray-800 text-xs text-white rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-50">
+                    {item.label}
+                  </div>
+                )}
+              </NavLink>
+            ))}
+          </nav>
+        </div>
+
+        <div className="border-t border-white/10 p-4 shrink-0 hidden lg:flex justify-end">
+          <button 
+            onClick={onToggle}
+            className="p-1.5 rounded-lg text-white/80 hover:bg-white/10 hover:text-white transition-colors"
+          >
+            {collapsed ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
+          </button>
+        </div>
+      </aside>
+    </>
+  );
+};
