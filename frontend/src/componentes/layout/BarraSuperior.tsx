@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Menu, Search, Sun, Moon, Bell, LogOut, User as UserIcon } from 'lucide-react';
 import { useTema } from '../../tienda/tema';
+import logo from '../../assets/logo.png';
 import { useAuth } from '../../contexto/AuthContexto';
+import { contadorPendientes } from '../../api/docentes';
+import { useNavigate } from 'react-router-dom';
 
 interface BarraSuperiorProps {
   onMenuClick: () => void;
@@ -11,8 +14,20 @@ interface BarraSuperiorProps {
 export const BarraSuperior = ({ onMenuClick, titulo = 'Sistema de Gestión' }: BarraSuperiorProps) => {
   const { modoOscuro, toggleModo } = useTema();
   const { usuario, logout } = useAuth();
-  const [menuAbierto, setMenuAbierto] = React.useState(false);
+  const [menuAbierto, setMenuAbierto] = useState(false);
+  const [pendientes, setPendientes] = useState(0);
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    const cargar = () => {
+      contadorPendientes()
+        .then((r) => setPendientes(r.pendientes))
+        .catch(() => {});
+    };
+    cargar();
+    const interval = setInterval(cargar, 30000);
+    return () => clearInterval(interval);
+  }, []);
   return (
     <header className="h-16 flex items-center justify-between px-4 lg:px-8 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-30 transition-colors">
       <div className="flex items-center gap-4">
@@ -22,9 +37,17 @@ export const BarraSuperior = ({ onMenuClick, titulo = 'Sistema de Gestión' }: B
         >
           <Menu className="w-6 h-6" />
         </button>
-        <h1 className="text-lg font-semibold text-gray-800 dark:text-gray-100 hidden sm:block">
-          {titulo}
-        </h1>
+        <div className="flex items-center gap-2.5">
+          <img
+            src={logo}
+            alt="MSJT"
+            className="w-8 h-8 object-contain hidden sm:block drop-shadow-sm"
+            draggable={false}
+          />
+          <h1 className="text-lg font-semibold text-gray-800 dark:text-gray-100 hidden sm:block">
+            {titulo}
+          </h1>
+        </div>
       </div>
 
       <div className="flex items-center gap-2 sm:gap-4">
@@ -45,9 +68,17 @@ export const BarraSuperior = ({ onMenuClick, titulo = 'Sistema de Gestión' }: B
           {modoOscuro ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
         </button>
 
-        <button className="p-2 rounded-full text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 transition-colors relative">
+        <button
+          onClick={() => navigate('/docentes')}
+          className="p-2 rounded-full text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 transition-colors relative"
+          title={pendientes > 0 ? `${pendientes} registro(s) pendiente(s)` : 'Sin notificaciones'}
+        >
           <Bell className="w-5 h-5" />
-          <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
+          {pendientes > 0 && (
+            <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] flex items-center justify-center bg-red-500 text-white text-[10px] font-bold rounded-full px-1">
+              {pendientes > 9 ? '9+' : pendientes}
+            </span>
+          )}
         </button>
 
         <div className="relative ml-2">

@@ -27,7 +27,7 @@ function iniciarBackend () {
     procesoPHP = spawn(phpExe, ['artisan', 'serve', '--host=127.0.0.1', `--port=${PUERTO_API}`], {
       cwd: raizProyecto,
       windowsHide: true,
-      env: { ...process.env, APP_ENV: 'production' }
+      env: { ...process.env, APP_ENV: esDev ? 'local' : 'production' }
     })
 
     procesoPHP.stdout.on('data', (data) => console.log('[Laravel]', data.toString()))
@@ -102,7 +102,7 @@ function crearVentanaPrincipal () {
     minHeight:       600,
     show:            false,
     title:           'Colegio Milagroso San Judas Tadeo',
-    backgroundColor: '#0F172A',
+    backgroundColor: '#8B1A2B',
     webPreferences: {
       preload:            path.join(__dirname, 'preload.js'),
       contextIsolation:   true,
@@ -155,41 +155,61 @@ function crearVentanaPrincipal () {
 
 // ─── Crear bandeja del sistema ────────────────────────────────────────────────
 function crearBandeja () {
-  const iconPath = path.join(__dirname, 'icons', 'tray.png')
-  const icon = nativeImage.createFromPath(iconPath)
+  try {
+    const candidatos = [
+      path.join(__dirname, 'icons', 'tray.png'),
+      path.join(__dirname, 'logo-splash.png'),
+    ]
 
-  bandeja = new Tray(icon.isEmpty() ? nativeImage.createEmpty() : icon)
-  bandeja.setToolTip('Colegio Milagroso San Judas Tadeo')
+    let icon = nativeImage.createEmpty()
+    for (const iconPath of candidatos) {
+      const cargado = nativeImage.createFromPath(iconPath)
+      if (!cargado.isEmpty()) {
+        icon = cargado.resize({ width: 16, height: 16 })
+        break
+      }
+    }
 
-  const menuBandeja = Menu.buildFromTemplate([
-    {
-      label: '📚 Abrir Sistema Escolar',
-      click: () => {
+    // En Windows, Tray sin icono válido puede cerrar la app
+    if (icon.isEmpty()) {
+      console.warn('[Bandeja] Sin icono válido; se omite la bandeja.')
+      return
+    }
+
+    bandeja = new Tray(icon)
+    bandeja.setToolTip('Colegio Milagroso San Judas Tadeo')
+
+    const menuBandeja = Menu.buildFromTemplate([
+      {
+        label: 'Abrir Sistema Escolar',
+        click: () => {
+          if (ventanaPrincipal) {
+            ventanaPrincipal.show()
+            ventanaPrincipal.focus()
+          }
+        }
+      },
+      { type: 'separator' },
+      {
+        label: 'Cerrar aplicación',
+        click: () => {
+          app.isQuitting = true
+          detenerBackend()
+          app.quit()
+        }
+      }
+    ])
+
+    bandeja.setContextMenu(menuBandeja)
+    bandeja.on('double-click', () => {
+      if (ventanaPrincipal) {
         ventanaPrincipal.show()
         ventanaPrincipal.focus()
       }
-    },
-    { type: 'separator' },
-    {
-      label: '🔔 Notificaciones',
-      enabled: false
-    },
-    { type: 'separator' },
-    {
-      label: '❌ Cerrar aplicación',
-      click: () => {
-        app.isQuitting = true
-        detenerBackend()
-        app.quit()
-      }
-    }
-  ])
-
-  bandeja.setContextMenu(menuBandeja)
-  bandeja.on('double-click', () => {
-    ventanaPrincipal.show()
-    ventanaPrincipal.focus()
-  })
+    })
+  } catch (err) {
+    console.error('[Bandeja] No se pudo crear:', err)
+  }
 }
 
 // ─── IPC: Notificaciones desde React ─────────────────────────────────────────

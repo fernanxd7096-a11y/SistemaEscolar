@@ -15,20 +15,14 @@ import { TomarAsistencia } from './paginas/asistencia/TomarAsistencia';
 import { RegistrarNotas } from './paginas/notas/RegistrarNotas';
 import { ListaComunicados } from './paginas/comunicados/ListaComunicados';
 import { Reportes } from './paginas/reportes/Reportes';
+import { ListaPadres } from './paginas/padres/ListaPadres';
+import { ListaEventos } from './paginas/eventos/ListaEventos';
+import { ListaPagos } from './paginas/pagos/ListaPagos';
 import { Configuracion } from './paginas/configuracion/Configuracion';
 import { RutaProtegida } from './rutas/RutaProtegida';
 import { useTema } from './tienda/tema';
 
 const queryClient = new QueryClient();
-
-const Proximamente = () => (
-  <div className="flex h-[80vh] items-center justify-center">
-    <div className="text-center space-y-4">
-      <h2 className="text-2xl font-bold text-gray-700 dark:text-gray-300">Próximamente</h2>
-      <p className="text-gray-500">Esta sección está en construcción.</p>
-    </div>
-  </div>
-);
 
 function App() {
   const { modoOscuro } = useTema();
@@ -55,12 +49,15 @@ function App() {
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/alumnos" element={<ListaAlumnos />} />
                 <Route path="/docentes" element={<ListaDocentes />} />
+                <Route path="/padres" element={<ListaPadres />} />
                 <Route path="/grados" element={<ListaGrados />} />
                 <Route path="/cursos" element={<ListaCursos />} />
                 <Route path="/horarios" element={<Horarios />} />
                 <Route path="/asistencia" element={<TomarAsistencia />} />
                 <Route path="/notas" element={<RegistrarNotas />} />
                 <Route path="/comunicados" element={<ListaComunicados />} />
+                <Route path="/eventos" element={<ListaEventos />} />
+                <Route path="/pagos" element={<ListaPagos />} />
                 <Route path="/reportes" element={<Reportes />} />
                 <Route path="/configuracion" element={<Configuracion />} />
               </Route>

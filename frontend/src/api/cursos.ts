@@ -40,3 +40,8 @@ export const actualizarCurso = async (
 export const eliminarCurso = async (id: number): Promise<void> => {
   await cliente.delete(`/cursos/${id}`);
 };
+
+export const listarTodosCursos = async (): Promise<Curso[]> => {
+  const { data } = await cliente.get('/cursos', { params: { all: true } });
+  return data;
+};

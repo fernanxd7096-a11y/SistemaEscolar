@@ -17,6 +17,9 @@ class DatabaseSeeder extends Seeder
             AsistenciaSeeder::class,
             NotaSeeder::class,
             ComunicadoSeeder::class,
+            PadreSeeder::class,
+            EventoSeeder::class,
+            PagoSeeder::class,
         ]);
     }
 }

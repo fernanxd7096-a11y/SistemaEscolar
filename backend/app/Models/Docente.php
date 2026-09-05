@@ -20,6 +20,8 @@ class Docente extends Model
         'telefono',
         'email',
         'estado',
+        'estado_registro',
+        'motivo_rechazo',
     ];
 
     protected $casts = [

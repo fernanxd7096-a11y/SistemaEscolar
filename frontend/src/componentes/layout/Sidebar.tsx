@@ -3,9 +3,10 @@ import { NavLink } from 'react-router-dom';
 import { 
   LayoutDashboard, Users, GraduationCap, BookOpen, 
   BookMarked, Calendar, ClipboardCheck, FileText, 
-  Bell, BarChart2, Settings, ChevronLeft, ChevronRight,
-  School
+  Bell, CalendarDays, BarChart2, Settings, ChevronLeft, ChevronRight,
+  UsersRound, DollarSign
 } from 'lucide-react';
+import logo from '../../assets/logo.png';
 
 interface SidebarProps {
   collapsed: boolean;
@@ -18,12 +19,15 @@ const navItems = [
   { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { path: '/alumnos', label: 'Alumnos', icon: Users },
   { path: '/docentes', label: 'Docentes', icon: GraduationCap },
+  { path: '/padres', label: 'Padres', icon: UsersRound },
   { path: '/grados', label: 'Grados', icon: BookOpen },
   { path: '/cursos', label: 'Cursos', icon: BookMarked },
   { path: '/horarios', label: 'Horarios', icon: Calendar },
   { path: '/asistencia', label: 'Asistencia', icon: ClipboardCheck },
   { path: '/notas', label: 'Notas', icon: FileText },
   { path: '/comunicados', label: 'Comunicados', icon: Bell },
+  { path: '/eventos', label: 'Eventos', icon: CalendarDays },
+  { path: '/pagos', label: 'Pagos', icon: DollarSign },
   { path: '/reportes', label: 'Reportes', icon: BarChart2 },
   { path: '/configuracion', label: 'Configuración', icon: Settings },
 ];
@@ -43,13 +47,19 @@ export const Sidebar = ({ collapsed, onToggle, mobileOpen, setMobileOpen }: Side
         ${collapsed ? 'w-20' : 'w-64'} 
         ${mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
-        <div className="flex h-16 items-center justify-center border-b border-white/10 shrink-0">
-          <div className="flex items-center gap-3 px-4">
-            <School className="w-8 h-8 text-acento-500 shrink-0" />
+        <div className={`flex items-center justify-center border-b border-white/10 shrink-0 ${collapsed ? 'h-16 px-2' : 'h-[4.5rem] px-4'}`}>
+          <div className={`flex items-center ${collapsed ? 'justify-center' : 'gap-3 w-full'}`}>
+            <img
+              src={logo}
+              alt="MSJT"
+              className={`object-contain shrink-0 drop-shadow-md ${collapsed ? 'w-10 h-10' : 'w-12 h-12'}`}
+              draggable={false}
+            />
             {!collapsed && (
-              <div className="flex flex-col truncate text-white">
-                <span className="text-xs text-white/70 font-medium">Milagroso</span>
-                <span className="text-sm font-bold truncate">San Judas Tadeo</span>
+              <div className="flex flex-col truncate text-white min-w-0">
+                <span className="text-[10px] text-acento-400 font-semibold tracking-wider uppercase">I.E.P.</span>
+                <span className="text-sm font-bold truncate leading-tight">San Judas Tadeo</span>
+                <span className="text-[10px] text-white/50 truncate">UGEL 05 — S.J.L.</span>
               </div>
             )}
           </div>
@@ -64,7 +74,7 @@ export const Sidebar = ({ collapsed, onToggle, mobileOpen, setMobileOpen }: Side
                 className={({ isActive }) => 
                   `flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors group relative
                   ${isActive 
-                    ? 'bg-white/10 text-acento-500 font-medium' 
+                    ? 'bg-white/10 text-acento-400 font-medium' 
                     : 'text-white/80 hover:bg-white/5 hover:text-white'}`
                 }
                 title={collapsed ? item.label : undefined}

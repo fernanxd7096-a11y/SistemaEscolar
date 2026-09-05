@@ -57,6 +57,8 @@ export interface Docente {
   telefono?: string | null;
   email?: string | null;
   estado: boolean;
+  estado_registro?: 'pendiente' | 'aprobado' | 'rechazado';
+  motivo_rechazo?: string | null;
   secciones_tutor_count?: number;
 }
 
@@ -178,6 +180,108 @@ export interface Comunicado {
   fecha_publicacion?: string | null;
   estado: boolean;
   autor?: { id: number; nombre: string; apellido: string } | null;
+  created_at?: string;
+}
+
+export interface Padre {
+  id: number;
+  dni: string;
+  nombres: string;
+  apellidos: string;
+  relacion: 'padre' | 'madre' | 'tutor' | 'apoderado';
+  telefono?: string | null;
+  email?: string | null;
+  usuario_id?: number | null;
+  alumnos?: Alumno[];
+}
+
+export interface AsistenciaSemanal {
+  fecha: string;
+  presente: number;
+  tardanza: number;
+  falta: number;
+  justificado: number;
+}
+
+export interface PromedioCurso {
+  curso: string;
+  promedio: number;
+}
+
+export interface AlumnoFaltas {
+  nombres: string;
+  apellidos: string;
+  total_faltas: number;
+}
+
+export interface AsistenciaMensual {
+  mes: string;
+  porcentaje_asistencia: number;
+  total: number;
+}
+
+export interface GraficosDashboard {
+  asistencia_semanal: AsistenciaSemanal[];
+  distribucion_asistencia: ResumenAsistencia;
+  promedios_por_curso: PromedioCurso[];
+  alumnos_mas_faltas: AlumnoFaltas[];
+  comunicados_recientes: Comunicado[];
+  asistencia_mensual: AsistenciaMensual[];
+}
+
+export interface Evento {
+  id: number;
+  titulo: string;
+  descripcion?: string | null;
+  tipo: 'institucional' | 'reunion' | 'celebracion' | 'escolar' | 'actividad';
+  fecha_inicio: string;
+  hora_inicio?: string | null;
+  fecha_fin?: string | null;
+  hora_fin?: string | null;
+  lugar?: string | null;
+  costo?: number | null;
+  cupo_maximo?: number | null;
+  estado: 'activo' | 'cancelado' | 'finalizado';
+  creado_por?: number | null;
+  creador?: { id: number; nombre: string; apellido: string } | null;
+  created_at?: string;
+}
+
+export interface ConceptoPago {
+  id: number;
+  nombre: string;
+  descripcion?: string | null;
+  monto_base: number;
+  año_escolar?: string | null;
+  estado: boolean;
+}
+
+export interface Comprobante {
+  id: number;
+  pago_id: number;
+  numero_comprobante: string;
+  tipo: 'boleta' | 'recibo' | 'factura';
+  archivo?: string | null;
+  fecha_emision: string;
+}
+
+export interface Pago {
+  id: number;
+  alumno_id: number;
+  concepto_pago_id: number;
+  evento_id?: number | null;
+  monto: number;
+  fecha_pago: string;
+  metodo_pago: 'efectivo' | 'transferencia' | 'deposito';
+  referencia_pago?: string | null;
+  observacion?: string | null;
+  evidencia?: string | null;
+  evidencia_url?: string | null;
+  estado: 'pendiente' | 'pagado' | 'anulado';
+  alumno?: { id: number; nombres: string; apellidos: string; dni: string };
+  concepto_pago?: ConceptoPago;
+  evento?: { id: number; titulo: string } | null;
+  comprobante?: Comprobante | null;
   created_at?: string;
 }
 

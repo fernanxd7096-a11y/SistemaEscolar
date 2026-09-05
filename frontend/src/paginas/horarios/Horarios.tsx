@@ -7,8 +7,8 @@ import {
   listarHorarios,
 } from '../../api/horarios';
 import { listarGrados, listarSecciones } from '../../api/grados';
-import { listarCursos } from '../../api/cursos';
-import { listarDocentes } from '../../api/docentes';
+import { listarTodosCursos } from '../../api/cursos';
+import { listarTodosDocentes } from '../../api/docentes';
 import type { Horario, Grado, Seccion, Curso, Docente } from '../../tipos';
 import { usePermiso } from '../../hooks/usePermiso';
 
@@ -32,6 +32,17 @@ const COLORES_CURSO = [
   'bg-teal-100 border-teal-300 text-teal-800 dark:bg-teal-900/40 dark:border-teal-700 dark:text-teal-200',
   'bg-pink-100 border-pink-300 text-pink-800 dark:bg-pink-900/40 dark:border-pink-700 dark:text-pink-200',
 ];
+
+/** Normaliza "08:00:00" | "8:00" → "08:00" */
+const normalizarHora = (hora?: string | null): string => {
+  if (!hora) return '08:00';
+  const m = String(hora).match(/^(\d{1,2}):(\d{2})/);
+  if (!m) return String(hora).slice(0, 5);
+  return `${m[1].padStart(2, '0')}:${m[2]}`;
+};
+
+const claveBloque = (inicio: string, fin: string) =>
+  `${normalizarHora(inicio)}-${normalizarHora(fin)}`;
 
 const vacio = {
   curso_id: '',
@@ -58,24 +69,22 @@ export const Horarios = () => {
   const [filtroSeccion, setFiltroSeccion] = useState('');
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState('');
+  const [errorModal, setErrorModal] = useState('');
   const [modalAbierto, setModalAbierto] = useState(false);
   const [editando, setEditando] = useState<Horario | null>(null);
   const [form, setForm] = useState(vacio);
   const [guardando, setGuardando] = useState(false);
 
-  // Filtrar secciones por grado seleccionado
   const seccionesFiltradas = useMemo(
     () => (filtroGrado ? secciones.filter((s) => s.grado_id === Number(filtroGrado)) : secciones),
     [secciones, filtroGrado]
   );
 
-  // Filtrar cursos por grado seleccionado
   const cursosFiltrados = useMemo(
     () => (filtroGrado ? cursos.filter((c) => c.grado_id === Number(filtroGrado)) : cursos),
     [cursos, filtroGrado]
   );
 
-  // Mapa de color por curso
   const colorCurso = useMemo(() => {
     const map: Record<number, string> = {};
     const cursosUnicos = [...new Set(horarios.map((h) => h.curso_id))];
@@ -85,10 +94,9 @@ export const Horarios = () => {
     return map;
   }, [horarios]);
 
-  // Extraer bloques horarios únicos ordenados
   const bloquesHorarios = useMemo(() => {
     const set = new Set<string>();
-    horarios.forEach((h) => set.add(`${h.hora_inicio}-${h.hora_fin}`));
+    horarios.forEach((h) => set.add(claveBloque(h.hora_inicio, h.hora_fin)));
     return Array.from(set).sort((a, b) => a.localeCompare(b));
   }, [horarios]);
 
@@ -102,7 +110,13 @@ export const Horarios = () => {
     setError('');
     try {
       const data = await listarHorarios({ seccion_id: Number(filtroSeccion) });
-      setHorarios(data);
+      setHorarios(
+        data.map((h) => ({
+          ...h,
+          hora_inicio: normalizarHora(h.hora_inicio),
+          hora_fin: normalizarHora(h.hora_fin),
+        }))
+      );
     } catch {
       setError('No se pudieron cargar los horarios.');
     } finally {
@@ -113,8 +127,8 @@ export const Horarios = () => {
   useEffect(() => {
     listarGrados().then(setGrados).catch(() => setGrados([]));
     listarSecciones().then(setSecciones).catch(() => setSecciones([]));
-    listarCursos().then((r) => setCursos(r.data)).catch(() => setCursos([]));
-    listarDocentes({ page: 1 }).then((r) => setDocentes(r.data)).catch(() => setDocentes([]));
+    listarTodosCursos().then(setCursos).catch(() => setCursos([]));
+    listarTodosDocentes().then(setDocentes).catch(() => setDocentes([]));
     setCargando(false);
   }, []);
 
@@ -122,7 +136,6 @@ export const Horarios = () => {
     cargar();
   }, [filtroSeccion]);
 
-  // Auto-seleccionar primera sección cuando cambia grado
   useEffect(() => {
     if (filtroGrado) {
       const primera = secciones.find((s) => s.grado_id === Number(filtroGrado));
@@ -132,25 +145,69 @@ export const Horarios = () => {
     }
   }, [filtroGrado, secciones]);
 
+  /** Busca un hueco libre para "Nueva clase" (evita chocar con el seeder). */
+  const sugerirHuecoLibre = (): { dia: Horario['dia_semana']; hora_inicio: string; hora_fin: string } => {
+    const bloquesBase = [
+      ['08:00', '08:45'],
+      ['08:45', '09:30'],
+      ['09:30', '10:15'],
+      ['10:30', '11:15'],
+      ['11:15', '12:00'],
+      ['12:00', '12:45'],
+      ['13:00', '13:45'],
+      ['14:00', '14:45'],
+      ['15:00', '15:45'],
+    ] as const;
+
+    for (const dia of DIAS) {
+      for (const [inicio, fin] of bloquesBase) {
+        const ocupado = horarios.some(
+          (h) =>
+            h.dia_semana === dia.value &&
+            normalizarHora(h.hora_inicio) < fin &&
+            normalizarHora(h.hora_fin) > inicio
+        );
+        if (!ocupado) {
+          return { dia: dia.value, hora_inicio: inicio, hora_fin: fin };
+        }
+      }
+    }
+
+    return { dia: 'lunes', hora_inicio: '16:00', hora_fin: '16:45' };
+  };
+
   const abrirCrear = (dia?: Horario['dia_semana'], hora?: string) => {
     setEditando(null);
-    setForm({
-      ...vacio,
-      dia_semana: dia ?? 'lunes',
-      hora_inicio: hora?.split('-')[0] ?? '08:00',
-      hora_fin: hora?.split('-')[1] ?? '08:45',
-    });
+    setErrorModal('');
+    if (dia && hora) {
+      const [inicioRaw, finRaw] = hora.split('-');
+      setForm({
+        ...vacio,
+        dia_semana: dia,
+        hora_inicio: normalizarHora(inicioRaw),
+        hora_fin: normalizarHora(finRaw),
+      });
+    } else {
+      const hueco = sugerirHuecoLibre();
+      setForm({
+        ...vacio,
+        dia_semana: hueco.dia,
+        hora_inicio: hueco.hora_inicio,
+        hora_fin: hueco.hora_fin,
+      });
+    }
     setModalAbierto(true);
   };
 
   const abrirEditar = (horario: Horario) => {
     setEditando(horario);
+    setErrorModal('');
     setForm({
       curso_id: String(horario.curso_id),
       docente_id: horario.docente_id ? String(horario.docente_id) : '',
       dia_semana: horario.dia_semana,
-      hora_inicio: horario.hora_inicio.slice(0, 5),
-      hora_fin: horario.hora_fin.slice(0, 5),
+      hora_inicio: normalizarHora(horario.hora_inicio),
+      hora_fin: normalizarHora(horario.hora_fin),
       aula: horario.aula ?? '',
       estado: horario.estado,
     });
@@ -160,15 +217,24 @@ export const Horarios = () => {
   const guardar = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!filtroSeccion) return;
+
+    const horaInicio = normalizarHora(form.hora_inicio);
+    const horaFin = normalizarHora(form.hora_fin);
+
+    if (horaFin <= horaInicio) {
+      setErrorModal('La hora de fin debe ser posterior a la hora de inicio.');
+      return;
+    }
+
     setGuardando(true);
-    setError('');
+    setErrorModal('');
     const payload = {
       seccion_id: Number(filtroSeccion),
       curso_id: Number(form.curso_id),
       docente_id: form.docente_id ? Number(form.docente_id) : null,
       dia_semana: form.dia_semana,
-      hora_inicio: form.hora_inicio,
-      hora_fin: form.hora_fin,
+      hora_inicio: horaInicio,
+      hora_fin: horaFin,
       aula: form.aula || null,
       estado: form.estado,
     };
@@ -182,14 +248,23 @@ export const Horarios = () => {
       await cargar();
     } catch (err: unknown) {
       const data = (err as { response?: { data?: { mensaje?: string; message?: string; errors?: Record<string, string[]> } } })?.response?.data;
-      setError(data?.errors ? Object.values(data.errors)[0][0] : data?.mensaje || data?.message || 'Error al guardar.');
+      let msg = data?.mensaje || data?.message || 'Error al guardar.';
+      if (data?.errors) {
+        const primero = Object.values(data.errors)[0]?.[0];
+        if (primero) {
+          msg = primero === 'validation.date_format'
+            ? 'El formato de hora no es válido. Usa HH:MM (ej. 08:00).'
+            : primero;
+        }
+      }
+      setErrorModal(msg);
     } finally {
       setGuardando(false);
     }
   };
 
   const borrar = async (horario: Horario) => {
-    if (!confirm(`¿Eliminar esta clase del horario?`)) return;
+    if (!confirm('¿Eliminar esta clase del horario?')) return;
     try {
       await eliminarHorario(horario.id);
       await cargar();
@@ -200,7 +275,7 @@ export const Horarios = () => {
 
   const obtenerClase = (dia: string, bloque: string) => {
     return horarios.find(
-      (h) => h.dia_semana === dia && `${h.hora_inicio.slice(0, 5)}-${h.hora_fin.slice(0, 5)}` === bloque
+      (h) => h.dia_semana === dia && claveBloque(h.hora_inicio, h.hora_fin) === bloque
     );
   };
 
@@ -225,7 +300,6 @@ export const Horarios = () => {
         )}
       </div>
 
-      {/* Filtros */}
       <div className="tarjeta p-4 dark:bg-gray-800 dark:border-gray-700">
         <div className="flex flex-col sm:flex-row gap-3">
           <div className="flex-1">
@@ -266,7 +340,6 @@ export const Horarios = () => {
         <div className="bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 px-4 py-3 rounded-xl text-sm">{error}</div>
       )}
 
-      {/* Grilla semanal */}
       {!filtroSeccion ? (
         <div className="tarjeta p-12 text-center dark:bg-gray-800 dark:border-gray-700">
           <Calendar className="w-16 h-16 mx-auto mb-4 text-gray-300 dark:text-gray-600" />
@@ -310,8 +383,8 @@ export const Horarios = () => {
                   bloquesHorarios.map((bloque) => (
                     <tr key={bloque} className="border-t border-gray-100 dark:border-gray-700">
                       <td className="px-3 py-2 text-xs font-mono text-gray-500 dark:text-gray-400 border-r border-gray-100 dark:border-gray-700 whitespace-nowrap align-top pt-3">
-                        {bloque.replace('-', '\n→ ').split('\n').map((l, i) => (
-                          <div key={i}>{l}</div>
+                        {bloque.split('-').map((l, i) => (
+                          <div key={i}>{i === 0 ? l : `→ ${l}`}</div>
                         ))}
                       </td>
                       {DIAS.map((dia) => {
@@ -320,7 +393,7 @@ export const Horarios = () => {
                           <td key={dia.value} className="px-2 py-2 align-top">
                             {clase ? (
                               <div
-                                className={`rounded-lg border p-2.5 transition-all hover:shadow-md cursor-pointer group ${colorCurso[clase.curso_id] ?? COLORES_CURSO[0]}`}
+                                className={`relative rounded-lg border p-2.5 transition-all hover:shadow-md cursor-pointer group ${colorCurso[clase.curso_id] ?? COLORES_CURSO[0]}`}
                                 onClick={() => puedeEditar && abrirEditar(clase)}
                               >
                                 <div className="font-semibold text-xs leading-tight">{clase.curso?.nombre ?? 'Curso'}</div>
@@ -349,6 +422,7 @@ export const Horarios = () => {
                                 <button
                                   onClick={() => abrirCrear(dia.value, bloque)}
                                   className="w-full h-full min-h-[60px] rounded-lg border-2 border-dashed border-gray-200 dark:border-gray-700 hover:border-primario-400 dark:hover:border-primario-500 hover:bg-primario-50/50 dark:hover:bg-primario-900/20 transition-all flex items-center justify-center"
+                                  title="Agregar clase en este horario"
                                 >
                                   <Plus className="w-4 h-4 text-gray-300 dark:text-gray-600" />
                                 </button>
@@ -366,7 +440,6 @@ export const Horarios = () => {
         </div>
       )}
 
-      {/* Leyenda de colores */}
       {filtroSeccion && horarios.length > 0 && (
         <div className="tarjeta p-4 dark:bg-gray-800 dark:border-gray-700">
           <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">Leyenda de cursos:</p>
@@ -383,7 +456,6 @@ export const Horarios = () => {
         </div>
       )}
 
-      {/* Modal crear/editar */}
       {modalAbierto && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
           <div className="bg-white dark:bg-gray-800 rounded-2xl w-full max-w-lg shadow-xl max-h-[90vh] overflow-y-auto">
@@ -394,6 +466,11 @@ export const Horarios = () => {
               <button onClick={() => setModalAbierto(false)} className="btn-icono"><X className="w-5 h-5" /></button>
             </div>
             <form onSubmit={guardar} className="p-6 space-y-4">
+              {errorModal && (
+                <div className="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 px-4 py-3 rounded-xl text-sm">
+                  {errorModal}
+                </div>
+              )}
               <div>
                 <label className="etiqueta dark:text-gray-300">Curso</label>
                 <select
@@ -407,6 +484,9 @@ export const Horarios = () => {
                     <option key={c.id} value={c.id}>{c.nombre}</option>
                   ))}
                 </select>
+                {cursosFiltrados.length === 0 && (
+                  <p className="text-xs text-amber-600 mt-1">No hay cursos para este grado. Crea cursos primero.</p>
+                )}
               </div>
               <div>
                 <label className="etiqueta dark:text-gray-300">Docente</label>
@@ -440,9 +520,10 @@ export const Horarios = () => {
                   <input
                     type="time"
                     required
+                    step={60}
                     className="campo dark:bg-gray-900 dark:border-gray-600 dark:text-white"
                     value={form.hora_inicio}
-                    onChange={(e) => setForm({ ...form, hora_inicio: e.target.value })}
+                    onChange={(e) => setForm({ ...form, hora_inicio: normalizarHora(e.target.value) })}
                   />
                 </div>
                 <div>
@@ -450,9 +531,10 @@ export const Horarios = () => {
                   <input
                     type="time"
                     required
+                    step={60}
                     className="campo dark:bg-gray-900 dark:border-gray-600 dark:text-white"
                     value={form.hora_fin}
-                    onChange={(e) => setForm({ ...form, hora_fin: e.target.value })}
+                    onChange={(e) => setForm({ ...form, hora_fin: normalizarHora(e.target.value) })}
                   />
                 </div>
               </div>
@@ -475,7 +557,7 @@ export const Horarios = () => {
               </label>
               <div className="flex justify-end gap-2 pt-2">
                 <button type="button" onClick={() => setModalAbierto(false)} className="btn-secundario">Cancelar</button>
-                <button type="submit" disabled={guardando} className="btn-primario">
+                <button type="submit" disabled={guardando || !form.curso_id} className="btn-primario">
                   {guardando ? 'Guardando...' : 'Guardar'}
                 </button>
               </div>

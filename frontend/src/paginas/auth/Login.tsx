@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, Eye, EyeOff, School, AlertCircle } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import { useAuth } from '../../contexto/AuthContexto';
+import logo from '../../assets/logo.png';
 
 export const Login = () => {
   const [mostrarPassword, setMostrarPassword] = useState(false);
@@ -37,26 +38,41 @@ export const Login = () => {
   return (
     <div className="min-h-screen w-full flex bg-gray-50 dark:bg-gray-900">
       <div className="hidden lg:flex w-1/2 gradiente-institucional text-white flex-col items-center justify-center p-12 relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white to-transparent"></div>
-        <div className="z-10 flex flex-col items-center text-center space-y-6 max-w-md">
-          <div className="w-32 h-32 bg-white/10 rounded-full flex items-center justify-center backdrop-blur-sm border border-white/20 mb-4">
-            <School className="w-16 h-16 text-acento-500" />
+        <div className="absolute inset-0 opacity-20 bg-[radial-gradient(ellipse_at_center,rgba(212,160,23,0.35)_0%,transparent_65%)]" />
+        <div className="z-10 flex flex-col items-center text-center space-y-8 max-w-md">
+          <div className="relative">
+            <div className="absolute inset-0 blur-2xl bg-acento-500/25 rounded-full scale-110" />
+            <img
+              src={logo}
+              alt="Escudo I.E.P. Milagroso San Judas Tadeo"
+              className="relative w-56 h-auto drop-shadow-[0_12px_28px_rgba(0,0,0,0.45)] select-none"
+              draggable={false}
+            />
           </div>
           <div className="space-y-2">
-            <h2 className="text-sm font-medium tracking-widest text-acento-500 uppercase">Colegio</h2>
-            <h1 className="text-4xl font-bold font-sans tracking-tight">Milagroso<br/>San Judas Tadeo</h1>
+            <h1 className="text-3xl font-bold font-sans tracking-tight leading-tight">
+              Milagroso<br />San Judas Tadeo
+            </h1>
+            <p className="text-primario-100/90 text-base font-light pt-3 border-t border-white/20">
+              Formando líderes para el futuro con excelencia académica y valores.
+            </p>
           </div>
-          <p className="text-blue-100 text-lg font-light pt-4 border-t border-white/20">
-            Formando líderes para el futuro con excelencia académica y valores.
-          </p>
         </div>
       </div>
 
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 sm:p-12">
         <div className="w-full max-w-md space-y-8 fade-in">
           <div className="text-center lg:text-left space-y-2">
-            <div className="lg:hidden w-16 h-16 bg-primario-50 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-6">
-              <School className="w-8 h-8 text-primario-600 dark:text-primario-400" />
+            <div className="lg:hidden flex flex-col items-center mb-6">
+              <img
+                src={logo}
+                alt="Escudo MSJT"
+                className="w-24 h-auto object-contain mb-3 drop-shadow-md"
+                draggable={false}
+              />
+              <span className="text-sm font-semibold text-primario-700 dark:text-primario-400">
+                I.E.P. Milagroso San Judas Tadeo
+              </span>
             </div>
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Bienvenido</h2>
             <p className="text-gray-500 dark:text-gray-400">Inicia sesión en tu cuenta para continuar</p>

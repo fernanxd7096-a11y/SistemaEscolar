@@ -1,6 +1,6 @@
 # Sistema Escolar — Milagroso San Judas Tadeo
 
-API Laravel + SPA React para la gestión escolar.
+API Laravel 12 + SPA React 19 para la gestión escolar integral.
 
 ## Requisitos
 
@@ -39,25 +39,48 @@ UI en `http://localhost:5173`
 - Email: `admin@sanjudastadeo.edu.pe`
 - Password: `Admin123!`
 
-## Estado actual (Fase 1)
+## Módulos implementados
 
-- Autenticación (login / logout / recuperar contraseña)
-- Roles y permisos (Spatie)
-- Dashboard base
-- Layout institucional (sidebar, topbar, modo oscuro)
+| Módulo | Estado |
+|--------|--------|
+| Auth (login, logout, recuperar contraseña) | ✅ |
+| Dashboard con KPIs y gráficos | ✅ |
+| Alumnos CRUD + matrícula | ✅ |
+| Docentes CRUD | ✅ |
+| Grados y Secciones | ✅ |
+| Cursos CRUD | ✅ |
+| Horarios (vista semanal) | ✅ |
+| Asistencia masiva | ✅ |
+| Notas masivas + libreta | ✅ |
+| Comunicados | ✅ |
+| Eventos escolares | ✅ |
+| Padres de familia + vinculación | ✅ |
+| Pagos + conceptos + comprobantes | ✅ |
+| Reportes JSON + PDF | ✅ |
+| API móvil para padres | ✅ |
+| Roles y permisos (6 roles, 54 permisos) | ✅ |
 
-Fases siguientes: cursos, horarios, asistencia, notas, reportes.
+## Stack
 
-## Fase 2 incluida
+- **Backend:** Laravel 12, Sanctum, Spatie Permission, DomPDF
+- **Frontend:** React 19, TypeScript, Vite, Tailwind CSS, Recharts
+- **Desktop (opcional):** Electron + electron-builder
 
-- CRUD Alumnos (con matrícula a sección)
-- CRUD Docentes
-- CRUD Grados y Secciones
-- Seeder académico de ejemplo (`AcademicoSeeder`)
-
-Tras actualizar el código:
+## Seeders
 
 ```bash
-cd backend
-php artisan migrate --seed
+php artisan migrate:fresh --seed
+```
+
+Incluye: roles, admin, datos académicos, cursos, horarios, asistencia, notas, comunicados, padres, eventos y pagos de ejemplo.
+
+## API móvil
+
+Prefijo `/api/movil` — perfil padre, resumen/notas/asistencia/horario/pagos del hijo, comunicados.
+
+## Empaquetado desktop
+
+```bash
+cd frontend
+npm run electron:build
 ```

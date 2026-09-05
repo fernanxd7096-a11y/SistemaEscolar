@@ -5,8 +5,8 @@
 
 @layer base {
   :root {
-    --color-primario: 30 58 95;
-    --color-acento: 245 158 11;
+    --color-primario: 139 26 43;
+    --color-acento: 212 160 23;
     --sidebar-width: 260px;
     --sidebar-collapsed: 72px;
     --topbar-height: 64px;
@@ -184,7 +184,7 @@
 
   /* Gradiente institucional */
   .gradiente-institucional {
-    background: linear-gradient(135deg, #1E3A5F 0%, #2D6A9F 60%, #3a7bcd 100%);
+    background: linear-gradient(135deg, #4A0012 0%, #8B1A2B 60%, #A0133B 100%);
   }
 
   /* Separador */

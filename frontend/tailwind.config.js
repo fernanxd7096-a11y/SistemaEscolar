@@ -8,23 +8,26 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Paleta institucional - Milagroso San Judas Tadeo
+        // Paleta institucional - Milagroso San Judas Tadeo (Guinda + Dorado)
         primario: {
-          50:  '#e8f0f9',
-          100: '#c5d8f0',
-          200: '#9dbee6',
-          300: '#74a3db',
-          400: '#578fd4',
-          500: '#3a7bcd',
-          600: '#2D6A9F', // Azul medio
-          700: '#1E3A5F', // Azul oscuro institucional
-          800: '#162b46',
-          900: '#0e1d2f',
+          50:  '#fdf2f4',
+          100: '#fce7eb',
+          200: '#f9d0d9',
+          300: '#f4a9b8',
+          400: '#ec7a93',
+          500: '#e04d6f',
+          600: '#c22d55',
+          700: '#8B1A2B', // Guinda institucional
+          800: '#6B001A', // Guinda oscuro
+          900: '#4A0012', // Guinda profundo
+          950: '#2D000B',
         },
         acento: {
+          300: '#fcd34d',
           400: '#fbbf24',
-          500: '#F59E0B', // Dorado institucional
-          600: '#d97706',
+          500: '#D4A017', // Dorado institucional
+          600: '#b8860b',
+          700: '#8B6914',
         },
         exito:   '#10B981',
         peligro: '#EF4444',

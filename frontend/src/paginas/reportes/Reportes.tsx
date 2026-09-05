@@ -1,10 +1,14 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { Users, BookOpen, GraduationCap, BarChart3, ClipboardList, Search, Printer } from 'lucide-react';
+import { Users, BookOpen, GraduationCap, BarChart3, ClipboardList, Search, Printer, Download } from 'lucide-react';
+import { toast } from 'react-toastify';
 import {
   obtenerResumenGeneral,
   obtenerBoleta,
   obtenerConsolidadoAsistencia,
   obtenerConsolidadoNotas,
+  descargarBoletaPdf,
+  descargarAsistenciaPdf,
+  descargarNotasPdf,
 } from '../../api/reportes';
 import { listarGrados, listarSecciones } from '../../api/grados';
 import { listarAlumnos } from '../../api/alumnos';
@@ -34,6 +38,7 @@ export const Reportes = () => {
   const [filtroGrado, setFiltroGrado] = useState('');
   const [filtroSeccion, setFiltroSeccion] = useState('');
   const [cargando, setCargando] = useState(false);
+  const [descargando, setDescargando] = useState(false);
   const [error, setError] = useState('');
 
   // Resumen
@@ -195,7 +200,23 @@ export const Reportes = () => {
                   <p className="text-sm text-gray-600 dark:text-gray-400">{boleta.alumno.apellidos}, {boleta.alumno.nombres} — DNI: {boleta.alumno.dni}</p>
                   {boleta.seccion && <p className="text-xs text-gray-500">{boleta.seccion.grado} "{boleta.seccion.nombre}" — {boleta.seccion.nivel}</p>}
                 </div>
-                <button onClick={() => window.print()} className="btn-secundario text-xs"><Printer className="w-3.5 h-3.5" /> Imprimir</button>
+                <div className="flex gap-2">
+                  <button
+                    onClick={async () => {
+                      setDescargando(true);
+                      try {
+                        await descargarBoletaPdf(Number(alumnoId), filtroSeccion ? Number(filtroSeccion) : undefined);
+                        toast.success('Boleta descargada correctamente.');
+                      } catch { toast.error('Error al descargar la boleta.'); }
+                      finally { setDescargando(false); }
+                    }}
+                    disabled={descargando}
+                    className="btn-primario text-xs"
+                  >
+                    <Download className="w-3.5 h-3.5" /> {descargando ? 'Descargando...' : 'Descargar PDF'}
+                  </button>
+                  <button onClick={() => window.print()} className="btn-secundario text-xs"><Printer className="w-3.5 h-3.5" /> Imprimir</button>
+                </div>
               </div>
               <table className="w-full text-sm">
                 <thead className="bg-gray-50 dark:bg-gray-900/50">
@@ -259,6 +280,22 @@ export const Reportes = () => {
           </div>
           {consAsistencia && (
             <div className="tarjeta overflow-hidden dark:bg-gray-800 dark:border-gray-700">
+              <div className="flex justify-end p-3 border-b border-gray-200 dark:border-gray-700">
+                <button
+                  onClick={async () => {
+                    setDescargando(true);
+                    try {
+                      await descargarAsistenciaPdf(Number(filtroSeccion), fechaDesde, fechaHasta);
+                      toast.success('Consolidado descargado correctamente.');
+                    } catch { toast.error('Error al descargar.'); }
+                    finally { setDescargando(false); }
+                  }}
+                  disabled={descargando}
+                  className="btn-primario text-xs"
+                >
+                  <Download className="w-3.5 h-3.5" /> {descargando ? 'Descargando...' : 'Descargar PDF'}
+                </button>
+              </div>
               <table className="w-full text-sm">
                 <thead className="bg-gray-50 dark:bg-gray-900/50">
                   <tr>
@@ -336,6 +373,22 @@ export const Reportes = () => {
           </div>
           {consNotas && (
             <div className="tarjeta overflow-hidden dark:bg-gray-800 dark:border-gray-700">
+              <div className="flex justify-end p-3 border-b border-gray-200 dark:border-gray-700">
+                <button
+                  onClick={async () => {
+                    setDescargando(true);
+                    try {
+                      await descargarNotasPdf(Number(filtroSeccion), bimestreNotas ? Number(bimestreNotas) : undefined);
+                      toast.success('Consolidado descargado correctamente.');
+                    } catch { toast.error('Error al descargar.'); }
+                    finally { setDescargando(false); }
+                  }}
+                  disabled={descargando}
+                  className="btn-primario text-xs"
+                >
+                  <Download className="w-3.5 h-3.5" /> {descargando ? 'Descargando...' : 'Descargar PDF'}
+                </button>
+              </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead className="bg-gray-50 dark:bg-gray-900/50">

@@ -25,6 +25,10 @@ class DocenteControlador extends Controller
             $query->where('estado', $request->boolean('estado'));
         }
 
+        if ($request->boolean('all')) {
+            return response()->json($query->orderBy('apellidos')->orderBy('nombres')->get());
+        }
+
         return response()->json($query->orderBy('apellidos')->orderBy('nombres')->paginate(15));
     }
 

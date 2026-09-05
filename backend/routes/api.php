@@ -16,6 +16,11 @@ use App\Http\Controllers\AsistenciaControlador;
 use App\Http\Controllers\NotaControlador;
 use App\Http\Controllers\ComunicadoControlador;
 use App\Http\Controllers\ReporteControlador;
+use App\Http\Controllers\PadreControlador;
+use App\Http\Controllers\EventoControlador;
+use App\Http\Controllers\PagoControlador;
+use App\Http\Controllers\RegistroDocenteControlador;
+use App\Http\Controllers\Movil\MovilControlador;
 
 Route::get('ping', fn () => response()->json([
     'estado'  => 'ok',
@@ -29,12 +34,16 @@ Route::prefix('auth')->group(function () {
     Route::post('password/reset',           [PasswordControlador::class, 'reset']);
 });
 
+// --- Registro público de docentes (sin autenticación) ---
+Route::post('docentes/registro', [RegistroDocenteControlador::class, 'registrar']);
+
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('auth/logout',              [AutenticacionControlador::class, 'logout']);
     Route::get('auth/usuario-actual',       [AutenticacionControlador::class, 'usuarioActual']);
 
     Route::get('dashboard/resumen',         [DashboardControlador::class, 'resumen']);
+    Route::get('dashboard/graficos',        [DashboardControlador::class, 'graficos']);
 
     Route::middleware('role:administrador|director')->group(function () {
         Route::apiResource('usuarios', UsuarioControlador::class);
@@ -52,9 +61,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('docentes', [DocenteControlador::class, 'index'])->middleware('permission:ver-docentes');
     Route::post('docentes', [DocenteControlador::class, 'store'])->middleware('permission:crear-docentes');
+    Route::get('docentes/registros/pendientes', [RegistroDocenteControlador::class, 'pendientes'])->middleware('permission:ver-docentes');
     Route::get('docentes/{docente}', [DocenteControlador::class, 'show'])->middleware('permission:ver-docentes');
     Route::put('docentes/{docente}', [DocenteControlador::class, 'update'])->middleware('permission:editar-docentes');
     Route::delete('docentes/{docente}', [DocenteControlador::class, 'destroy'])->middleware('permission:eliminar-docentes');
+    Route::post('docentes/{docente}/aprobar', [RegistroDocenteControlador::class, 'aprobar'])->middleware('permission:editar-docentes');
+    Route::post('docentes/{docente}/rechazar', [RegistroDocenteControlador::class, 'rechazar'])->middleware('permission:editar-docentes');
+    Route::get('notificaciones/pendientes', [RegistroDocenteControlador::class, 'contadorPendientes']);
 
     Route::get('grados', [GradoControlador::class, 'index'])->middleware('permission:ver-grados');
     Route::post('grados', [GradoControlador::class, 'store'])->middleware('permission:crear-grados');
@@ -102,9 +115,65 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('comunicados/{comunicado}', [ComunicadoControlador::class, 'update'])->middleware('permission:editar-comunicados');
     Route::delete('comunicados/{comunicado}', [ComunicadoControlador::class, 'destroy'])->middleware('permission:eliminar-comunicados');
 
+    // --- Eventos ---
+    Route::get('eventos', [EventoControlador::class, 'index'])->middleware('permission:ver-eventos');
+    Route::post('eventos', [EventoControlador::class, 'store'])->middleware('permission:crear-eventos');
+    Route::get('eventos/{evento}', [EventoControlador::class, 'show'])->middleware('permission:ver-eventos');
+    Route::put('eventos/{evento}', [EventoControlador::class, 'update'])->middleware('permission:editar-eventos');
+    Route::delete('eventos/{evento}', [EventoControlador::class, 'destroy'])->middleware('permission:eliminar-eventos');
+
+    // --- Padres de familia ---
+    Route::get('padres', [PadreControlador::class, 'index'])->middleware('permission:ver-padres');
+    Route::post('padres', [PadreControlador::class, 'store'])->middleware('permission:crear-padres');
+    Route::get('padres/{padre}', [PadreControlador::class, 'show'])->middleware('permission:ver-padres');
+    Route::put('padres/{padre}', [PadreControlador::class, 'update'])->middleware('permission:editar-padres');
+    Route::delete('padres/{padre}', [PadreControlador::class, 'destroy'])->middleware('permission:eliminar-padres');
+    Route::post('padres/{padre}/vincular', [PadreControlador::class, 'vincularAlumno'])->middleware('permission:editar-padres');
+    Route::delete('padres/{padre}/desvincular/{alumno}', [PadreControlador::class, 'desvincularAlumno'])->middleware('permission:editar-padres');
+
     // --- Fase 7: reportes ---
     Route::get('reportes/resumen', [ReporteControlador::class, 'resumenGeneral'])->middleware('permission:ver-reportes');
     Route::get('reportes/boleta/{alumno}', [ReporteControlador::class, 'boletaAlumno'])->middleware('permission:ver-reportes');
     Route::get('reportes/consolidado-asistencia', [ReporteControlador::class, 'consolidadoAsistencia'])->middleware('permission:ver-reportes');
     Route::get('reportes/consolidado-notas', [ReporteControlador::class, 'consolidadoNotas'])->middleware('permission:ver-reportes');
+
+    // --- PDF Exports ---
+    Route::get('reportes/boleta/{alumno}/pdf', [ReporteControlador::class, 'boletaPdf'])->middleware('permission:ver-reportes');
+    Route::get('reportes/consolidado-asistencia/pdf', [ReporteControlador::class, 'consolidadoAsistenciaPdf'])->middleware('permission:ver-reportes');
+    Route::get('reportes/consolidado-notas/pdf', [ReporteControlador::class, 'consolidadoNotasPdf'])->middleware('permission:ver-reportes');
+
+    // --- Conceptos de pago ---
+    Route::get('conceptos-pago', [PagoControlador::class, 'conceptos'])->middleware('permission:ver-pagos');
+    Route::post('conceptos-pago', [PagoControlador::class, 'crearConcepto'])->middleware('permission:crear-pagos');
+    Route::put('conceptos-pago/{concepto}', [PagoControlador::class, 'actualizarConcepto'])->middleware('permission:editar-pagos');
+    Route::delete('conceptos-pago/{concepto}', [PagoControlador::class, 'eliminarConcepto'])->middleware('permission:eliminar-pagos');
+
+    // --- Pagos ---
+    Route::get('pagos', [PagoControlador::class, 'index'])->middleware('permission:ver-pagos');
+    Route::post('pagos', [PagoControlador::class, 'store'])->middleware('permission:crear-pagos');
+    Route::get('pagos/{pago}', [PagoControlador::class, 'show'])->middleware('permission:ver-pagos');
+    Route::put('pagos/{pago}', [PagoControlador::class, 'update'])->middleware('permission:editar-pagos');
+    Route::delete('pagos/{pago}', [PagoControlador::class, 'destroy'])->middleware('permission:eliminar-pagos');
+    Route::post('pagos/{pago}/evidencia', [PagoControlador::class, 'subirEvidencia'])->middleware('permission:crear-pagos|editar-pagos');
+    Route::delete('pagos/{pago}/evidencia', [PagoControlador::class, 'eliminarEvidencia'])->middleware('permission:crear-pagos|editar-pagos|eliminar-pagos');
+
+    // --- Pagos por evento ---
+    Route::get('eventos/{evento}/pagos', [PagoControlador::class, 'pagosPorEvento'])->middleware('permission:ver-pagos');
+
+    // --- Pagos por padre ---
+    Route::get('padres/{padre}/pagos', [PagoControlador::class, 'pagosPorPadre'])->middleware('permission:ver-pagos');
+});
+
+// =============================================
+// API MÓVIL — Para la app de celulares
+// =============================================
+Route::middleware('auth:sanctum')->prefix('movil')->group(function () {
+    Route::get('perfil',                          [MovilControlador::class, 'perfil']);
+    Route::get('hijo/{alumno}/resumen',           [MovilControlador::class, 'resumenHijo']);
+    Route::get('hijo/{alumno}/notas',             [MovilControlador::class, 'notasHijo']);
+    Route::get('hijo/{alumno}/asistencia',        [MovilControlador::class, 'asistenciaHijo']);
+    Route::get('hijo/{alumno}/horario',           [MovilControlador::class, 'horarioHijo']);
+    Route::get('hijo/{alumno}/pagos',             [MovilControlador::class, 'pagosHijo']);
+    Route::get('comunicados',                     [MovilControlador::class, 'comunicados']);
+    Route::get('comunicados/{comunicado}',        [MovilControlador::class, 'comunicadoDetalle']);
 });

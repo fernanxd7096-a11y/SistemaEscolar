@@ -27,6 +27,10 @@ class CursoControlador extends Controller
             $query->where('estado', $request->boolean('estado'));
         }
 
+        if ($request->boolean('all')) {
+            return response()->json($query->orderBy('grado_id')->orderBy('nombre')->get());
+        }
+
         return response()->json($query->orderBy('grado_id')->orderBy('nombre')->paginate(15));
     }
 

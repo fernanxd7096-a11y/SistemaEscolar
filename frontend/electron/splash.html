@@ -21,13 +21,13 @@
     .tarjeta {
       width: 100%;
       height: 100%;
-      background: linear-gradient(145deg, #1E3A5F 0%, #2D6A9F 60%, #1a4f80 100%);
+      background: linear-gradient(135deg, #4A0012 0%, #8B1A2B 60%, #A0133B 100%);
       border-radius: 16px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 20px;
+      gap: 16px;
       box-shadow: 0 25px 60px rgba(0,0,0,0.5);
       position: relative;
       overflow: hidden;
@@ -56,23 +56,21 @@
       background: rgba(255,255,255,0.04);
     }
 
-    /* Ícono */
+    /* Ícono / logo */
     .icono {
-      width: 90px;
-      height: 90px;
-      background: rgba(255,255,255,0.12);
-      border-radius: 50%;
+      width: 110px;
+      height: 110px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 2px solid rgba(255,255,255,0.2);
-      backdrop-filter: blur(10px);
+      z-index: 1;
     }
 
-    .icono svg {
-      width: 48px;
-      height: 48px;
-      fill: #F59E0B;
+    .icono img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.4));
     }
 
     /* Textos */
@@ -86,7 +84,7 @@
       font-size: 11px;
       font-weight: 500;
       letter-spacing: 3px;
-      color: #F59E0B;
+      color: #D4A017;
       text-transform: uppercase;
       margin-bottom: 6px;
     }
@@ -160,10 +158,7 @@
 <body>
   <div class="tarjeta">
     <div class="icono">
-      <!-- Ícono escolar SVG -->
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
-      </svg>
+      <img src="logo-splash.png" alt="Escudo MSJT" />
     </div>
 
     <div class="textos">

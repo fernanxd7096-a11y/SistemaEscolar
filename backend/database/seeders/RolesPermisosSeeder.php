@@ -41,6 +41,12 @@ class RolesPermisosSeeder extends Seeder
             'ver-notas', 'registrar-notas', 'editar-notas',
             // Comunicados
             'ver-comunicados', 'crear-comunicados', 'editar-comunicados', 'eliminar-comunicados',
+            // Eventos
+            'ver-eventos', 'crear-eventos', 'editar-eventos', 'eliminar-eventos',
+            // Padres
+            'ver-padres', 'crear-padres', 'editar-padres', 'eliminar-padres',
+            // Pagos
+            'ver-pagos', 'crear-pagos', 'editar-pagos', 'eliminar-pagos',
             // Reportes
             'ver-reportes', 'exportar-reportes',
             // Configuración
@@ -67,6 +73,9 @@ class RolesPermisosSeeder extends Seeder
             'ver-asistencias', 'registrar-asistencias',
             'ver-notas', 'registrar-notas',
             'ver-comunicados', 'crear-comunicados', 'editar-comunicados',
+            'ver-eventos', 'crear-eventos', 'editar-eventos',
+            'ver-padres', 'crear-padres', 'editar-padres',
+            'ver-pagos', 'crear-pagos', 'editar-pagos',
             'ver-reportes', 'exportar-reportes',
             'ver-configuracion',
         ]);
@@ -78,6 +87,9 @@ class RolesPermisosSeeder extends Seeder
             'ver-grados', 'ver-cursos',
             'ver-asistencias', 'registrar-asistencias',
             'ver-comunicados', 'crear-comunicados',
+            'ver-eventos',
+            'ver-padres', 'crear-padres', 'editar-padres',
+            'ver-pagos', 'crear-pagos', 'editar-pagos',
             'ver-reportes',
         ]);
 
@@ -89,6 +101,7 @@ class RolesPermisosSeeder extends Seeder
             'ver-notas', 'registrar-notas',
             'ver-comunicados',
             'ver-cursos',
+            'ver-eventos',
         ]);
 
         // Padre: solo consulta
@@ -96,6 +109,8 @@ class RolesPermisosSeeder extends Seeder
             'ver-notas',
             'ver-asistencias',
             'ver-comunicados',
+            'ver-eventos',
+            'ver-pagos',
         ]);
 
         // Alumno: solo consulta propia
@@ -104,6 +119,7 @@ class RolesPermisosSeeder extends Seeder
             'ver-asistencias',
             'ver-horarios',
             'ver-comunicados',
+            'ver-eventos',
         ]);
     }
 }
