@@ -27,6 +27,8 @@ export default function GestionLayout() {
       <Stack.Screen name="docente-formulario" options={{ title: 'Docente' }} />
       <Stack.Screen name="cursos" options={{ title: 'Cursos' }} />
       <Stack.Screen name="curso-formulario" options={{ title: 'Curso' }} />
+      <Stack.Screen name="pagos" options={{ title: 'Pagos' }} />
+      <Stack.Screen name="pago-formulario" options={{ title: 'Pago' }} />
       <Stack.Screen name="horario" options={{ title: 'Horario' }} />
       <Stack.Screen name="horario-reglas" options={{ title: 'Reglas recurrentes' }} />
       <Stack.Screen name="horario-regla-formulario" options={{ title: 'Regla del horario' }} />

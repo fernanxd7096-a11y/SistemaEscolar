@@ -15,6 +15,7 @@
       "bundleIdentifier": "pe.edu.sanjudastadeo.mobile"
     },
     "android": {
+      "usesCleartextTraffic": true,
       "package": "pe.edu.sanjudastadeo.mobile",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
@@ -40,7 +41,14 @@
       ],
       "@react-native-community/datetimepicker",
       "expo-font",
-      "expo-sharing"
+      "expo-sharing",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Se usa para elegir tu foto de perfil desde la galería.",
+          "cameraPermission": "Se usa para tomarte una foto de perfil con la cámara."
+        }
+      ]
     ]
   }
 }

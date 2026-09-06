@@ -1,6 +1,6 @@
 import { Directory, File, Paths } from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
-import { useAuthStore } from '@/tienda/auth';
+import { tokenActual } from './sesion';
 
 /**
  * Boleta de notas en PDF: descarga y compartición.
@@ -19,7 +19,7 @@ import { useAuthStore } from '@/tienda/auth';
  * JS, como pasaría con axios y `responseType: 'arraybuffer'`.
  */
 
-const BASE_URL = process.env.EXPO_PUBLIC_API_URL ?? 'http://localhost:8000/api';
+const BASE_URL = process.env.EXPO_PUBLIC_API_URL;
 
 /** Subcarpeta de caché para no mezclar las boletas con otros archivos temporales. */
 const CARPETA_BOLETAS = 'boletas';
@@ -50,7 +50,9 @@ export const descargarBoletaPdf = async (
   alumnoId: number,
   opciones: OpcionesBoleta = {}
 ): Promise<string> => {
-  const token = useAuthStore.getState().token;
+  // Mismo puente que usa el interceptor de axios (ver src/api/sesion.ts): la capa
+  // de API no importa el store directamente para no reintroducir el ciclo.
+  const token = tokenActual();
 
   const carpeta = new Directory(Paths.cache, CARPETA_BOLETAS);
   if (!carpeta.exists) {

@@ -3,6 +3,7 @@ import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { Usuario } from '@/tipos';
 import { login as loginApi, logout as logoutApi, obtenerUsuarioActual } from '@/api/auth';
+import { registrarSesion } from '@/api/sesion';
 
 // Reemplaza a frontend/src/contexto/AuthContexto.tsx (React Context) por un store
 // Zustand. Motivo: el interceptor 401 de axios (src/api/cliente.ts) necesita poder
@@ -28,6 +29,7 @@ interface AuthState {
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   cerrarSesionLocal: () => void;
+  actualizarUsuario: (usuario: Usuario) => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>((set, get) => ({
@@ -90,4 +92,23 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     AsyncStorage.removeItem(CLAVE_USUARIO_CACHE).catch(() => {});
     set({ token: null, usuario: null, estaAutenticado: false });
   },
+
+  // Refresca el usuario en memoria y en la caché de AsyncStorage tras editar el
+  // perfil (nombre, contraseña no cambia este objeto, foto). Sin esto, el nombre
+  // o la foto nuevos solo se verían después de cerrar sesión y volver a entrar.
+  actualizarUsuario: async (usuario: Usuario) => {
+    set({ usuario });
+    await AsyncStorage.setItem(CLAVE_USUARIO_CACHE, JSON.stringify(usuario));
+  },
 }));
+
+// El cliente axios necesita el token y necesita cerrar sesión ante un 401, pero no
+// puede importar este store sin crear un ciclo (este store importa @/api/auth, que
+// importa @/api/cliente). En vez de eso el store se registra en el puente neutral
+// de @/api/sesion, que es el que consulta el interceptor. Se ejecuta al evaluarse
+// el módulo, y el layout raíz importa este store en el arranque, así que el
+// registro siempre ocurre antes de la primera petición.
+registrarSesion({
+  obtenerToken: () => useAuthStore.getState().token,
+  alExpirar: () => useAuthStore.getState().cerrarSesionLocal(),
+});

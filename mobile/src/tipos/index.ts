@@ -10,7 +10,10 @@ export interface Usuario {
   apellido: string;
   email: string;
   estado: boolean;
-  foto?: string;
+  /** Ruta relativa en el disco "public" del backend (p. ej. "perfiles/xyz.png"). */
+  foto?: string | null;
+  /** URL absoluta lista para usar en un <Image>; la calcula el backend (accessor). */
+  foto_url?: string | null;
   roles: Rol[];
   permisos: string[];
 }
@@ -366,4 +369,31 @@ export interface KpisDashboard {
     es_no_lectivo: boolean;
     bloques_hoy: AgendaBloque[];
   } | null;
+}
+
+// --- Pagos -------------------------------------------------------------------
+
+export type MetodoPago = 'yape' | 'plin' | 'tarjeta' | 'efectivo';
+
+export interface Pago {
+  id: number;
+  alumno_id: number;
+  monto: number;
+  /** Texto libre: el colegio cobra por conceptos variados (pensión, materiales,
+   *  actividades...), así que no hay un catálogo cerrado. */
+  concepto: string;
+  fecha: string;
+  metodo_pago: MetodoPago;
+  referencia?: string | null;
+  observacion?: string | null;
+  registrado_por?: number | null;
+  alumno?: Alumno;
+  registrador?: { id: number; nombre: string; apellido: string } | null;
+}
+
+export interface ResumenMetodoPago {
+  yape: { total: number; cantidad: number };
+  plin: { total: number; cantidad: number };
+  efectivo: { total: number; cantidad: number };
+  tarjeta: { total: number; cantidad: number };
 }

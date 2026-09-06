@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { View, Text, StyleSheet, Pressable, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Alert, ActivityIndicator, Image } from 'react-native';
+import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuthStore } from '@/tienda/auth';
 import { enviarNotificacionPrueba } from '@/api/pushTokens';
@@ -34,11 +35,15 @@ export default function PerfilScreen() {
 
   return (
     <View style={estilos.contenedor}>
-      <View style={estilos.avatar}>
-        <Text style={estilos.avatarTexto}>
-          {(usuario?.nombre?.[0] ?? '') + (usuario?.apellido?.[0] ?? '')}
-        </Text>
-      </View>
+      {usuario?.foto_url ? (
+        <Image source={{ uri: usuario.foto_url }} style={estilos.avatarFoto} />
+      ) : (
+        <View style={estilos.avatar}>
+          <Text style={estilos.avatarTexto}>
+            {(usuario?.nombre?.[0] ?? '') + (usuario?.apellido?.[0] ?? '')}
+          </Text>
+        </View>
+      )}
       <Text style={estilos.nombre}>
         {usuario?.nombre} {usuario?.apellido}
       </Text>
@@ -48,6 +53,14 @@ export default function PerfilScreen() {
         <Text style={estilos.etiqueta}>Rol</Text>
         <Text style={estilos.valor}>{usuario?.roles?.map((r) => r.name).join(', ') || '—'}</Text>
       </View>
+
+      <Pressable
+        style={estilos.botonSecundario}
+        onPress={() => router.push('/(app)/perfil/editar')}
+      >
+        <Ionicons name="create-outline" size={18} color={colores.primario} />
+        <Text style={estilos.botonSecundarioTexto}>Editar perfil</Text>
+      </Pressable>
 
       <Pressable style={estilos.botonSecundario} onPress={probarNotificacion} disabled={enviandoPrueba}>
         {enviandoPrueba ? (
@@ -77,6 +90,13 @@ const estilos = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 16,
   },
+  avatarFoto: {
+    width: 84,
+    height: 84,
+    borderRadius: 42,
+    marginTop: 16,
+    backgroundColor: colores.borde,
+  },
   avatarTexto: { color: '#fff', fontSize: 28, fontWeight: '700' },
   nombre: { fontSize: 18, fontWeight: '700', color: colores.texto, marginTop: 12 },
   email: { fontSize: 13, color: colores.textoSecundario, marginTop: 2 },
@@ -94,20 +114,24 @@ const estilos = StyleSheet.create({
   botonSecundario: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     gap: 8,
+    width: '100%',
     backgroundColor: '#fff',
     borderWidth: 1,
     borderColor: colores.primario,
     borderRadius: 10,
     paddingVertical: 12,
     paddingHorizontal: 20,
-    marginTop: 24,
+    marginTop: 14,
   },
   botonSecundarioTexto: { color: colores.primario, fontWeight: '700', fontSize: 13 },
   boton: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     gap: 8,
+    width: '100%',
     backgroundColor: colores.peligro,
     borderRadius: 10,
     paddingVertical: 12,

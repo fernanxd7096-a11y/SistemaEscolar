@@ -82,11 +82,16 @@ export default function AppLayout() {
         Inicio. `href: null` la mantiene navegable pero fuera de la barra.
       */}
       <Tabs.Screen name="horario" options={{ href: null, headerShown: false }} />
+      {/*
+        "perfil" ahora es una carpeta con su propio Stack (vista + edición), así
+        que se apaga el header de la pestaña y cada pantalla del Stack pone el
+        suyo — el mismo patrón que usa "gestion".
+      */}
       <Tabs.Screen
         name="perfil"
         options={{
           title: 'Perfil',
-          headerTitle: 'Mi perfil',
+          headerShown: false,
           tabBarIcon: ({ color, size }) => <Ionicons name="person-outline" size={size} color={color} />,
         }}
       />

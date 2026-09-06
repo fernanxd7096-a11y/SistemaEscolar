@@ -42,6 +42,13 @@ const SECCIONES: Seccion[] = [
     ruta: '/(app)/gestion/horario',
     color: colores.advertencia,
   },
+  {
+    icono: 'cash-outline',
+    titulo: 'Pagos',
+    descripcion: 'Registro de cobros por Yape, Plin, tarjeta o efectivo.',
+    ruta: '/(app)/gestion/pagos',
+    color: '#7c3aed',
+  },
 ];
 
 export default function GestionIndice() {
