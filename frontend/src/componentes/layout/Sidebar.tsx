@@ -1,11 +1,11 @@
-import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { 
-  LayoutDashboard, Users, GraduationCap, BookOpen, 
-  BookMarked, Calendar, ClipboardCheck, FileText, 
+import {
+  LayoutDashboard, Users, GraduationCap, BookOpen,
+  BookMarked, Calendar, ClipboardCheck, FileText,
   Bell, BarChart2, Settings, ChevronLeft, ChevronRight,
-  School
+  School, PartyPopper, Wallet
 } from 'lucide-react';
+import { usePermiso } from '../../hooks/usePermiso';
 
 interface SidebarProps {
   collapsed: boolean;
@@ -15,20 +15,29 @@ interface SidebarProps {
 }
 
 const navItems = [
-  { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { path: '/alumnos', label: 'Alumnos', icon: Users },
-  { path: '/docentes', label: 'Docentes', icon: GraduationCap },
-  { path: '/grados', label: 'Grados', icon: BookOpen },
-  { path: '/cursos', label: 'Cursos', icon: BookMarked },
-  { path: '/horarios', label: 'Horarios', icon: Calendar },
-  { path: '/asistencia', label: 'Asistencia', icon: ClipboardCheck },
-  { path: '/notas', label: 'Notas', icon: FileText },
-  { path: '/comunicados', label: 'Comunicados', icon: Bell },
-  { path: '/reportes', label: 'Reportes', icon: BarChart2 },
-  { path: '/configuracion', label: 'Configuración', icon: Settings },
+  { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, permiso: null },
+  { path: '/alumnos', label: 'Alumnos', icon: Users, permiso: null },
+  { path: '/docentes', label: 'Docentes', icon: GraduationCap, permiso: null },
+  { path: '/grados', label: 'Grados', icon: BookOpen, permiso: null },
+  { path: '/cursos', label: 'Cursos', icon: BookMarked, permiso: null },
+  { path: '/horarios', label: 'Horarios', icon: Calendar, permiso: null },
+  { path: '/asistencia', label: 'Asistencia', icon: ClipboardCheck, permiso: null },
+  { path: '/notas', label: 'Notas', icon: FileText, permiso: null },
+  { path: '/eventos', label: 'Eventos', icon: PartyPopper, permiso: null },
+  { path: '/pagos', label: 'Pagos', icon: Wallet, permiso: 'ver-pagos' },
+  { path: '/comunicados', label: 'Comunicados', icon: Bell, permiso: null },
+  { path: '/reportes', label: 'Reportes', icon: BarChart2, permiso: null },
+  { path: '/configuracion', label: 'Configuración', icon: Settings, permiso: null },
 ];
 
 export const Sidebar = ({ collapsed, onToggle, mobileOpen, setMobileOpen }: SidebarProps) => {
+  // Nota: los ítems históricos de este menú no filtraban por permiso (se apoyaban
+  // en que las rutas ya estaban protegidas por rol a nivel de backend). Los nuevos
+  // (Pagos) sí se ocultan si el usuario no tiene el permiso, porque a diferencia de
+  // Eventos, no todos los roles pueden verlo.
+  const puedeVerPagos = usePermiso('ver-pagos');
+  const itemsVisibles = navItems.filter((item) => item.permiso !== 'ver-pagos' || puedeVerPagos);
+
   return (
     <>
       {/* Mobile overlay */}
@@ -57,7 +66,7 @@ export const Sidebar = ({ collapsed, onToggle, mobileOpen, setMobileOpen }: Side
 
         <div className="flex-1 overflow-y-auto py-4 custom-scrollbar">
           <nav className="space-y-1 px-3">
-            {navItems.map((item) => (
+            {itemsVisibles.map((item) => (
               <NavLink
                 key={item.path}
                 to={item.path}

@@ -45,6 +45,10 @@ class RolesPermisosSeeder extends Seeder
             'ver-reportes', 'exportar-reportes',
             // Configuración
             'ver-configuracion', 'editar-configuracion',
+            // Eventos extracurriculares
+            'ver-eventos', 'crear-eventos', 'editar-eventos', 'eliminar-eventos',
+            // Pagos
+            'ver-pagos', 'crear-pagos', 'editar-pagos', 'eliminar-pagos',
         ];
 
         foreach ($permisos as $permiso) {
@@ -69,6 +73,8 @@ class RolesPermisosSeeder extends Seeder
             'ver-comunicados', 'crear-comunicados', 'editar-comunicados',
             'ver-reportes', 'exportar-reportes',
             'ver-configuracion',
+            'ver-eventos', 'crear-eventos', 'editar-eventos',
+            'ver-pagos', 'crear-pagos', 'editar-pagos',
         ]);
 
         // Secretario: gestión administrativa
@@ -79,6 +85,8 @@ class RolesPermisosSeeder extends Seeder
             'ver-asistencias', 'registrar-asistencias',
             'ver-comunicados', 'crear-comunicados',
             'ver-reportes',
+            'ver-eventos', 'crear-eventos', 'editar-eventos',
+            'ver-pagos', 'crear-pagos',
         ]);
 
         // Docente: lo relacionado con su trabajo
@@ -89,6 +97,7 @@ class RolesPermisosSeeder extends Seeder
             'ver-notas', 'registrar-notas',
             'ver-comunicados',
             'ver-cursos',
+            'ver-eventos',
         ]);
 
         // Padre: solo consulta
@@ -96,6 +105,7 @@ class RolesPermisosSeeder extends Seeder
             'ver-notas',
             'ver-asistencias',
             'ver-comunicados',
+            'ver-eventos',
         ]);
 
         // Alumno: solo consulta propia
@@ -104,6 +114,7 @@ class RolesPermisosSeeder extends Seeder
             'ver-asistencias',
             'ver-horarios',
             'ver-comunicados',
+            'ver-eventos',
         ]);
     }
 }

@@ -6,6 +6,8 @@ use App\Models\Alumno;
 use App\Models\Asistencia;
 use App\Models\Nota;
 use App\Models\Seccion;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -29,12 +31,77 @@ class ReporteControlador extends Controller
      */
     public function boletaAlumno(Request $request, Alumno $alumno)
     {
-        $seccionId = $request->input('seccion_id');
+        $boleta = $this->datosBoleta(
+            $alumno,
+            $request->input('seccion_id'),
+            $request->input('bimestre')
+        );
 
+        return response()->json([
+            'alumno'  => $boleta['alumno'],
+            'seccion' => $boleta['seccion'],
+            'cursos'  => $boleta['cursos'],
+        ]);
+    }
+
+    /**
+     * Boleta de notas en PDF con formato institucional.
+     *
+     * Se genera con barryvdh/laravel-dompdf sobre resources/views/reportes/boleta.blade.php.
+     * Por defecto se devuelve en línea (`Content-Disposition: inline`) para que la app
+     * móvil pueda guardarla y compartirla; con `?descargar=1` se fuerza la descarga.
+     */
+    public function boletaPdf(Request $request, Alumno $alumno)
+    {
+        $request->validate([
+            'seccion_id'  => 'nullable|exists:secciones,id',
+            'bimestre'    => 'nullable|integer|min:1|max:4',
+            'año_escolar' => 'nullable|string|max:20',
+        ]);
+
+        $boleta = $this->datosBoleta(
+            $alumno,
+            $request->input('seccion_id'),
+            $request->input('bimestre')
+        );
+
+        $pdf = Pdf::loadView('reportes.boleta', [
+            'alumno'           => $boleta['alumno'],
+            'seccion'          => $boleta['seccion'],
+            'cursos'           => $boleta['cursos'],
+            'promedio_general' => $boleta['promedio_general'],
+            'cursos_aprobados' => $boleta['cursos_aprobados'],
+            'condicion_final'  => $boleta['condicion_final'],
+            'bimestre'         => $request->input('bimestre'),
+            'año_escolar'      => $request->input('año_escolar') ?? $boleta['año_escolar'],
+            'colegio'          => config('colegio'),
+            'nota_maxima'      => config('colegio.nota_maxima'),
+            'aprobado_desde'   => config('colegio.aprobado_desde'),
+            'emitido_en'       => Carbon::now()->locale('es')->isoFormat('D [de] MMMM [de] YYYY, HH:mm'),
+        ])->setPaper('a4');
+
+        $nombreArchivo = 'boleta-' . str($alumno->apellidos . '-' . $alumno->nombres)->slug() . '.pdf';
+
+        return $request->boolean('descargar')
+            ? $pdf->download($nombreArchivo)
+            : $pdf->stream($nombreArchivo);
+    }
+
+    /**
+     * Notas del alumno agrupadas por curso, con los promedios ya calculados.
+     * Es la fuente única de la boleta JSON y de la boleta PDF.
+     *
+     * @return array<string, mixed>
+     */
+    private function datosBoleta(Alumno $alumno, $seccionId = null, $bimestre = null): array
+    {
         $query = Nota::where('alumno_id', $alumno->id)->with('curso');
 
         if ($seccionId) {
             $query->where('seccion_id', $seccionId);
+        }
+        if ($bimestre) {
+            $query->where('bimestre', $bimestre);
         }
 
         $notas = $query->orderBy('curso_id')->orderBy('bimestre')->orderBy('tipo')->get();
@@ -59,14 +126,14 @@ class ReporteControlador extends Controller
         })->values();
 
         // Sección del alumno
-        $seccion = null;
-        if ($seccionId) {
-            $seccion = Seccion::with('grado')->find($seccionId);
-        } else {
-            $seccion = $alumno->secciones()->with('grado')->first();
-        }
+        $seccion = $seccionId
+            ? Seccion::with('grado')->find($seccionId)
+            : $alumno->secciones()->with('grado')->first();
 
-        return response()->json([
+        $aprobadoDesde = (float) config('colegio.aprobado_desde', 11);
+        $aprobados = $porCurso->where('promedio_final', '>=', $aprobadoDesde)->count();
+
+        return [
             'alumno' => [
                 'id'        => $alumno->id,
                 'nombres'   => $alumno->nombres,
@@ -78,8 +145,18 @@ class ReporteControlador extends Controller
                 'grado'  => $seccion->grado->nombre ?? '',
                 'nivel'  => $seccion->grado->nivel ?? '',
             ] : null,
-            'cursos' => $porCurso,
-        ]);
+            'cursos'           => $porCurso,
+            'promedio_general' => $porCurso->isEmpty() ? null : round($porCurso->avg('promedio_final'), 1),
+            'cursos_aprobados' => $aprobados,
+            'condicion_final'  => $porCurso->isEmpty()
+                ? '—'
+                : ($aprobados === $porCurso->count() ? 'Aprobado' : 'En recuperación'),
+            // El año escolar sale de la matrícula (pivot alumno_seccion); si el
+            // alumno aún no está matriculado, se cae al año en curso.
+            'año_escolar' => $alumno->secciones()
+                ->when($seccionId, fn ($q) => $q->where('secciones.id', $seccionId))
+                ->first()?->pivot?->getAttribute('año_escolar') ?? (string) date('Y'),
+        ];
     }
 
     /**

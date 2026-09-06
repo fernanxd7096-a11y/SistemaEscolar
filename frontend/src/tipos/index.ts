@@ -181,3 +181,38 @@ export interface Comunicado {
   created_at?: string;
 }
 
+export interface Evento {
+  id: number;
+  titulo: string;
+  descripcion?: string | null;
+  tipo: 'visita_estudio' | 'olimpiada' | 'deportivo' | 'cultural' | 'otro';
+  lugar?: string | null;
+  fecha: string;
+  hora?: string | null;
+  estado: 'programado' | 'en_curso' | 'finalizado' | 'cancelado';
+  visible: boolean;
+  creado_por?: number | null;
+  creador?: { id: number; nombre: string; apellido: string } | null;
+  created_at?: string;
+}
+
+export interface Pago {
+  id: number;
+  alumno_id: number;
+  monto: number;
+  concepto: string;
+  fecha: string;
+  metodo_pago: 'yape' | 'efectivo' | 'tarjeta';
+  referencia?: string | null;
+  observacion?: string | null;
+  registrado_por?: number | null;
+  alumno?: Alumno;
+  registrador?: { id: number; nombre: string; apellido: string } | null;
+}
+
+export interface ResumenMetodoPago {
+  yape: { total: number; cantidad: number };
+  efectivo: { total: number; cantidad: number };
+  tarjeta: { total: number; cantidad: number };
+}
+

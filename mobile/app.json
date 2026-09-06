@@ -1,0 +1,46 @@
+{
+  "expo": {
+    "name": "Sistema Escolar SJT",
+    "slug": "sistema-escolar-sjt-mobile",
+    "scheme": "sistemaescolarsjt",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "experiments": {
+      "typedRoutes": true
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "pe.edu.sanjudastadeo.mobile"
+    },
+    "android": {
+      "package": "pe.edu.sanjudastadeo.mobile",
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.png",
+          "color": "#0f6cbd"
+        }
+      ],
+      "@react-native-community/datetimepicker",
+      "expo-font",
+      "expo-sharing"
+    ]
+  }
+}

@@ -25,6 +25,7 @@
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "react-hook-form": "^7.82.0",
+    "react-is": "^19.2.8",
     "react-router-dom": "^7.18.1",
     "react-toastify": "^11.1.0",
     "recharts": "^3.10.0",
@@ -42,6 +43,7 @@
     "electron": "^43.2.0",
     "electron-builder": "^26.15.3",
     "oxlint": "^1.71.0",
+    "playwright-core": "^1.62.1",
     "typescript": "~6.0.2",
     "vite": "^8.1.1",
     "wait-on": "^9.1.0"

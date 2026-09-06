@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Curso;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class CursoControlador extends Controller
 {
@@ -33,12 +34,22 @@ class CursoControlador extends Controller
     public function store(Request $request)
     {
         $datos = $request->validate([
-            'nombre'           => 'required|string|max:100',
+            // La tabla tiene unique(nombre, grado_id): sin esta regla, repetir un
+            // curso en el mismo grado revienta con un error de integridad (500)
+            // en vez de devolver un 422 que el formulario pueda mostrar.
+            'nombre'           => [
+                'required', 'string', 'max:100',
+                Rule::unique('cursos', 'nombre')->where(
+                    fn ($q) => $q->where('grado_id', $request->input('grado_id'))
+                ),
+            ],
             'descripcion'      => 'nullable|string|max:255',
             'grado_id'         => 'required|exists:grados,id',
             'docente_id'       => 'nullable|exists:docentes,id',
             'horas_semanales'  => 'nullable|integer|min:1|max:20',
             'estado'           => 'boolean',
+        ], [
+            'nombre.unique' => 'Ya existe un curso con ese nombre en el grado seleccionado.',
         ]);
 
         $datos['estado'] = $datos['estado'] ?? true;
@@ -57,12 +68,22 @@ class CursoControlador extends Controller
     public function update(Request $request, Curso $curso)
     {
         $datos = $request->validate([
-            'nombre'           => 'sometimes|string|max:100',
+            'nombre'           => [
+                'sometimes', 'string', 'max:100',
+                Rule::unique('cursos', 'nombre')
+                    ->ignore($curso->id)
+                    ->where(fn ($q) => $q->where(
+                        'grado_id',
+                        $request->input('grado_id', $curso->grado_id)
+                    )),
+            ],
             'descripcion'      => 'nullable|string|max:255',
             'grado_id'         => 'sometimes|exists:grados,id',
             'docente_id'       => 'nullable|exists:docentes,id',
             'horas_semanales'  => 'nullable|integer|min:1|max:20',
             'estado'           => 'boolean',
+        ], [
+            'nombre.unique' => 'Ya existe un curso con ese nombre en el grado seleccionado.',
         ]);
 
         $curso->update($datos);

@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Save, Check, Settings, School, Calendar, Palette } from 'lucide-react';
 import { useTema } from '../../tienda/tema';
 
 export const Configuracion = () => {
-  const { tema, cambiarTema } = useTema();
+  const { modoOscuro, toggleModo } = useTema();
   const [exito, setExito] = useState('');
 
   // Datos del colegio (localStorage)
@@ -152,15 +152,14 @@ export const Configuracion = () => {
           <label className="etiqueta dark:text-gray-300 mb-3">Tema de la interfaz</label>
           <div className="flex gap-3">
             {[
-              { value: 'claro', label: '☀️ Claro', desc: 'Fondo blanco' },
-              { value: 'oscuro', label: '🌙 Oscuro', desc: 'Fondo oscuro' },
-              { value: 'sistema', label: '💻 Sistema', desc: 'Según tu dispositivo' },
+              { value: false, label: '☀️ Claro', desc: 'Fondo blanco' },
+              { value: true, label: '🌙 Oscuro', desc: 'Fondo oscuro' },
             ].map((t) => (
               <button
-                key={t.value}
-                onClick={() => cambiarTema(t.value as 'claro' | 'oscuro' | 'sistema')}
+                key={t.label}
+                onClick={() => { if (modoOscuro !== t.value) toggleModo(); }}
                 className={`flex-1 p-4 rounded-xl border-2 transition-all text-center ${
-                  tema === t.value
+                  modoOscuro === t.value
                     ? 'border-primario-500 bg-primario-50 dark:bg-primario-900/20 shadow-sm'
                     : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
                 }`}

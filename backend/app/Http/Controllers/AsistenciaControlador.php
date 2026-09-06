@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\AvisoInasistencia;
 use App\Models\Alumno;
 use App\Models\Asistencia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class AsistenciaControlador extends Controller
 {
@@ -65,30 +67,89 @@ class AsistenciaControlador extends Controller
         $userId = $request->user()?->id;
 
         $resultados = [];
+        // alumno_id => Asistencia, solo los que pasaron a falta/tardanza en esta llamada.
+        $porNotificar = [];
 
-        DB::transaction(function () use ($request, $seccionId, $fecha, $userId, &$resultados) {
+        DB::transaction(function () use ($request, $seccionId, $fecha, $userId, &$resultados, &$porNotificar) {
             foreach ($request->input('asistencias') as $item) {
-                $asistencia = Asistencia::updateOrCreate(
-                    [
-                        'alumno_id'  => $item['alumno_id'],
-                        'seccion_id' => $seccionId,
-                        'fecha'      => $fecha,
-                    ],
-                    [
+                $existente = Asistencia::where('alumno_id', $item['alumno_id'])
+                    ->where('seccion_id', $seccionId)
+                    ->whereDate('fecha', $fecha)
+                    ->first();
+                $estadoAnterior = $existente?->estado;
+
+                // Nota: se actualiza/crea "a mano" (en vez de updateOrCreate) porque su
+                // implementación intenta un INSERT optimista primero; en SQLite, si ese
+                // INSERT choca con la unique constraint (alumno_id, seccion_id, fecha),
+                // la transacción completa queda en estado abortado y el fallback interno
+                // de Laravel a "first()" también falla, tumbando toda la petición.
+                if ($existente) {
+                    $existente->update([
                         'estado'         => $item['estado'],
                         'observacion'    => $item['observacion'] ?? null,
                         'registrado_por' => $userId,
-                    ]
-                );
+                    ]);
+                    $asistencia = $existente;
+                } else {
+                    $asistencia = Asistencia::create([
+                        'alumno_id'      => $item['alumno_id'],
+                        'seccion_id'     => $seccionId,
+                        'fecha'          => $fecha,
+                        'estado'         => $item['estado'],
+                        'observacion'    => $item['observacion'] ?? null,
+                        'registrado_por' => $userId,
+                    ]);
+                }
                 $resultados[] = $asistencia;
+
+                // Notificar solo cuando el estado CAMBIA a falta/tardanza (evita reenviar
+                // el mismo aviso si se vuelve a guardar la misma asistencia sin cambios).
+                $esNuevoAviso = in_array($item['estado'], ['falta', 'tardanza'], true)
+                    && $estadoAnterior !== $item['estado'];
+                if ($esNuevoAviso) {
+                    $porNotificar[] = $asistencia;
+                }
             }
         });
+
+        if (config('asistencia.notificar_padres_inasistencia') && !empty($porNotificar)) {
+            $this->notificarPadres($porNotificar);
+        }
 
         return response()->json([
             'mensaje'     => 'Asistencia registrada correctamente.',
             'total'       => count($resultados),
             'asistencias' => $resultados,
         ], 201);
+    }
+
+    /**
+     * Encola (no envía síncronamente) un correo por cada padre con email registrado,
+     * por cada asistencia que acaba de pasar a falta/tardanza.
+     */
+    private function notificarPadres(array $asistencias): void
+    {
+        $alumnos = Alumno::whereIn('id', collect($asistencias)->pluck('alumno_id'))
+            ->with('padres')
+            ->get()
+            ->keyBy('id');
+
+        foreach ($asistencias as $asistencia) {
+            $alumno = $alumnos->get($asistencia->alumno_id);
+            if (!$alumno) {
+                continue;
+            }
+
+            foreach ($alumno->padres as $padre) {
+                if (!$padre->email) {
+                    continue;
+                }
+
+                Mail::to($padre->email)->queue(
+                    new AvisoInasistencia($alumno, $asistencia, trim("{$padre->nombres} {$padre->apellidos}"))
+                );
+            }
+        }
     }
 
     /**

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Plus, Search, Pencil, Trash2, X, Megaphone, AlertTriangle, Info, Users, Eye } from 'lucide-react';
+import { Plus, Search, Pencil, Trash2, X, Megaphone, AlertTriangle, Info, Eye } from 'lucide-react';
 import {
   actualizarComunicado,
   crearComunicado,

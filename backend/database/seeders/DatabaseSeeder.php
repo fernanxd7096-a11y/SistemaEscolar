@@ -12,11 +12,14 @@ class DatabaseSeeder extends Seeder
             RolesPermisosSeeder::class,
             AdminSeeder::class,
             AcademicoSeeder::class,
+            PadreSeeder::class,
             CursoSeeder::class,
             HorarioSeeder::class,
+            HorarioAvanzadoSeeder::class,
             AsistenciaSeeder::class,
             NotaSeeder::class,
             ComunicadoSeeder::class,
+            EventoSeeder::class,
         ]);
     }
 }

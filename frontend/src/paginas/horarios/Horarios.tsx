@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { Plus, Pencil, Trash2, X, Calendar, Clock, MapPin } from 'lucide-react';
+import { Plus, Trash2, X, Calendar, Clock, MapPin } from 'lucide-react';
 import {
   actualizarHorario,
   crearHorario,

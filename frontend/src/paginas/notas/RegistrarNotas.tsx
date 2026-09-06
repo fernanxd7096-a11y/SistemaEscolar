@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { Save, Check, BookOpen, ClipboardList, GraduationCap } from 'lucide-react';
 import {
   obtenerNotasSeccionCurso,

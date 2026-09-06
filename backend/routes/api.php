@@ -12,10 +12,17 @@ use App\Http\Controllers\GradoControlador;
 use App\Http\Controllers\SeccionControlador;
 use App\Http\Controllers\CursoControlador;
 use App\Http\Controllers\HorarioControlador;
+use App\Http\Controllers\HorarioReglaControlador;
+use App\Http\Controllers\HorarioExcepcionControlador;
+use App\Http\Controllers\AgendaHorarioControlador;
 use App\Http\Controllers\AsistenciaControlador;
 use App\Http\Controllers\NotaControlador;
 use App\Http\Controllers\ComunicadoControlador;
 use App\Http\Controllers\ReporteControlador;
+use App\Http\Controllers\PushTokenControlador;
+use App\Http\Controllers\EventoControlador;
+use App\Http\Controllers\PagoControlador;
+use App\Http\Controllers\PerfilControlador;
 
 Route::get('ping', fn () => response()->json([
     'estado'  => 'ok',
@@ -35,6 +42,20 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('auth/usuario-actual',       [AutenticacionControlador::class, 'usuarioActual']);
 
     Route::get('dashboard/resumen',         [DashboardControlador::class, 'resumen']);
+    Route::get('dashboard/kpis',            [DashboardControlador::class, 'kpis']);
+
+    // --- App móvil: notificaciones push (Expo) ---
+    Route::post('push-tokens',              [PushTokenControlador::class, 'store']);
+    Route::delete('push-tokens',            [PushTokenControlador::class, 'destroy']);
+    Route::post('push-tokens/prueba',       [PushTokenControlador::class, 'prueba']);
+
+    // --- Mi perfil (autoservicio: cualquier usuario autenticado edita lo suyo,
+    // sin permisos de rol — distinto de Admin\UsuarioControlador, que gestiona a
+    // OTROS usuarios y sí está restringido a administrador/director) ---
+    Route::put('perfil',                    [PerfilControlador::class, 'actualizar']);
+    Route::put('perfil/password',           [PerfilControlador::class, 'cambiarPassword']);
+    Route::post('perfil/foto',              [PerfilControlador::class, 'subirFoto']);
+    Route::delete('perfil/foto',            [PerfilControlador::class, 'eliminarFoto']);
 
     Route::middleware('role:administrador|director')->group(function () {
         Route::apiResource('usuarios', UsuarioControlador::class);
@@ -75,6 +96,27 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('cursos/{curso}', [CursoControlador::class, 'destroy'])->middleware('permission:eliminar-cursos');
 
     // --- Fase 3: horarios ---
+    // Horario avanzado (reglas recurrentes + excepciones + agenda resuelta).
+    // Va ANTES de horarios/{horario} para que 'reglas', 'excepciones' y 'agenda'
+    // no sean capturados por el binding del modelo.
+    Route::get('horarios/agenda',      [AgendaHorarioControlador::class, 'agenda'])->middleware('permission:ver-horarios');
+    Route::get('horarios/mi-agenda',   [AgendaHorarioControlador::class, 'miAgenda'])->middleware('permission:ver-horarios');
+
+    Route::get('horarios/reglas',                    [HorarioReglaControlador::class, 'index'])->middleware('permission:ver-horarios');
+    Route::post('horarios/reglas',                   [HorarioReglaControlador::class, 'store'])->middleware('permission:crear-horarios');
+    Route::post('horarios/reglas/verificar',         [HorarioReglaControlador::class, 'verificarConflictos'])->middleware('permission:ver-horarios');
+    Route::get('horarios/reglas/{regla}',            [HorarioReglaControlador::class, 'show'])->middleware('permission:ver-horarios');
+    Route::put('horarios/reglas/{regla}',            [HorarioReglaControlador::class, 'update'])->middleware('permission:editar-horarios');
+    Route::delete('horarios/reglas/{regla}',         [HorarioReglaControlador::class, 'destroy'])->middleware('permission:eliminar-horarios');
+
+    Route::get('horarios/excepciones',               [HorarioExcepcionControlador::class, 'index'])->middleware('permission:ver-horarios');
+    Route::post('horarios/excepciones',              [HorarioExcepcionControlador::class, 'store'])->middleware('permission:crear-horarios');
+    Route::get('horarios/excepciones/{excepcion}',   [HorarioExcepcionControlador::class, 'show'])->middleware('permission:ver-horarios');
+    Route::put('horarios/excepciones/{excepcion}',   [HorarioExcepcionControlador::class, 'update'])->middleware('permission:editar-horarios');
+    Route::delete('horarios/excepciones/{excepcion}', [HorarioExcepcionControlador::class, 'destroy'])->middleware('permission:eliminar-horarios');
+
+    // Plantilla semanal clásica (la sigue usando la app web). Cada fila se espeja
+    // en horario_reglas: ver App\Models\Horario::booted.
     Route::get('horarios', [HorarioControlador::class, 'index'])->middleware('permission:ver-horarios');
     Route::post('horarios', [HorarioControlador::class, 'store'])->middleware('permission:crear-horarios');
     Route::get('horarios/{horario}', [HorarioControlador::class, 'show'])->middleware('permission:ver-horarios');
@@ -105,6 +147,23 @@ Route::middleware('auth:sanctum')->group(function () {
     // --- Fase 7: reportes ---
     Route::get('reportes/resumen', [ReporteControlador::class, 'resumenGeneral'])->middleware('permission:ver-reportes');
     Route::get('reportes/boleta/{alumno}', [ReporteControlador::class, 'boletaAlumno'])->middleware('permission:ver-reportes');
+    Route::get('reportes/boleta/{alumno}/pdf', [ReporteControlador::class, 'boletaPdf'])->middleware('permission:ver-reportes');
     Route::get('reportes/consolidado-asistencia', [ReporteControlador::class, 'consolidadoAsistencia'])->middleware('permission:ver-reportes');
     Route::get('reportes/consolidado-notas', [ReporteControlador::class, 'consolidadoNotas'])->middleware('permission:ver-reportes');
+
+    // --- Eventos extracurriculares ---
+    Route::get('eventos/proximos', [EventoControlador::class, 'proximos'])->middleware('permission:ver-eventos');
+    Route::get('eventos', [EventoControlador::class, 'index'])->middleware('permission:ver-eventos');
+    Route::post('eventos', [EventoControlador::class, 'store'])->middleware('permission:crear-eventos');
+    Route::get('eventos/{evento}', [EventoControlador::class, 'show'])->middleware('permission:ver-eventos');
+    Route::put('eventos/{evento}', [EventoControlador::class, 'update'])->middleware('permission:editar-eventos');
+    Route::delete('eventos/{evento}', [EventoControlador::class, 'destroy'])->middleware('permission:eliminar-eventos');
+
+    // --- Pagos ---
+    Route::get('pagos/resumen-metodo', [PagoControlador::class, 'resumenMetodo'])->middleware('permission:ver-pagos');
+    Route::get('pagos', [PagoControlador::class, 'index'])->middleware('permission:ver-pagos');
+    Route::post('pagos', [PagoControlador::class, 'store'])->middleware('permission:crear-pagos');
+    Route::get('pagos/{pago}', [PagoControlador::class, 'show'])->middleware('permission:ver-pagos');
+    Route::put('pagos/{pago}', [PagoControlador::class, 'update'])->middleware('permission:editar-pagos');
+    Route::delete('pagos/{pago}', [PagoControlador::class, 'destroy'])->middleware('permission:eliminar-pagos');
 });

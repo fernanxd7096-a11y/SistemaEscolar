@@ -51,7 +51,7 @@ export const TomarAsistencia = () => {
   const [filtroSeccion, setFiltroSeccion] = useState('');
   const [fecha, setFecha] = useState(new Date().toISOString().slice(0, 10));
   const [alumnos, setAlumnos] = useState<(AlumnoAsistencia & { estadoLocal: EstadoAsistencia; obsLocal: string })[]>([]);
-  const [resumen, setResumen] = useState<ResumenAsistencia | null>(null);
+  const [, setResumen] = useState<ResumenAsistencia | null>(null);
   const [cargando, setCargando] = useState(false);
   const [guardando, setGuardando] = useState(false);
   const [error, setError] = useState('');
