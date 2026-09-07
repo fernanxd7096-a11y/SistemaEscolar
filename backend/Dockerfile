@@ -47,4 +47,4 @@ RUN mkdir -p /var/www/html/storage/framework/sessions \
 EXPOSE 80
 
 # Comando para iniciar Apache en primer plano
-CMD ["apache2-foreground"]
+CMD php artisan migrate --force && apache2-foreground
