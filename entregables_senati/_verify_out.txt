@@ -1,0 +1,47 @@
+===== TABLE 2 =====
+R0: ['DÍA', 'ACTIVIDADES/TRABAJOS EFECTUADOS', 'HORAS']
+R1: ['LUNES | 17/08/2026', 'Análisis inicial del SistemaEscolar para la I.E.P. Milagroso San Judas Tadeo: revisión del problema de gestión manual y definición del alcance del sistema web integral.', '8']
+R2: ['MARTES 18/08/2026', 'Definición de módulos funcionales del sistema (auth, alumnos, docentes, grados/secciones, cursos, horarios, asistencia, notas, comunicados, eventos, padres, pagos y reportes).', '8']
+R3: ['MIÉRCOLES 19/08/2026', 'Diseño de la arquitectura API REST + SPA: backend Laravel (PHP) y frontend React + Vite, con autenticación por token (Laravel Sanctum).', '8']
+R4: ['JUEVES 20/08/2026', 'Preparación del entorno de desarrollo en Windows: instalación/verificación de PHP 8.2+, Composer, Node.js/npm, XAMPP, Visual Studio Code y Git.', '8']
+R5: ['VIERNES 21/08/2026', 'Configuración inicial del backend Laravel: dependencias Composer, archivo .env, generación de APP_KEY y arranque local con php artisan serve (puerto 8000).', '8']
+R6: ['SÁBADO 22/08/2026', 'Configuración inicial del frontend React 19 + TypeScript + Vite: instalación npm, estructura del SPA y verificación de arranque en localhost:5173.', '4']
+R7: ['', 'TOTAL', '44']
+===== TABLE 3 =====
+R0: ['DÍA', 'ACTIVIDADES/TRABAJOS EFECTUADOS', 'HORAS']
+R1: ['LUNES 24/08/2026', 'Configuración de la base de datos del proyecto (PostgreSQL 16 según README; se revisó también SQLite en .env.example) y preparación de migraciones iniciales.', '8']
+R2: ['MARTES 25/08/2026', 'Implementación de la autenticación base con Laravel Sanctum (login/logout) y alineación de rutas /api/auth entre backend y frontend. |', '8']
+R3: ['MIÉRCOLES 26/08/2026', 'Conexión frontend–API: almacenamiento del token Bearer, consumo de endpoints con Axios y acceso al dashboard tras el inicio de sesión. |', '8']
+R4: ['JUEVES 27/08/2026', 'Desarrollo de las primeras funcionalidades académicas: CRUD de alumnos, docentes, grados y secciones, con sus endpoints y pantallas iniciales. |', '8']
+R5: ['VIERNES 28/08/2026', 'Pruebas funcionales de autenticación y CRUD básicos; corrección de desalineaciones detectadas entre frontend y backend en el módulo de auth. |', '8']
+R6: ['SÁBADO 29/08/2026', 'Documentación del arranque local (README) y consolidación del entorno para continuar el desarrollo de los módulos restantes del sistema. |', '4']
+R7: ['|', 'TOTAL', '44']
+
+===== INFORME =====
+P124: Tarea más significativa durante las dos semanas: ¿Por qué eligió esta tarea y qué operaciones del PEA cumplió con su ejecución?			
+P125: Configuración inicial de la arquitectura y del entorno de desarrollo del SistemaEscolar (API Laravel + SPA React/Vite), porque constituye el punto de partida para construir el sistema desde cero: sin entorno, base de datos y autenticación operativos no es posible avanzar en los módulos escolares. Respecto al PEA: en la documentación disponible no figuran números de operaciones/tareas del PEA identificados para esta actividad; por ello no se consignan códigos PEA. 
+P126: Descripción del proceso:(Secuencia lógica de la ejecución de la tarea: operaciones, pasos, sub pasos)	
+P127: 1. Se analizó el contexto del colegio y el objetivo del SistemaEscolar (gestión escolar integral). 	
+P128: 2. Se definieron los módulos prioritarios a implementar (auth y módulos académicos base). 	
+P129: 3. Se diseñó la arquitectura: Frontend React/Vite ↔ API Laravel ↔ Base de datos. 	
+P130: 4. Se preparó el entorno local (PHP 8.2+, Composer, Node.js/npm, XAMPP, VS Code y Git). 	
+P131: 5. Se configuró el backend Laravel (.env, key, dependencias) y se verificó php artisan serve :8000. 	
+P132: 6. Se configuró el frontend React 19 + Vite y se verificó el arranque en localhost:5173. 	
+P133: 7. Se preparó la base de datos (PostgreSQL objetivo / revisión de SQLite en .env.example) y migraciones. 	
+P134: 8. Se implementó la autenticación con Laravel Sanctum y la conexión frontend–API con token Bearer. 	
+P135: 9. Se desarrollaron las primeras pantallas/CRUD de alumnos, docentes, grados y secciones. 	
+P136: 10. Se realizaron pruebas funcionales, se corrigieron desalineaciones de auth y se documentó el arranque. 	
+P137: 	
+P138: Máquinas, equipos, herramientas y materiales (Listar lo utilizado especificando características, medidas, etc)	
+P139: Laptop/PC personal (Windows) como estación de desarrollo. 	
+P140: Visual Studio Code (editor), Git y GitHub (control de versiones del repositorio SistemaEscolar). 				
+P141: XAMPP (intérprete PHP 8.2+), Composer, Node.js y npm. Backend: PHP 8.2+ y Laravel 12 (API REST + Sanctum). Frontend: React 19 + TypeScript + Vite. Base de datos: PostgreSQL 16 (según README). Nota: .env.example usa SQLite por defecto. Electron + electron-builder (opción de escritorio Windows, documentada en el proyecto). Seguridad e higiene industrial/ambiental (ATS, Charla de cinco minutos: SST/SGA)				
+P142: Aplicación de pausas visuales y postura ergonómica en el puesto de trabajo frente al computador. Respaldo del código con Git antes de cambios relevantes. No se registraron procedimientos ATS específicos adicionales en la documentación del proyecto. Resultados de la ejecución de la tarea/Recomendaciones (¿Se logró el objetivo que motivó la ejecución de la tarea? Qué recomendaciones sugiere para garantizar la operatividad del bien o servicio realizado		
+P143: Se logró dejar operativa la base del SistemaEscolar: entorno local, API Laravel, SPA React/Vite, autenticación Sanctum y primeros módulos académicos. 	
+P144: Quedó definida y funcional la arquitectura Frontend → API → Base de datos, permitiendo continuar el desarrollo del resto de módulos. 	
+P145: Recomendación: unificar la configuración de base de datos (PostgreSQL vs SQLite) en la documentación del proyecto para evitar confusiones. 
+P146: Recomendación: mantener actualizado el README con requisitos (PHP, Node, Composer) y pasos de arranque del backend y frontend. 
+DIAG P0: text='HACER ESQUEMA, DIBUJO O DIAGRAMA' drawings=0
+DIAG P1: text='' drawings=1
+
+ASSERTS OK

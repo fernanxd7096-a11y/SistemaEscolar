@@ -1,0 +1,598 @@
+﻿===== CNIU-108_INFORME_FPE_ORIG.docx =====
+0|SERVICIO NACIONAL DE ADIESTRAMIENTO EN TRABAJO INDUSTRIAL
+4|FORMACIËN PROFESIONAL DUALFORMACIËN PROFESIONAL DUAL
+5|FORMACIËN PROFESIONAL DUAL
+6|FORMACIËN PROFESIONAL DUAL
+25|INFORME
+26|DE FORMACIËN PR┴CTICA EN EMPRESA
+31|CËDIGO N░
+40|DIRECCIËN ZONALLuis Caceres GrazianiDIRECCIËN ZONALLuis Caceres Graziani
+41|DIRECCIËN ZONAL
+43|Luis Caceres Graziani
+44|DIRECCIËN ZONAL
+46|Luis Caceres Graziani
+53|FORMACIËN PROFESIONAL DUAL
+58|CFP/UCP/ESCUELA: Luis Caceres Graziani
+60|ESTUDIANTE: Fernando Sebastißn PÚrez Aronaca
+62|ID: 1594904
+64|BLOQUE: 202620-CNIU-108-ACT-NRC_32008
+66|CARRERA: IngenierÝa de Software con I.A
+68|INSTRUCTOR: JosÚ Armando Tiznado Ubillus
+70|SEMESTRE:6
+72|DEL: 17/08/2026
+74|AL: 04/12/2026
+98|INSTRUCCIONES PARA EL USO DEL
+99|INFORME DE FORMACIËN PR┴CTICA EN EMPRESA
+101|PRESENTACIËN.
+103|El Informe de Formaci¾n Prßctica en Empresa es un documento de control, en el cual el estudiante, registra diariamente, las tareas y operaciones que ejecuta en su formaci¾n prßctica Empresa.
+105|INSTRUCCIONES PARA EL USO DEL INFORME DE FORMACIËN PR┴CTICA.
+107|En el cuadro de rotaciones, el estudiante, registrarß el nombre de las ßreas o secciones por las cuales rota durante su formaci¾n prßctica en la Empresa, precisando la fecha de inicio y tÚrmino.
+108|Con base al PEA publicado en SINFO, el estudiante selecciona el PEA del semestre que estß cursando y transcribe el PEA en el informe de prßctica del presente formato. 
+109|El estudiante registrarß y controlarß su avance, marcando en la columna que corresponda.
+110|Si el PEA tiene menos operaciones (151) de las indicadas en el presente formato, puede eliminar alguna pßgina.
+111|En el REGISTRO SEMANAL DE TRABAJOS REALIZADOS, el estudiante anotarß diariamente los trabajos que ejecuta en la empresa, indicando el tiempo correspondiente. El dÝa de asistencia a SENATI para las sesiones de tecnologÝa, registrarß los contenidos que desarrolla en clase. Al tÚrmino de cada semana totalizarß las horas.
+112|De las tareas realizadas durante dos semanas, el estudiante seleccionarß la tarea mßs significativa y realizarß una descripci¾n del proceso de ejecuci¾n con esquemas y dibujos correspondientes que aclaren dicho proceso.
+113|Una de las caracterÝsticas de la comunicaci¾n tÚcnica es que, debe contener informaci¾n relevante y fßcil de entender.
+114|Cada dos semanas, el estudiante presentarß en fÝsico el informe de la tarea mßs significativa al Monitor, quien revisarß, anotarß las observaciones, las recomendaciones que considere y validarß con su firma el respectivo informe.
+115|Se recomienda que el monitor solicite al estudiante que explique o fundamente el informe que ha elaborado.
+116|El informe validado por el monitor serß presentado al instructor correspondiente. El estudiante debe escanear o tomar foto al informe firmado por el monitor, luego lo sube a la plataforma LMS (Blackboard)
+117|El Instructor revisarß y calificarß el Informe de Formaci¾n Prßctica en Empresa haciendo las observaciones y recomendaciones que considere convenientes, en los aspectos relacionados a la elaboraci¾n de un Informe TÚcnico.
+120|CUADRO DE ROTACIONES
+122|┴REA / SECCIËN / EMPRESA
+123|PER═ODO
+124|SEMANAS
+126|DESDE
+127|HASTA
+198|PLAN ESPEC═FICO DE APRENDIZAJE (PEA)
+199|CONTROL DE AVANCE
+200|Llenar seg·n avance
+201|N║
+202|OPERACIONES/TAREAS
+203|OPERACIONES EJECUTADAS*
+204|OPERACIONES PARA SEMINARIO
+207|1
+208|2
+209|3
+210|4
+212|01
+219|02
+226|03
+233|04
+240|05
+247|06
+254|07
+261|08
+268|09
+275|10
+282|11
+289|12
+296|13
+303|14
+310|15
+317|16
+324|17
+331|18
+338|19
+345|20
+352|21
+359|22
+366|23
+373|24
+380|25
+387|26
+394|27
+401|28
+408|29
+415|30
+422|31
+429|32
+436|33
+443|34
+450| *N·mero de repeticiones realizadas.
+457|N║
+458|OPERACIONES/TAREAS
+459|OPERACIONES EJECUTADAS*
+460|OPERACIONES PARA
+461|SEMINARIO
+464|1
+465|2
+466|3
+467|4
+469|35
+476|36
+483|37
+490|38
+497|39
+504|40
+511|41
+518|42
+525|43
+532|44
+539|45
+546|46
+553|47
+560|48
+567|49
+574|50
+581|51
+588|52
+595|53
+602|54
+609|55
+616|56
+623|57
+630|58
+637|59
+644|60
+651|61
+658|62
+665|63
+672|64
+679|65
+686|66
+693|67
+700|68
+707|69
+714|70
+721|71
+728|72
+735|73
+742|N║
+743|OPERACIONES/TAREAS
+744|OPERACIONES EJECUTADAS*
+745|OPERACIONES PARA
+746|SEMINARIO
+749|1
+750|2
+751|3
+752|4
+754|74
+761|75
+768|76
+775|77
+782|78
+789|79
+796|80
+803|81
+810|82
+817|83
+824|84
+831|85
+838|86
+845|87
+852|88
+859|89
+866|90
+873|91
+880|92
+887|93
+894|94
+901|95
+908|96
+915|97
+922|98
+929|99
+936|100
+943|101
+950|102
+957|103
+964|104
+971|105
+978|106
+985|107
+992|108
+999|109
+1006|110
+1013|111
+1020|112
+1027|N║
+1028|OPERACIONES/TAREAS
+1029|OPERACIONES EJECUTADAS*
+1030|OPERACIONES PARA
+1031|SEMINARIO
+1034|1
+1035|2
+1036|3
+1037|4
+1039|113
+1046|114
+1053|115
+1060|116
+1067|117
+1074|118
+1081|119
+1088|120
+1095|121
+1102|122
+1109|123
+1116|124
+1123|125
+1130|126
+1137|127
+1144|128
+1151|129
+1158|130
+1165|131
+1172|132
+1179|133
+1186|134
+1193|135
+1200|136
+1207|137
+1214|138
+1221|139
+1228|140
+1235|141
+1242|142
+1249|143
+1256|144
+1263|145
+1270|146
+1277|147
+1284|148
+1291|149
+1298|150
+1305|151
+1313|REGISTRO SEMANAL DE TRABAJOS EFECTUADOS
+1315|D═A
+1316|ACTIVIDADES/TRABAJOS EFECTUADOS
+1317|HORAS
+1318|LUNES
+1319|../.../à.
+1322|MARTES ../.../à.
+1326|MI╔RCOLES ../.../à.
+1330|JUEVES ../.../à.
+1333|VIERNES ../.../à.
+1336|S┴BADO ../.../à.
+1341|TOTAL
+1345|D═A
+1346|ACTIVIDADES/TRABAJOS EFECTUADOS
+1347|HORAS
+1348|LUNES ../.../à.
+1351|MARTES ../.../à.
+1355|MI╔RCOLES ../.../à.
+1359|JUEVES ../.../à.
+1363|VIERNES ../.../à.
+1367|S┴BADO ../.../à.
+1373|TOTAL
+1378|INFORME DE FORMACIËN PR┴CTICA EN EMPRESA
+1380|Tarea mßs significativa durante las dos semanas: ┐Por quÚ eligi¾ esta tarea y quÚ operaciones del PEA cumpli¾ con su ejecuci¾n?
+1382|Descripci¾n del proceso:(Secuencia l¾gica de la ejecuci¾n de la tarea: operaciones, pasos, sub pasos)
+1401|Mßquinas, equipos, herramientas y materiales (Listar lo utilizado especificando caracterÝsticas, medidas, etc)
+1404|Seguridad e higiene industrial/ambiental (ATS, Charla de cinco minutos: SST/SGA)
+1405|Resultados de la ejecuci¾n de la tarea/Recomendaciones (┐Se logr¾ el objetivo que motiv¾ la ejecuci¾n de la tarea? QuÚ recomendaciones sugiere para garantizar la operatividad del bien o servicio realizado
+1427|HACER ESQUEMA, DIBUJO O DIAGRAMA
+1430|EVALUACIËN DEL INFORME POR EL INSTRUCTOR
+1431|                                                                                                                                                        NOTA
+1433|OBSERVACIONES Y RECOMENDACIONES DEL MONITOR DE EMPRESA:
+1435|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1436|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1437|FIRMA DEL ESTUDIANTE
+1438|FIRMA DEL MONITOR DE EMPRESA
+1473|PROPIEDAD INTELECTUAL DE SENATI. PROHIBIDA SU 
+1474|REPRODUCCIËN Y VENTA SIN LA AUTORIZACIËN 
+1475|CORRESPONDIENTE
+---TOTAL PARAS WITH TEXT--- 273
+
+===== MEDIA (ORIG) =====
+word/media/hdphoto1.wdp
+word/media/image2.png
+word/media/image1.png
+---TOTAL MEDIA--- 3
+
+===== Cuaderno_Informe_01_Semana01_RELLENO.docx =====
+0|SERVICIO NACIONAL DE ADIESTRAMIENTO EN TRABAJO INDUSTRIAL
+4|FORMACIËN PROFESIONAL DUALFORMACIËN PROFESIONAL DUAL
+5|FORMACIËN PROFESIONAL DUAL
+6|FORMACIËN PROFESIONAL DUAL
+25|INFORME
+26|DE FORMACIËN PR┴CTICA EN EMPRESA
+31|CËDIGO N░
+40|DIRECCIËN ZONALLuis Caceres GrazianiDIRECCIËN ZONALLuis Caceres Graziani
+41|DIRECCIËN ZONAL
+43|Luis Caceres Graziani
+44|DIRECCIËN ZONAL
+46|Luis Caceres Graziani
+53|FORMACIËN PROFESIONAL DUAL
+58|CFP/UCP/ESCUELA: Luis Caceres Graziani
+60|ESTUDIANTE: Fernando Sebastißn PÚrez Aronaca
+62|ID: 1594904
+64|BLOQUE: 202620-CNIU-108-ACT-NRC_32008
+66|CARRERA: IngenierÝa de Software con I.A
+68|INSTRUCTOR: JosÚ Armando Tiznado Ubillus
+70|SEMESTRE:6
+72|DEL: 17/08/2026
+74|AL: 04/12/2026
+98|INSTRUCCIONES PARA EL USO DEL
+99|INFORME DE FORMACIËN PR┴CTICA EN EMPRESA
+101|PRESENTACIËN.
+103|El Informe de Formaci¾n Prßctica en Empresa es un documento de control, en el cual el estudiante, registra diariamente, las tareas y operaciones que ejecuta en su formaci¾n prßctica Empresa.
+105|INSTRUCCIONES PARA EL USO DEL INFORME DE FORMACIËN PR┴CTICA.
+107|En el cuadro de rotaciones, el estudiante, registrarß el nombre de las ßreas o secciones por las cuales rota durante su formaci¾n prßctica en la Empresa, precisando la fecha de inicio y tÚrmino.
+108|Con base al PEA publicado en SINFO, el estudiante selecciona el PEA del semestre que estß cursando y transcribe el PEA en el informe de prßctica del presente formato. 
+109|El estudiante registrarß y controlarß su avance, marcando en la columna que corresponda.
+110|Si el PEA tiene menos operaciones (151) de las indicadas en el presente formato, puede eliminar alguna pßgina.
+111|En el REGISTRO SEMANAL DE TRABAJOS REALIZADOS, el estudiante anotarß diariamente los trabajos que ejecuta en la empresa, indicando el tiempo correspondiente. El dÝa de asistencia a SENATI para las sesiones de tecnologÝa, registrarß los contenidos que desarrolla en clase. Al tÚrmino de cada semana totalizarß las horas.
+112|De las tareas realizadas durante dos semanas, el estudiante seleccionarß la tarea mßs significativa y realizarß una descripci¾n del proceso de ejecuci¾n con esquemas y dibujos correspondientes que aclaren dicho proceso.
+113|Una de las caracterÝsticas de la comunicaci¾n tÚcnica es que, debe contener informaci¾n relevante y fßcil de entender.
+114|Cada dos semanas, el estudiante presentarß en fÝsico el informe de la tarea mßs significativa al Monitor, quien revisarß, anotarß las observaciones, las recomendaciones que considere y validarß con su firma el respectivo informe.
+115|Se recomienda que el monitor solicite al estudiante que explique o fundamente el informe que ha elaborado.
+116|El informe validado por el monitor serß presentado al instructor correspondiente. El estudiante debe escanear o tomar foto al informe firmado por el monitor, luego lo sube a la plataforma LMS (Blackboard)
+117|El Instructor revisarß y calificarß el Informe de Formaci¾n Prßctica en Empresa haciendo las observaciones y recomendaciones que considere convenientes, en los aspectos relacionados a la elaboraci¾n de un Informe TÚcnico.
+120|CUADRO DE ROTACIONES
+122|┴REA / SECCIËN / EMPRESA
+123|PER═ODO
+124|SEMANAS
+126|DESDE
+127|HASTA
+129|Desarrollo de Software û I.E.P. Milagroso San Judas Tadeo 
+131|17/08/2026 
+132|04/12/2026 
+133|16 
+198|PLAN ESPEC═FICO DE APRENDIZAJE (PEA)
+199|CONTROL DE AVANCE
+200|Llenar seg·n avance
+201|N║
+202|OPERACIONES/TAREAS
+203|OPERACIONES EJECUTADAS*
+204|OPERACIONES PARA SEMINARIO
+207|1
+208|2
+209|3
+210|4
+212|01
+219|02
+226|03
+233|04
+240|05
+247|06
+254|07
+261|08
+268|09
+275|10
+282|11
+289|12
+296|13
+303|14
+310|15
+317|16
+324|17
+331|18
+338|19
+345|20
+352|21
+359|22
+366|23
+373|24
+380|25
+387|26
+394|27
+401|28
+408|29
+415|30
+422|31
+429|32
+436|33
+443|34
+450| *N·mero de repeticiones realizadas.
+457|N║
+458|OPERACIONES/TAREAS
+459|OPERACIONES EJECUTADAS*
+460|OPERACIONES PARA
+461|SEMINARIO
+464|1
+465|2
+466|3
+467|4
+469|35
+476|36
+483|37
+490|38
+497|39
+504|40
+511|41
+518|42
+525|43
+532|44
+539|45
+546|46
+553|47
+560|48
+567|49
+574|50
+581|51
+588|52
+595|53
+602|54
+609|55
+616|56
+623|57
+630|58
+637|59
+644|60
+651|61
+658|62
+665|63
+672|64
+679|65
+686|66
+693|67
+700|68
+707|69
+714|70
+721|71
+728|72
+735|73
+742|N║
+743|OPERACIONES/TAREAS
+744|OPERACIONES EJECUTADAS*
+745|OPERACIONES PARA
+746|SEMINARIO
+749|1
+750|2
+751|3
+752|4
+754|74
+761|75
+768|76
+775|77
+782|78
+789|79
+796|80
+803|81
+810|82
+817|83
+824|84
+831|85
+838|86
+845|87
+852|88
+859|89
+866|90
+873|91
+880|92
+887|93
+894|94
+901|95
+908|96
+915|97
+922|98
+929|99
+936|100
+943|101
+950|102
+957|103
+964|104
+971|105
+978|106
+985|107
+992|108
+999|109
+1006|110
+1013|111
+1020|112
+1027|N║
+1028|OPERACIONES/TAREAS
+1029|OPERACIONES EJECUTADAS*
+1030|OPERACIONES PARA
+1031|SEMINARIO
+1034|1
+1035|2
+1036|3
+1037|4
+1039|113
+1046|114
+1053|115
+1060|116
+1067|117
+1074|118
+1081|119
+1088|120
+1095|121
+1102|122
+1109|123
+1116|124
+1123|125
+1130|126
+1137|127
+1144|128
+1151|129
+1158|130
+1165|131
+1172|132
+1179|133
+1186|134
+1193|135
+1200|136
+1207|137
+1214|138
+1221|139
+1228|140
+1235|141
+1242|142
+1249|143
+1256|144
+1263|145
+1270|146
+1277|147
+1284|148
+1291|149
+1298|150
+1305|151
+1313|REGISTRO SEMANAL DE TRABAJOS EFECTUADOS
+1315|D═A
+1316|ACTIVIDADES/TRABAJOS EFECTUADOS
+1317|HORAS
+1318|LUNES
+1319|17/08/2026
+1320|Diagn¾stico tÚcnico del script de arranque launch.bat y del entorno XAMPP + Laravel del Sistema Escolar SJT, validando dependencias, puertos y secuencia de levantamiento del backend para asegurar un arranque confiable del entorno de desarrollo.
+1321|8
+1322|MARTES 18/08/2026
+1323|Pruebas de integraci¾n entre Electron y el frontend React/Vite en modo escritorio, verificando carga de la SPA, embebido del frontend y estabilidad de la ventana de aplicaci¾n para el despliegue local en Windows.
+1324|8
+1325|MI╔RCOLES 19/08/2026
+1326|Correcci¾n de rutas del intÚrprete PHP y variables de entorno del launcher; se depur¾ la configuraci¾n que impedÝa iniciar correctamente el servidor Laravel y se estandariz¾ el uso de rutas absolutas para evitar fallos en equipos distintos.
+1327|8
+1328|JUEVES 20/08/2026
+1329|Verificaci¾n end-to-end de la comunicaci¾n frontendûAPI mediante Laravel Sanctum tras el arranque, comprobando autenticaci¾n por token, respuestas de endpoints crÝticos y coherencia entre Vite (5173) y la API (8000).
+1330|8
+1331|VIERNES 21/08/2026
+1332|Pruebas de estabilidad del arranque en entorno limpio (sin procesos previos), registro de hallazgos y documentaci¾n de cambios realizados en el script para facilitar el mantenimiento y la reproducci¾n del entorno por el equipo.
+1333|8
+1334|S┴BADO 22/08/2026
+1335|Revisi¾n funcional de m¾dulos acadÚmicos del sistema (alumnos, docentes, grados y secciones), contrastando el flujo de datos con la API y confirmando que el entorno estabilizado permite continuar el desarrollo sin bloqueos de infraestructura.
+1336|4
+1338|TOTAL
+1339|44
+1342|D═A
+1343|ACTIVIDADES/TRABAJOS EFECTUADOS
+1344|HORAS
+1345|LUNES ../.../à.
+1348|MARTES ../.../à.
+1352|MI╔RCOLES ../.../à.
+1356|JUEVES ../.../à.
+1360|VIERNES ../.../à.
+1364|S┴BADO ../.../à.
+1370|TOTAL
+1375|INFORME DE FORMACIËN PR┴CTICA EN EMPRESA
+1377|Tarea mßs significativa durante las dos semanas: ┐Por quÚ eligi¾ esta tarea y quÚ operaciones del PEA cumpli¾ con su ejecuci¾n?
+1378|Revisi¾n y correcci¾n del script de arranque (launch.bat) y su integraci¾n con Electron, por su impacto en la puesta en marcha del entorno de desarrollo (backend Laravel + frontend React). 
+1379|Descripci¾n del proceso:(Secuencia l¾gica de la ejecuci¾n de la tarea: operaciones, pasos, sub pasos)
+1380|1. Se identificaron los componentes que debe levantar el script: XAMPP (PHP), servidor Vite y proceso Electron. 
+1381|2. Se revis¾ scripts/launch.bat para verificar las rutas configuradas del intÚrprete PHP. 
+1382|3. Se ejecut¾ el script en un entorno limpio para reproducir el problema reportado. 
+1383|4. Se identific¾ el punto donde el proceso no iniciaba correctamente el servidor Laravel. 
+1384|5. Se ajustaron las variables de entorno y rutas del ejecutable PHP en el script. 
+1385|6. Se verific¾ el arranque del frontend con Vite en modo desarrollo (localhost:5173). 
+1386|7. Se comprob¾ la comunicaci¾n entre el frontend y la API (localhost:8000/api). 
+1387|8. Se prob¾ el empaquetado con electron-builder en modo escritorio (Windows). 
+1388|9. Se document¾ el cambio realizado en el script para referencia futura. 
+1389|10. Se repitieron las pruebas de arranque para confirmar la estabilidad del proceso. 
+1398|Mßquinas, equipos, herramientas y materiales (Listar lo utilizado especificando caracterÝsticas, medidas, etc)
+1399|Laptop personal (Windows), XAMPP (Apache/MySQL/PHP 8.2), Node.js y npm. 
+1400|Editor de c¾digo Visual Studio Code, Git/GitHub para control de versiones. 
+1401|Laravel 12, React 19 + Vite, Electron 28 (electron-builder). Seguridad e higiene industrial/ambiental (ATS, Charla de cinco minutos: SST/SGA)
+1402|ErgonomÝa del puesto de trabajo (pausas visuales/posturales) y respaldo del c¾digo antes de modificar el script. Resultados de la ejecuci¾n de la tarea/Recomendaciones (┐Se logr¾ el objetivo que motiv¾ la ejecuci¾n de la tarea? QuÚ recomendaciones sugiere para garantizar la operatividad del bien o servicio realizado
+1403|El script de arranque qued¾ operativo, iniciando XAMPP, el backend Laravel y el frontend en Electron. 
+1404|Se cumpli¾ el objetivo de reducir el tiempo de puesta en marcha del entorno de desarrollo local. 
+1405|Recomendaci¾n: documentar en el README los requisitos previos (versi¾n de PHP y Node). 
+1406|Recomendaci¾n: automatizar la verificaci¾n de dependencias antes de ejecutar el script. 
+1424|HACER ESQUEMA, DIBUJO O DIAGRAMA
+1428|EVALUACIËN DEL INFORME POR EL INSTRUCTOR
+1429|                                                                                                                                                        NOTA
+1431|OBSERVACIONES Y RECOMENDACIONES DEL MONITOR DE EMPRESA:
+1433|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1434|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1435|FIRMA DEL ESTUDIANTE
+1436|FIRMA DEL MONITOR DE EMPRESA
+1471|PROPIEDAD INTELECTUAL DE SENATI. PROHIBIDA SU 
+1472|REPRODUCCIËN Y VENTA SIN LA AUTORIZACIËN 
+1473|CORRESPONDIENTE
+---TOTAL PARAS WITH TEXT--- 307
+
+===== MEDIA (CUADERNO) =====
+word/media/hdphoto1.wdp
+word/media/image2.png
+word/media/image1.png
+word/media/image3.png
+---TOTAL MEDIA--- 4

@@ -192,45 +192,56 @@ class ReporteControlador extends Controller
 
     /**
      * Exportar boleta / Informe Académico a PDF.
+     * Formato consolidado: una tabla con todos los bimestres en una sola página.
      * Guarda automáticamente en carpeta Boletas y devuelve el archivo.
      */
     public function boletaPdf(Request $request, Alumno $alumno)
     {
         $seccionId = $request->input('seccion_id');
 
-        $query = Nota::where('alumno_id', $alumno->id)->with('curso');
-        if ($seccionId) {
-            $query->where('seccion_id', $seccionId);
-        }
-
-        $notas = $query->orderBy('curso_id')->orderBy('bimestre')->get();
-
-        // Obtener TODOS los cursos de la sección (incluso sin notas)
+        // Obtener sección del alumno
         $seccion = $seccionId
-            ? Seccion::with('grado')->find($seccionId)
-            : $alumno->secciones()->with('grado')->first();
+            ? Seccion::with('grado', 'docenteTutor')->find($seccionId)
+            : $alumno->secciones()->with('grado', 'docenteTutor')->first();
 
+        // Obtener TODOS los cursos del grado
         $cursosSeccion = $seccion
             ? \App\Models\Curso::where('grado_id', $seccion->grado_id)->where('estado', true)->orderBy('nombre')->get()
             : collect();
 
-        $cursos = $cursosSeccion->map(function ($curso) use ($notas) {
+        // Obtener todas las notas del alumno
+        $query = Nota::where('alumno_id', $alumno->id)->with('curso');
+        if ($seccionId) $query->where('seccion_id', $seccionId);
+        $notas = $query->orderBy('curso_id')->orderBy('bimestre')->get();
+
+        // Construir datos consolidados: una fila por curso con los 4 bimestres
+        $cursosConsolidados = [];
+        foreach ($cursosSeccion as $curso) {
             $notasCurso = $notas->where('curso_id', $curso->id);
-            $porBimestre = [];
+            $bims = [];
             for ($b = 1; $b <= 4; $b++) {
                 $del = $notasCurso->where('bimestre', $b);
-                $porBimestre[$b] = $del->isEmpty() ? null : round($del->avg('calificacion'), 1);
+                $bims[$b] = $del->isEmpty() ? null : round($del->avg('calificacion'), 0);
             }
-            $promedioFinal = $notasCurso->isEmpty() ? 0 : round($notasCurso->avg('calificacion'), 1);
-            return [
-                'curso'          => $curso->nombre,
-                'bimestre_1'     => $porBimestre[1],
-                'bimestre_2'     => $porBimestre[2],
-                'bimestre_3'     => $porBimestre[3],
-                'bimestre_4'     => $porBimestre[4],
-                'promedio_final' => $promedioFinal,
+            $conNotas = array_filter($bims, fn($v) => $v !== null);
+            $promAnual = !empty($conNotas) ? round(array_sum($conNotas) / count($conNotas), 0) : null;
+
+            $cursosConsolidados[] = [
+                'nombre'        => $curso->nombre,
+                'bim1'          => $bims[1],
+                'bim2'          => $bims[2],
+                'bim3'          => $bims[3],
+                'bim4'          => $bims[4],
+                'promedio_anual' => $promAnual,
             ];
-        })->toArray();
+        }
+
+        // Tutor
+        $tutor = '-';
+        if ($seccion && $seccion->docenteTutor) {
+            $dt = $seccion->docenteTutor;
+            $tutor = trim("{$dt->nombres} {$dt->apellidos}");
+        }
 
         $anioEscolar = date('Y');
         try {
@@ -238,45 +249,73 @@ class ReporteControlador extends Controller
             if ($config) $anioEscolar = $config->valor;
         } catch (\Exception $e) {}
 
-        // Logo como base64 para DomPDF
+        // Logo
         $logoBase64 = null;
         $logoPath = base_path('../frontend/src/assets/logo.png');
         if (file_exists($logoPath)) {
-            $logoData = file_get_contents($logoPath);
-            $logoBase64 = 'data:image/png;base64,' . base64_encode($logoData);
+            $logoBase64 = 'data:image/png;base64,' . base64_encode(file_get_contents($logoPath));
         }
 
         $pdf = Pdf::loadView('pdf.boleta', [
-            'alumno'          => $alumno,
-            'seccion'         => $seccion,
-            'cursos'          => $cursos,
-            'anioEscolar'     => $anioEscolar,
-            'logoBase64'      => $logoBase64,
-            'observaciones'   => '',
-            'fechaGeneracion' => Carbon::now()->locale('es')->isoFormat('D [de] MMMM [de] YYYY, HH:mm'),
+            'alumno'             => $alumno,
+            'seccion'            => $seccion,
+            'cursosConsolidados' => $cursosConsolidados,
+            'tutor'              => $tutor,
+            'anioEscolar'        => $anioEscolar,
+            'logoBase64'         => $logoBase64,
+            'comportamiento'     => null,
+            'recomendaciones'    => '',
+            'fechaGeneracion'    => Carbon::now()->locale('es')->isoFormat('D [de] MMMM [de] YYYY, HH:mm'),
         ]);
 
         $pdf->setPaper('A4', 'portrait');
 
-        // Guardar en carpeta Boletas
-        $boletasDir = base_path('../Boletas');
-        if (!is_dir($boletasDir)) {
-            mkdir($boletasDir, 0755, true);
+        $limpiar = function($texto) {
+            $texto = str_replace(
+                ['á','é','í','ó','ú','ñ','Á','É','Í','Ó','Ú','Ñ','ü','Ü'],
+                ['a','e','i','o','u','n','A','E','I','O','U','N','u','U'],
+                $texto
+            );
+            return preg_replace('/[^a-zA-Z0-9_]/', '_', $texto);
+        };
+        $apellidosClean = $limpiar($alumno->apellidos);
+        $nombresClean = $limpiar($alumno->nombres);
+        $filename = "Informe_Academico_{$apellidosClean}_{$nombresClean}_{$anioEscolar}.pdf";
+
+        // 1. Almacenamiento estándar y portable en el servidor (storage/app/boletas)
+        $serverBoletasDir = storage_path('app/boletas');
+        if (!is_dir($serverBoletasDir)) {
+            @mkdir($serverBoletasDir, 0755, true);
+        }
+        $serverFilePath = $serverBoletasDir . DIRECTORY_SEPARATOR . $filename;
+        @file_put_contents($serverFilePath, $pdf->output());
+
+        // 2. Si existe o es modo local en Windows, guardar también en la carpeta raíz ../Boletas
+        $localBoletasDir = base_path('../Boletas');
+        $effectiveFilePath = $serverFilePath;
+        $effectiveDir = $serverBoletasDir;
+
+        try {
+            if (!is_dir($localBoletasDir)) {
+                @mkdir($localBoletasDir, 0755, true);
+            }
+            if (is_dir($localBoletasDir) && is_writable($localBoletasDir)) {
+                $localFilePath = $localBoletasDir . DIRECTORY_SEPARATOR . $filename;
+                @file_put_contents($localFilePath, $pdf->output());
+                $effectiveFilePath = $localFilePath;
+                $effectiveDir = $localBoletasDir;
+            }
+        } catch (\Throwable $e) {
+            // En servidor Linux en la nube, continuar normalmente con el archivo en storage
         }
 
-        $apellidosClean = preg_replace('/[^a-zA-Z0-9_]/', '_', $alumno->apellidos);
-        $nombresClean = preg_replace('/[^a-zA-Z0-9_]/', '_', $alumno->nombres);
-        $filename = "Informe_Academico_{$apellidosClean}_{$nombresClean}_{$anioEscolar}.pdf";
-        $filepath = $boletasDir . DIRECTORY_SEPARATOR . $filename;
-
-        file_put_contents($filepath, $pdf->output());
-
-        // Devolver el PDF para descarga Y la ruta donde se guardó
+        // Devolver el PDF para descarga directa por Internet Y los encabezados informativos
         return response($pdf->output(), 200, [
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => "attachment; filename=\"$filename\"",
-            'X-Boleta-Path' => $filepath,
-            'X-Boleta-Dir' => $boletasDir,
+            'X-Boleta-Path' => $effectiveFilePath,
+            'X-Boleta-Dir' => $effectiveDir,
+            'Access-Control-Expose-Headers' => 'X-Boleta-Path, X-Boleta-Dir',
         ]);
     }
 

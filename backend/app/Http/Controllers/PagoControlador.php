@@ -6,6 +6,8 @@ use App\Models\Pago;
 use App\Models\Comprobante;
 use App\Models\ConceptoPago;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class PagoControlador extends Controller
 {
@@ -276,6 +278,41 @@ class PagoControlador extends Controller
                 'pendientes'=> $pagos->where('estado', 'pendiente')->count(),
                 'monto'     => $pagos->where('estado', 'pagado')->sum('monto'),
             ],
+        ]);
+    }
+
+    /**
+     * Resumen de montos cobrados por método de pago (para dashboard/reportes/móvil).
+     */
+    public function resumenMetodo(Request $request)
+    {
+        $query = Pago::query();
+        $fechaCol = Schema::hasColumn('pagos', 'fecha_pago') ? 'fecha_pago' : 'fecha';
+
+        if ($request->filled('fecha_desde')) {
+            $query->whereDate($fechaCol, '>=', $request->input('fecha_desde'));
+        }
+        if ($request->filled('fecha_hasta')) {
+            $query->whereDate($fechaCol, '<=', $request->input('fecha_hasta'));
+        }
+
+        $resumen = $query->select('metodo_pago', DB::raw('SUM(monto) as total'), DB::raw('COUNT(*) as cantidad'))
+            ->groupBy('metodo_pago')
+            ->get()
+            ->keyBy('metodo_pago');
+
+        $vacio = fn ($metodo) => [
+            'total'    => (float) ($resumen[$metodo]->total ?? 0),
+            'cantidad' => (int) ($resumen[$metodo]->cantidad ?? 0),
+        ];
+
+        return response()->json([
+            'yape'          => $vacio('yape'),
+            'plin'          => $vacio('plin'),
+            'efectivo'      => $vacio('efectivo'),
+            'tarjeta'       => $vacio('tarjeta'),
+            'transferencia' => $vacio('transferencia'),
+            'deposito'      => $vacio('deposito'),
         ]);
     }
 }

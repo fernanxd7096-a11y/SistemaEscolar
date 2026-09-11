@@ -1,0 +1,467 @@
+================================================================================
+c:\Users\ferna\Downloads\Cuaderno_Informe_01_Semana01.docx
+exists=True size=81787
+paragraphs=195 tables=6
+
+--- TABLE 0 rows=17 cols=4 ---
+R0: [0]| CUADRO DE ROTACIONES | || [1]| CUADRO DE ROTACIONES | || [2]| CUADRO DE ROTACIONES | || [3]| CUADRO DE ROTACIONES |
+R1: [0]ÁREA / SECCIÓN / EMPRESA || [1]PERÍODO || [2]PERÍODO || [3]SEMANAS
+R2: [0]ÁREA / SECCIÓN / EMPRESA || [1]DESDE || [2]HASTA || [3]SEMANAS
+R3: [0]Desarrollo de Software – I.E.P. Milagroso San Judas Tadeo  | || [1]17/08/2026 || [2]04/12/2026 || [3]16
+R4: [0]| || [1] || [2] || [3]
+R5: [0]| || [1] || [2] || [3]
+R6: [0]| || [1] || [2] || [3]
+R7: [0]| || [1] || [2] || [3]
+R8: [0]| || [1] || [2] || [3]
+R9: [0]| || [1] || [2] || [3]
+R10: [0]| || [1] || [2] || [3]
+R11: [0]| || [1] || [2] || [3]
+R12: [0]| || [1] || [2] || [3]
+R13: [0]| || [1] || [2] || [3]
+R14: [0]| || [1] || [2] || [3]
+R15: [0]| || [1] || [2] || [3]
+R16: [0] || [1] || [2] || [3]
+
+--- TABLE 1 rows=160 cols=7 ---
+R0: [0]Nº || [1]OPERACIONES/TAREAS || [2]OPERACIONES EJECUTADAS* || [3]OPERACIONES EJECUTADAS* || [4]OPERACIONES EJECUTADAS* || [5]OPERACIONES EJECUTADAS* || [6]OPERACIONES PARA SEMINARIO
+R1: [0]Nº || [1]OPERACIONES/TAREAS || [2]1 || [3]2 || [4]3 || [5]4 || [6]OPERACIONES PARA SEMINARIO
+R2: [0]01 || [1] || [2] || [3] || [4] || [5] || [6]
+R3: [0]02 || [1] || [2] || [3] || [4] || [5] || [6]
+R4: [0]03 || [1] || [2] || [3] || [4] || [5] || [6]
+R5: [0]04 || [1] || [2] || [3] || [4] || [5] || [6]
+R6: [0]05 || [1] || [2] || [3] || [4] || [5] || [6]
+R7: [0]06 || [1] || [2] || [3] || [4] || [5] || [6]
+R8: [0]07 || [1] || [2] || [3] || [4] || [5] || [6]
+R9: [0]08 || [1] || [2] || [3] || [4] || [5] || [6]
+R10: [0]09 || [1] || [2] || [3] || [4] || [5] || [6]
+R11: [0]10 || [1] || [2] || [3] || [4] || [5] || [6]
+R12: [0]11 || [1] || [2] || [3] || [4] || [5] || [6]
+R13: [0]12 || [1] || [2] || [3] || [4] || [5] || [6]
+R14: [0]13 || [1] || [2] || [3] || [4] || [5] || [6]
+R15: [0]14 || [1] || [2] || [3] || [4] || [5] || [6]
+R16: [0]15 || [1] || [2] || [3] || [4] || [5] || [6]
+R17: [0]16 || [1] || [2] || [3] || [4] || [5] || [6]
+R18: [0]17 || [1] || [2] || [3] || [4] || [5] || [6]
+R19: [0]18 || [1] || [2] || [3] || [4] || [5] || [6]
+R20: [0]19 || [1] || [2] || [3] || [4] || [5] || [6]
+R21: [0]20 || [1] || [2] || [3] || [4] || [5] || [6]
+R22: [0]21 || [1] || [2] || [3] || [4] || [5] || [6]
+R23: [0]22 || [1] || [2] || [3] || [4] || [5] || [6]
+R24: [0]23 || [1] || [2] || [3] || [4] || [5] || [6]
+R25: [0]24 || [1] || [2] || [3] || [4] || [5] || [6]
+R26: [0]25 || [1] || [2] || [3] || [4] || [5] || [6]
+R27: [0]26 || [1] || [2] || [3] || [4] || [5] || [6]
+R28: [0]27 || [1] || [2] || [3] || [4] || [5] || [6]
+R29: [0]28 || [1] || [2] || [3] || [4] || [5] || [6]
+R30: [0]29 || [1] || [2] || [3] || [4] || [5] || [6]
+R31: [0]30 || [1] || [2] || [3] || [4] || [5] || [6]
+R32: [0]31 || [1] || [2] || [3] || [4] || [5] || [6]
+R33: [0]32 || [1] || [2] || [3] || [4] || [5] || [6]
+R34: [0]33 || [1] || [2] || [3] || [4] || [5] || [6]
+R35: [0]34 || [1] || [2] || [3] || [4] || [5] || [6]
+R36: [0]*Número de repeticiones realizadas. || [1]*Número de repeticiones realizadas. || [2] || [3] || [4] || [5] || [6]|
+R37: [0]Nº || [1]OPERACIONES/TAREAS || [2]OPERACIONES EJECUTADAS* || [3]OPERACIONES EJECUTADAS* || [4]OPERACIONES EJECUTADAS* || [5]OPERACIONES EJECUTADAS* || [6]OPERACIONES PARA | SEMINARIO
+R38: [0]Nº || [1]OPERACIONES/TAREAS || [2]1 || [3]2 || [4]3 || [5]4 || [6]OPERACIONES PARA | SEMINARIO
+R39: [0]35 || [1] || [2] || [3] || [4] || [5] || [6]
+R40: [0]36 || [1] || [2] || [3] || [4] || [5] || [6]
+R41: [0]37 || [1] || [2] || [3] || [4] || [5] || [6]
+R42: [0]38 || [1] || [2] || [3] || [4] || [5] || [6]
+R43: [0]39 || [1] || [2] || [3] || [4] || [5] || [6]
+R44: [0]40 || [1] || [2] || [3] || [4] || [5] || [6]
+R45: [0]41 || [1] || [2] || [3] || [4] || [5] || [6]
+R46: [0]42 || [1] || [2] || [3] || [4] || [5] || [6]
+R47: [0]43 || [1] || [2] || [3] || [4] || [5] || [6]
+R48: [0]44 || [1] || [2] || [3] || [4] || [5] || [6]
+R49: [0]45 || [1] || [2] || [3] || [4] || [5] || [6]
+R50: [0]46 || [1] || [2] || [3] || [4] || [5] || [6]
+R51: [0]47 || [1] || [2] || [3] || [4] || [5] || [6]
+R52: [0]48 || [1] || [2] || [3] || [4] || [5] || [6]
+R53: [0]49 || [1] || [2] || [3] || [4] || [5] || [6]
+R54: [0]50 || [1] || [2] || [3] || [4] || [5] || [6]
+R55: [0]51 || [1] || [2] || [3] || [4] || [5] || [6]
+R56: [0]52 || [1] || [2] || [3] || [4] || [5] || [6]
+R57: [0]53 || [1] || [2] || [3] || [4] || [5] || [6]
+R58: [0]54 || [1] || [2] || [3] || [4] || [5] || [6]
+R59: [0]55 || [1] || [2] || [3] || [4] || [5] || [6]
+R60: [0]56 || [1] || [2] || [3] || [4] || [5] || [6]
+R61: [0]57 || [1] || [2] || [3] || [4] || [5] || [6]
+R62: [0]58 || [1] || [2] || [3] || [4] || [5] || [6]
+R63: [0]59 || [1] || [2] || [3] || [4] || [5] || [6]
+R64: [0]60 || [1] || [2] || [3] || [4] || [5] || [6]
+R65: [0]61 || [1] || [2] || [3] || [4] || [5] || [6]
+R66: [0]62 || [1] || [2] || [3] || [4] || [5] || [6]
+R67: [0]63 || [1] || [2] || [3] || [4] || [5] || [6]
+R68: [0]64 || [1] || [2] || [3] || [4] || [5] || [6]
+R69: [0]65 || [1] || [2] || [3] || [4] || [5] || [6]
+R70: [0]66 || [1] || [2] || [3] || [4] || [5] || [6]
+R71: [0]67 || [1] || [2] || [3] || [4] || [5] || [6]
+R72: [0]68 || [1] || [2] || [3] || [4] || [5] || [6]
+R73: [0]69 || [1] || [2] || [3] || [4] || [5] || [6]
+R74: [0]70 || [1] || [2] || [3] || [4] || [5] || [6]
+R75: [0]71 || [1] || [2] || [3] || [4] || [5] || [6]
+R76: [0]72 || [1] || [2] || [3] || [4] || [5] || [6]
+R77: [0]73 || [1] || [2] || [3] || [4] || [5] || [6]
+R78: [0]Nº || [1]OPERACIONES/TAREAS || [2]OPERACIONES EJECUTADAS* || [3]OPERACIONES EJECUTADAS* || [4]OPERACIONES EJECUTADAS* || [5]OPERACIONES EJECUTADAS* || [6]OPERACIONES PARA | SEMINARIO
+R79: [0]Nº || [1]OPERACIONES/TAREAS || [2]1 || [3]2 || [4]3 || [5]4 || [6]OPERACIONES PARA | SEMINARIO
+R80: [0]74 || [1] || [2] || [3] || [4] || [5] || [6]
+R81: [0]75 || [1] || [2] || [3] || [4] || [5] || [6]
+R82: [0]76 || [1] || [2] || [3] || [4] || [5] || [6]
+R83: [0]77 || [1] || [2] || [3] || [4] || [5] || [6]
+R84: [0]78 || [1] || [2] || [3] || [4] || [5] || [6]
+R85: [0]79 || [1] || [2] || [3] || [4] || [5] || [6]
+R86: [0]80 || [1] || [2] || [3] || [4] || [5] || [6]
+R87: [0]81 || [1] || [2] || [3] || [4] || [5] || [6]
+R88: [0]82 || [1] || [2] || [3] || [4] || [5] || [6]
+R89: [0]83 || [1] || [2] || [3] || [4] || [5] || [6]
+R90: [0]84 || [1] || [2] || [3] || [4] || [5] || [6]
+R91: [0]85 || [1] || [2] || [3] || [4] || [5] || [6]
+R92: [0]86 || [1] || [2] || [3] || [4] || [5] || [6]
+R93: [0]87 || [1] || [2] || [3] || [4] || [5] || [6]
+R94: [0]88 || [1] || [2] || [3] || [4] || [5] || [6]
+R95: [0]89 || [1] || [2] || [3] || [4] || [5] || [6]
+R96: [0]90 || [1] || [2] || [3] || [4] || [5] || [6]
+R97: [0]91 || [1] || [2] || [3] || [4] || [5] || [6]
+R98: [0]92 || [1] || [2] || [3] || [4] || [5] || [6]
+R99: [0]93 || [1] || [2] || [3] || [4] || [5] || [6]
+R100: [0]94 || [1] || [2] || [3] || [4] || [5] || [6]
+R101: [0]95 || [1] || [2] || [3] || [4] || [5] || [6]
+R102: [0]96 || [1] || [2] || [3] || [4] || [5] || [6]
+R103: [0]97 || [1] || [2] || [3] || [4] || [5] || [6]
+R104: [0]98 || [1] || [2] || [3] || [4] || [5] || [6]
+R105: [0]99 || [1] || [2] || [3] || [4] || [5] || [6]
+R106: [0]100 || [1] || [2] || [3] || [4] || [5] || [6]
+R107: [0]101 || [1] || [2] || [3] || [4] || [5] || [6]
+R108: [0]102 || [1] || [2] || [3] || [4] || [5] || [6]
+R109: [0]103 || [1] || [2] || [3] || [4] || [5] || [6]
+R110: [0]104 || [1] || [2] || [3] || [4] || [5] || [6]
+R111: [0]105 || [1] || [2] || [3] || [4] || [5] || [6]
+R112: [0]106 || [1] || [2] || [3] || [4] || [5] || [6]
+R113: [0]107 || [1] || [2] || [3] || [4] || [5] || [6]
+R114: [0]108 || [1] || [2] || [3] || [4] || [5] || [6]
+R115: [0]109 || [1] || [2] || [3] || [4] || [5] || [6]
+R116: [0]110 || [1] || [2] || [3] || [4] || [5] || [6]
+R117: [0]111 || [1] || [2] || [3] || [4] || [5] || [6]
+R118: [0]112 || [1] || [2] || [3] || [4] || [5] || [6]
+R119: [0]Nº || [1]OPERACIONES/TAREAS || [2]OPERACIONES EJECUTADAS* || [3]OPERACIONES EJECUTADAS* || [4]OPERACIONES EJECUTADAS* || [5]OPERACIONES EJECUTADAS* || [6]OPERACIONES PARA | SEMINARIO
+R120: [0]Nº || [1]OPERACIONES/TAREAS || [2]1 || [3]2 || [4]3 || [5]4 || [6]OPERACIONES PARA | SEMINARIO
+R121: [0]113 || [1] || [2] || [3] || [4] || [5] || [6]
+R122: [0]114 || [1] || [2] || [3] || [4] || [5] || [6]
+R123: [0]115 || [1] || [2] || [3] || [4] || [5] || [6]
+R124: [0]116 || [1] || [2] || [3] || [4] || [5] || [6]
+R125: [0]117 || [1] || [2] || [3] || [4] || [5] || [6]
+R126: [0]118 || [1] || [2] || [3] || [4] || [5] || [6]
+R127: [0]119 || [1] || [2] || [3] || [4] || [5] || [6]
+R128: [0]120 || [1] || [2] || [3] || [4] || [5] || [6]
+R129: [0]121 || [1] || [2] || [3] || [4] || [5] || [6]
+R130: [0]122 || [1] || [2] || [3] || [4] || [5] || [6]
+R131: [0]123 || [1] || [2] || [3] || [4] || [5] || [6]
+R132: [0]124 || [1] || [2] || [3] || [4] || [5] || [6]
+R133: [0]125 || [1] || [2] || [3] || [4] || [5] || [6]
+R134: [0]126 || [1] || [2] || [3] || [4] || [5] || [6]
+R135: [0]127 || [1] || [2] || [3] || [4] || [5] || [6]
+R136: [0]128 || [1] || [2] || [3] || [4] || [5] || [6]
+R137: [0]129 || [1] || [2] || [3] || [4] || [5] || [6]
+R138: [0]130 || [1] || [2] || [3] || [4] || [5] || [6]
+R139: [0]131 || [1] || [2] || [3] || [4] || [5] || [6]
+R140: [0]132 || [1] || [2] || [3] || [4] || [5] || [6]
+R141: [0]133 || [1] || [2] || [3] || [4] || [5] || [6]
+R142: [0]134 || [1] || [2] || [3] || [4] || [5] || [6]
+R143: [0]135 || [1] || [2] || [3] || [4] || [5] || [6]
+R144: [0]136 || [1] || [2] || [3] || [4] || [5] || [6]
+R145: [0]137 || [1] || [2] || [3] || [4] || [5] || [6]
+R146: [0]138 || [1] || [2] || [3] || [4] || [5] || [6]
+R147: [0]139 || [1] || [2] || [3] || [4] || [5] || [6]
+R148: [0]140 || [1] || [2] || [3] || [4] || [5] || [6]
+R149: [0]141 || [1] || [2] || [3] || [4] || [5] || [6]
+R150: [0]142 || [1] || [2] || [3] || [4] || [5] || [6]
+R151: [0]143 || [1] || [2] || [3] || [4] || [5] || [6]
+R152: [0]144 || [1] || [2] || [3] || [4] || [5] || [6]
+R153: [0]145 || [1] || [2] || [3] || [4] || [5] || [6]
+R154: [0]146 || [1] || [2] || [3] || [4] || [5] || [6]
+R155: [0]147 || [1] || [2] || [3] || [4] || [5] || [6]
+R156: [0]148 || [1] || [2] || [3] || [4] || [5] || [6]
+R157: [0]149 || [1] || [2] || [3] || [4] || [5] || [6]
+R158: [0]150 || [1] || [2] || [3] || [4] || [5] || [6]
+R159: [0]151 || [1] || [2] || [3] || [4] || [5] || [6]
+
+--- TABLE 2 rows=8 cols=3 ---
+R0: [0]DÍA || [1]ACTIVIDADES/TRABAJOS EFECTUADOS || [2]HORAS
+R1: [0]LUNES | 17/08/2026 || [1]Revisión del script de arranque (launch.bat) y del entorno XAMPP + Laravel del Sistema Escolar. || [2]
+R2: [0]MARTES 18/08/2026 || [1]Prueba de integración de Electron con el frontend React/Vite para el modo escritorio. || [2]
+R3: [0]MIÉRCOLES 19/08/2026 || [1]Corrección de rutas del intérprete PHP y variables de entorno usadas por el launcher. || [2]
+R4: [0]JUEVES 20/08/2026 || [1]Verificación de la comunicación frontend-API (Sanctum) tras el arranque del entorno. || [2]
+R5: [0]VIERNES 21/08/2026 || [1]Pruebas de estabilidad del arranque en un entorno limpio; documentación de cambios. || [2]
+R6: [0]SÁBADO 22/08/2026 || [1]Revisión general de módulos académicos (alumnos, docentes, grados y secciones). || [2]
+R7: [0] || [1]TOTAL || [2]
+
+--- TABLE 3 rows=8 cols=3 ---
+R0: [0]DÍA || [1]ACTIVIDADES/TRABAJOS EFECTUADOS || [2]HORAS
+R1: [0]LUNES ../.../…. || [1] || [2]
+R2: [0]MARTES ../.../…. || [1]| || [2]
+R3: [0]MIÉRCOLES ../.../…. || [1]| || [2]
+R4: [0]JUEVES ../.../…. || [1]| || [2]
+R5: [0]VIERNES ../.../…. || [1]| || [2]
+R6: [0]SÁBADO ../.../…. || [1]| || [2]
+R7: [0]| || [1]TOTAL || [2]
+
+--- TABLE 4 rows=2 cols=1 ---
+R0: [0]HACER ESQUEMA, DIBUJO O DIAGRAMA
+R1: [0]
+
+--- TABLE 5 rows=4 cols=2 ---
+R0: [0]EVALUACIÓN DEL INFORME POR EL INSTRUCTOR |                                                                                                                                          … || [1]EVALUACIÓN DEL INFORME POR EL INSTRUCTOR |                                                                                                                                          …
+R1: [0]OBSERVACIONES Y RECOMENDACIONES DEL MONITOR DE EMPRESA: |  | -----------------------------------------------------------------------------------------------------------------------… || [1]OBSERVACIONES Y RECOMENDACIONES DEL MONITOR DE EMPRESA: |  | -----------------------------------------------------------------------------------------------------------------------…
+R2: [0]FIRMA DEL ESTUDIANTE || [1]FIRMA DEL MONITOR DE EMPRESA
+R3: [0]|  |  |  | || [1]
+
+--- PARAGRAPHS (nonempty / key) ---
+P95: El Informe de Formación Práctica en Empresa es un documento de control, en el cual el estudiante, registra diariamente, las tareas y operaciones que ejecuta en su formación práctica Empresa.
+P99: En el cuadro de rotaciones, el estudiante, registrará el nombre de las áreas o secciones por las cuales rota durante su formación práctica en la Empresa, precisando la fecha de inicio y término.
+P103: En el REGISTRO SEMANAL DE TRABAJOS REALIZADOS, el estudiante anotará diariamente los trabajos que ejecuta en la empresa, indicando el tiempo correspondiente. El día de asistencia a SENATI para las sesiones de tecnología, registrará los contenidos que desarrolla en clase. Al término de cada semana to…
+P104: De las tareas realizadas durante dos semanas, el estudiante seleccionará la tarea más significativa y realizará una descripción del proceso de ejecución con esquemas y dibujos correspondientes que aclaren dicho proceso.
+P106: Cada dos semanas, el estudiante presentará en físico el informe de la tarea más significativa al Monitor, quien revisará, anotará las observaciones, las recomendaciones que considere y validará con su firma el respectivo informe.
+P115: REGISTRO SEMANAL DE TRABAJOS EFECTUADOS
+P124: Tarea más significativa durante las dos semanas: ¿Por qué eligió esta tarea y qué operaciones del PEA cumplió con su ejecución?
+P125: Revisión y corrección del script de arranque (launch.bat) y su integración con Electron, por su impacto en la puesta en marcha del entorno de desarrollo (backend Laravel + frontend React).
+P126: Descripción del proceso:(Secuencia lógica de la ejecución de la tarea: operaciones, pasos, sub pasos)
+P132: 6. Se verificó el arranque del frontend con Vite en modo desarrollo (localhost:5173).
+P141: Laravel 12, React 19 + Vite, Electron 28 (electron-builder). Seguridad e higiene industrial/ambiental (ATS, Charla de cinco minutos: SST/SGA)
+P142: Ergonomía del puesto de trabajo (pausas visuales/posturales) y respaldo del código antes de modificar el script. Resultados de la ejecución de la tarea/Recomendaciones (¿Se logró el objetivo que motivó la ejecución de la tarea? Qué recomendaciones sugiere para garantizar la operatividad del bien o s…
+P144: Se cumplió el objetivo de reducir el tiempo de puesta en marcha del entorno de desarrollo local.
+
+drawings=7 blips=1
+================================================================================
+c:\Users\ferna\Desktop\SistemaEscolar\entregables_senati\Cuaderno_Informe_01_Semana01_RELLENO.docx
+exists=True size=141750
+paragraphs=213 tables=6
+
+--- TABLE 0 rows=17 cols=4 ---
+R0: [0]| CUADRO DE ROTACIONES | || [1]| CUADRO DE ROTACIONES | || [2]| CUADRO DE ROTACIONES | || [3]| CUADRO DE ROTACIONES |
+R1: [0]ÁREA / SECCIÓN / EMPRESA || [1]PERÍODO || [2]PERÍODO || [3]SEMANAS
+R2: [0]ÁREA / SECCIÓN / EMPRESA || [1]DESDE || [2]HASTA || [3]SEMANAS
+R3: [0]Desarrollo de Software – I.E.P. Milagroso San Judas Tadeo  | || [1]17/08/2026 || [2]04/12/2026 || [3]16
+R4: [0]| || [1] || [2] || [3]
+R5: [0]| || [1] || [2] || [3]
+R6: [0]| || [1] || [2] || [3]
+R7: [0]| || [1] || [2] || [3]
+R8: [0]| || [1] || [2] || [3]
+R9: [0]| || [1] || [2] || [3]
+R10: [0]| || [1] || [2] || [3]
+R11: [0]| || [1] || [2] || [3]
+R12: [0]| || [1] || [2] || [3]
+R13: [0]| || [1] || [2] || [3]
+R14: [0]| || [1] || [2] || [3]
+R15: [0]| || [1] || [2] || [3]
+R16: [0] || [1] || [2] || [3]
+
+--- TABLE 1 rows=160 cols=7 ---
+R0: [0]Nº || [1]OPERACIONES/TAREAS || [2]OPERACIONES EJECUTADAS* || [3]OPERACIONES EJECUTADAS* || [4]OPERACIONES EJECUTADAS* || [5]OPERACIONES EJECUTADAS* || [6]OPERACIONES PARA SEMINARIO
+R1: [0]Nº || [1]OPERACIONES/TAREAS || [2]1 || [3]2 || [4]3 || [5]4 || [6]OPERACIONES PARA SEMINARIO
+R2: [0]01 || [1] || [2] || [3] || [4] || [5] || [6]
+R3: [0]02 || [1] || [2] || [3] || [4] || [5] || [6]
+R4: [0]03 || [1] || [2] || [3] || [4] || [5] || [6]
+R5: [0]04 || [1] || [2] || [3] || [4] || [5] || [6]
+R6: [0]05 || [1] || [2] || [3] || [4] || [5] || [6]
+R7: [0]06 || [1] || [2] || [3] || [4] || [5] || [6]
+R8: [0]07 || [1] || [2] || [3] || [4] || [5] || [6]
+R9: [0]08 || [1] || [2] || [3] || [4] || [5] || [6]
+R10: [0]09 || [1] || [2] || [3] || [4] || [5] || [6]
+R11: [0]10 || [1] || [2] || [3] || [4] || [5] || [6]
+R12: [0]11 || [1] || [2] || [3] || [4] || [5] || [6]
+R13: [0]12 || [1] || [2] || [3] || [4] || [5] || [6]
+R14: [0]13 || [1] || [2] || [3] || [4] || [5] || [6]
+R15: [0]14 || [1] || [2] || [3] || [4] || [5] || [6]
+R16: [0]15 || [1] || [2] || [3] || [4] || [5] || [6]
+R17: [0]16 || [1] || [2] || [3] || [4] || [5] || [6]
+R18: [0]17 || [1] || [2] || [3] || [4] || [5] || [6]
+R19: [0]18 || [1] || [2] || [3] || [4] || [5] || [6]
+R20: [0]19 || [1] || [2] || [3] || [4] || [5] || [6]
+R21: [0]20 || [1] || [2] || [3] || [4] || [5] || [6]
+R22: [0]21 || [1] || [2] || [3] || [4] || [5] || [6]
+R23: [0]22 || [1] || [2] || [3] || [4] || [5] || [6]
+R24: [0]23 || [1] || [2] || [3] || [4] || [5] || [6]
+R25: [0]24 || [1] || [2] || [3] || [4] || [5] || [6]
+R26: [0]25 || [1] || [2] || [3] || [4] || [5] || [6]
+R27: [0]26 || [1] || [2] || [3] || [4] || [5] || [6]
+R28: [0]27 || [1] || [2] || [3] || [4] || [5] || [6]
+R29: [0]28 || [1] || [2] || [3] || [4] || [5] || [6]
+R30: [0]29 || [1] || [2] || [3] || [4] || [5] || [6]
+R31: [0]30 || [1] || [2] || [3] || [4] || [5] || [6]
+R32: [0]31 || [1] || [2] || [3] || [4] || [5] || [6]
+R33: [0]32 || [1] || [2] || [3] || [4] || [5] || [6]
+R34: [0]33 || [1] || [2] || [3] || [4] || [5] || [6]
+R35: [0]34 || [1] || [2] || [3] || [4] || [5] || [6]
+R36: [0]*Número de repeticiones realizadas. || [1]*Número de repeticiones realizadas. || [2] || [3] || [4] || [5] || [6]|
+R37: [0]Nº || [1]OPERACIONES/TAREAS || [2]OPERACIONES EJECUTADAS* || [3]OPERACIONES EJECUTADAS* || [4]OPERACIONES EJECUTADAS* || [5]OPERACIONES EJECUTADAS* || [6]OPERACIONES PARA | SEMINARIO
+R38: [0]Nº || [1]OPERACIONES/TAREAS || [2]1 || [3]2 || [4]3 || [5]4 || [6]OPERACIONES PARA | SEMINARIO
+R39: [0]35 || [1] || [2] || [3] || [4] || [5] || [6]
+R40: [0]36 || [1] || [2] || [3] || [4] || [5] || [6]
+R41: [0]37 || [1] || [2] || [3] || [4] || [5] || [6]
+R42: [0]38 || [1] || [2] || [3] || [4] || [5] || [6]
+R43: [0]39 || [1] || [2] || [3] || [4] || [5] || [6]
+R44: [0]40 || [1] || [2] || [3] || [4] || [5] || [6]
+R45: [0]41 || [1] || [2] || [3] || [4] || [5] || [6]
+R46: [0]42 || [1] || [2] || [3] || [4] || [5] || [6]
+R47: [0]43 || [1] || [2] || [3] || [4] || [5] || [6]
+R48: [0]44 || [1] || [2] || [3] || [4] || [5] || [6]
+R49: [0]45 || [1] || [2] || [3] || [4] || [5] || [6]
+R50: [0]46 || [1] || [2] || [3] || [4] || [5] || [6]
+R51: [0]47 || [1] || [2] || [3] || [4] || [5] || [6]
+R52: [0]48 || [1] || [2] || [3] || [4] || [5] || [6]
+R53: [0]49 || [1] || [2] || [3] || [4] || [5] || [6]
+R54: [0]50 || [1] || [2] || [3] || [4] || [5] || [6]
+R55: [0]51 || [1] || [2] || [3] || [4] || [5] || [6]
+R56: [0]52 || [1] || [2] || [3] || [4] || [5] || [6]
+R57: [0]53 || [1] || [2] || [3] || [4] || [5] || [6]
+R58: [0]54 || [1] || [2] || [3] || [4] || [5] || [6]
+R59: [0]55 || [1] || [2] || [3] || [4] || [5] || [6]
+R60: [0]56 || [1] || [2] || [3] || [4] || [5] || [6]
+R61: [0]57 || [1] || [2] || [3] || [4] || [5] || [6]
+R62: [0]58 || [1] || [2] || [3] || [4] || [5] || [6]
+R63: [0]59 || [1] || [2] || [3] || [4] || [5] || [6]
+R64: [0]60 || [1] || [2] || [3] || [4] || [5] || [6]
+R65: [0]61 || [1] || [2] || [3] || [4] || [5] || [6]
+R66: [0]62 || [1] || [2] || [3] || [4] || [5] || [6]
+R67: [0]63 || [1] || [2] || [3] || [4] || [5] || [6]
+R68: [0]64 || [1] || [2] || [3] || [4] || [5] || [6]
+R69: [0]65 || [1] || [2] || [3] || [4] || [5] || [6]
+R70: [0]66 || [1] || [2] || [3] || [4] || [5] || [6]
+R71: [0]67 || [1] || [2] || [3] || [4] || [5] || [6]
+R72: [0]68 || [1] || [2] || [3] || [4] || [5] || [6]
+R73: [0]69 || [1] || [2] || [3] || [4] || [5] || [6]
+R74: [0]70 || [1] || [2] || [3] || [4] || [5] || [6]
+R75: [0]71 || [1] || [2] || [3] || [4] || [5] || [6]
+R76: [0]72 || [1] || [2] || [3] || [4] || [5] || [6]
+R77: [0]73 || [1] || [2] || [3] || [4] || [5] || [6]
+R78: [0]Nº || [1]OPERACIONES/TAREAS || [2]OPERACIONES EJECUTADAS* || [3]OPERACIONES EJECUTADAS* || [4]OPERACIONES EJECUTADAS* || [5]OPERACIONES EJECUTADAS* || [6]OPERACIONES PARA | SEMINARIO
+R79: [0]Nº || [1]OPERACIONES/TAREAS || [2]1 || [3]2 || [4]3 || [5]4 || [6]OPERACIONES PARA | SEMINARIO
+R80: [0]74 || [1] || [2] || [3] || [4] || [5] || [6]
+R81: [0]75 || [1] || [2] || [3] || [4] || [5] || [6]
+R82: [0]76 || [1] || [2] || [3] || [4] || [5] || [6]
+R83: [0]77 || [1] || [2] || [3] || [4] || [5] || [6]
+R84: [0]78 || [1] || [2] || [3] || [4] || [5] || [6]
+R85: [0]79 || [1] || [2] || [3] || [4] || [5] || [6]
+R86: [0]80 || [1] || [2] || [3] || [4] || [5] || [6]
+R87: [0]81 || [1] || [2] || [3] || [4] || [5] || [6]
+R88: [0]82 || [1] || [2] || [3] || [4] || [5] || [6]
+R89: [0]83 || [1] || [2] || [3] || [4] || [5] || [6]
+R90: [0]84 || [1] || [2] || [3] || [4] || [5] || [6]
+R91: [0]85 || [1] || [2] || [3] || [4] || [5] || [6]
+R92: [0]86 || [1] || [2] || [3] || [4] || [5] || [6]
+R93: [0]87 || [1] || [2] || [3] || [4] || [5] || [6]
+R94: [0]88 || [1] || [2] || [3] || [4] || [5] || [6]
+R95: [0]89 || [1] || [2] || [3] || [4] || [5] || [6]
+R96: [0]90 || [1] || [2] || [3] || [4] || [5] || [6]
+R97: [0]91 || [1] || [2] || [3] || [4] || [5] || [6]
+R98: [0]92 || [1] || [2] || [3] || [4] || [5] || [6]
+R99: [0]93 || [1] || [2] || [3] || [4] || [5] || [6]
+R100: [0]94 || [1] || [2] || [3] || [4] || [5] || [6]
+R101: [0]95 || [1] || [2] || [3] || [4] || [5] || [6]
+R102: [0]96 || [1] || [2] || [3] || [4] || [5] || [6]
+R103: [0]97 || [1] || [2] || [3] || [4] || [5] || [6]
+R104: [0]98 || [1] || [2] || [3] || [4] || [5] || [6]
+R105: [0]99 || [1] || [2] || [3] || [4] || [5] || [6]
+R106: [0]100 || [1] || [2] || [3] || [4] || [5] || [6]
+R107: [0]101 || [1] || [2] || [3] || [4] || [5] || [6]
+R108: [0]102 || [1] || [2] || [3] || [4] || [5] || [6]
+R109: [0]103 || [1] || [2] || [3] || [4] || [5] || [6]
+R110: [0]104 || [1] || [2] || [3] || [4] || [5] || [6]
+R111: [0]105 || [1] || [2] || [3] || [4] || [5] || [6]
+R112: [0]106 || [1] || [2] || [3] || [4] || [5] || [6]
+R113: [0]107 || [1] || [2] || [3] || [4] || [5] || [6]
+R114: [0]108 || [1] || [2] || [3] || [4] || [5] || [6]
+R115: [0]109 || [1] || [2] || [3] || [4] || [5] || [6]
+R116: [0]110 || [1] || [2] || [3] || [4] || [5] || [6]
+R117: [0]111 || [1] || [2] || [3] || [4] || [5] || [6]
+R118: [0]112 || [1] || [2] || [3] || [4] || [5] || [6]
+R119: [0]Nº || [1]OPERACIONES/TAREAS || [2]OPERACIONES EJECUTADAS* || [3]OPERACIONES EJECUTADAS* || [4]OPERACIONES EJECUTADAS* || [5]OPERACIONES EJECUTADAS* || [6]OPERACIONES PARA | SEMINARIO
+R120: [0]Nº || [1]OPERACIONES/TAREAS || [2]1 || [3]2 || [4]3 || [5]4 || [6]OPERACIONES PARA | SEMINARIO
+R121: [0]113 || [1] || [2] || [3] || [4] || [5] || [6]
+R122: [0]114 || [1] || [2] || [3] || [4] || [5] || [6]
+R123: [0]115 || [1] || [2] || [3] || [4] || [5] || [6]
+R124: [0]116 || [1] || [2] || [3] || [4] || [5] || [6]
+R125: [0]117 || [1] || [2] || [3] || [4] || [5] || [6]
+R126: [0]118 || [1] || [2] || [3] || [4] || [5] || [6]
+R127: [0]119 || [1] || [2] || [3] || [4] || [5] || [6]
+R128: [0]120 || [1] || [2] || [3] || [4] || [5] || [6]
+R129: [0]121 || [1] || [2] || [3] || [4] || [5] || [6]
+R130: [0]122 || [1] || [2] || [3] || [4] || [5] || [6]
+R131: [0]123 || [1] || [2] || [3] || [4] || [5] || [6]
+R132: [0]124 || [1] || [2] || [3] || [4] || [5] || [6]
+R133: [0]125 || [1] || [2] || [3] || [4] || [5] || [6]
+R134: [0]126 || [1] || [2] || [3] || [4] || [5] || [6]
+R135: [0]127 || [1] || [2] || [3] || [4] || [5] || [6]
+R136: [0]128 || [1] || [2] || [3] || [4] || [5] || [6]
+R137: [0]129 || [1] || [2] || [3] || [4] || [5] || [6]
+R138: [0]130 || [1] || [2] || [3] || [4] || [5] || [6]
+R139: [0]131 || [1] || [2] || [3] || [4] || [5] || [6]
+R140: [0]132 || [1] || [2] || [3] || [4] || [5] || [6]
+R141: [0]133 || [1] || [2] || [3] || [4] || [5] || [6]
+R142: [0]134 || [1] || [2] || [3] || [4] || [5] || [6]
+R143: [0]135 || [1] || [2] || [3] || [4] || [5] || [6]
+R144: [0]136 || [1] || [2] || [3] || [4] || [5] || [6]
+R145: [0]137 || [1] || [2] || [3] || [4] || [5] || [6]
+R146: [0]138 || [1] || [2] || [3] || [4] || [5] || [6]
+R147: [0]139 || [1] || [2] || [3] || [4] || [5] || [6]
+R148: [0]140 || [1] || [2] || [3] || [4] || [5] || [6]
+R149: [0]141 || [1] || [2] || [3] || [4] || [5] || [6]
+R150: [0]142 || [1] || [2] || [3] || [4] || [5] || [6]
+R151: [0]143 || [1] || [2] || [3] || [4] || [5] || [6]
+R152: [0]144 || [1] || [2] || [3] || [4] || [5] || [6]
+R153: [0]145 || [1] || [2] || [3] || [4] || [5] || [6]
+R154: [0]146 || [1] || [2] || [3] || [4] || [5] || [6]
+R155: [0]147 || [1] || [2] || [3] || [4] || [5] || [6]
+R156: [0]148 || [1] || [2] || [3] || [4] || [5] || [6]
+R157: [0]149 || [1] || [2] || [3] || [4] || [5] || [6]
+R158: [0]150 || [1] || [2] || [3] || [4] || [5] || [6]
+R159: [0]151 || [1] || [2] || [3] || [4] || [5] || [6]
+
+--- TABLE 2 rows=8 cols=3 ---
+R0: [0]DÍA || [1]ACTIVIDADES/TRABAJOS EFECTUADOS || [2]HORAS
+R1: [0]LUNES | 17/08/2026 || [1]Diagnóstico técnico del script de arranque launch.bat y del entorno XAMPP + Laravel del Sistema Escolar SJT, validando dependencias, puertos y secuencia de levantamiento del backen… || [2]8
+R2: [0]MARTES 18/08/2026 || [1]Pruebas de integración entre Electron y el frontend React/Vite en modo escritorio, verificando carga de la SPA, embebido del frontend y estabilidad de la ventana de aplicación para… || [2]8
+R3: [0]MIÉRCOLES 19/08/2026 || [1]Corrección de rutas del intérprete PHP y variables de entorno del launcher; se depuró la configuración que impedía iniciar correctamente el servidor Laravel y se estandarizó el uso… || [2]8
+R4: [0]JUEVES 20/08/2026 || [1]Verificación end-to-end de la comunicación frontend–API mediante Laravel Sanctum tras el arranque, comprobando autenticación por token, respuestas de endpoints críticos y coherenci… || [2]8
+R5: [0]VIERNES 21/08/2026 || [1]Pruebas de estabilidad del arranque en entorno limpio (sin procesos previos), registro de hallazgos y documentación de cambios realizados en el script para facilitar el mantenimien… || [2]8
+R6: [0]SÁBADO 22/08/2026 || [1]Revisión funcional de módulos académicos del sistema (alumnos, docentes, grados y secciones), contrastando el flujo de datos con la API y confirmando que el entorno estabilizado pe… || [2]4
+R7: [0] || [1]TOTAL || [2]44
+
+--- TABLE 3 rows=8 cols=3 ---
+R0: [0]DÍA || [1]ACTIVIDADES/TRABAJOS EFECTUADOS || [2]HORAS
+R1: [0]LUNES ../.../…. || [1] || [2]
+R2: [0]MARTES ../.../…. || [1]| || [2]
+R3: [0]MIÉRCOLES ../.../…. || [1]| || [2]
+R4: [0]JUEVES ../.../…. || [1]| || [2]
+R5: [0]VIERNES ../.../…. || [1]| || [2]
+R6: [0]SÁBADO ../.../…. || [1]| || [2]
+R7: [0]| || [1]TOTAL || [2]
+
+--- TABLE 4 rows=2 cols=1 ---
+R0: [0]HACER ESQUEMA, DIBUJO O DIAGRAMA |
+R1: [0]
+
+--- TABLE 5 rows=4 cols=2 ---
+R0: [0]EVALUACIÓN DEL INFORME POR EL INSTRUCTOR |                                                                                                                                          … || [1]EVALUACIÓN DEL INFORME POR EL INSTRUCTOR |                                                                                                                                          …
+R1: [0]OBSERVACIONES Y RECOMENDACIONES DEL MONITOR DE EMPRESA: |  | -----------------------------------------------------------------------------------------------------------------------… || [1]OBSERVACIONES Y RECOMENDACIONES DEL MONITOR DE EMPRESA: |  | -----------------------------------------------------------------------------------------------------------------------…
+R2: [0]FIRMA DEL ESTUDIANTE || [1]FIRMA DEL MONITOR DE EMPRESA
+R3: [0]|  |  |  | || [1]
+
+--- PARAGRAPHS (nonempty / key) ---
+P95: El Informe de Formación Práctica en Empresa es un documento de control, en el cual el estudiante, registra diariamente, las tareas y operaciones que ejecuta en su formación práctica Empresa.
+P99: En el cuadro de rotaciones, el estudiante, registrará el nombre de las áreas o secciones por las cuales rota durante su formación práctica en la Empresa, precisando la fecha de inicio y término.
+P103: En el REGISTRO SEMANAL DE TRABAJOS REALIZADOS, el estudiante anotará diariamente los trabajos que ejecuta en la empresa, indicando el tiempo correspondiente. El día de asistencia a SENATI para las sesiones de tecnología, registrará los contenidos que desarrolla en clase. Al término de cada semana to…
+P104: De las tareas realizadas durante dos semanas, el estudiante seleccionará la tarea más significativa y realizará una descripción del proceso de ejecución con esquemas y dibujos correspondientes que aclaren dicho proceso.
+P106: Cada dos semanas, el estudiante presentará en físico el informe de la tarea más significativa al Monitor, quien revisará, anotará las observaciones, las recomendaciones que considere y validará con su firma el respectivo informe.
+P115: REGISTRO SEMANAL DE TRABAJOS EFECTUADOS
+P124: Tarea más significativa durante las dos semanas: ¿Por qué eligió esta tarea y qué operaciones del PEA cumplió con su ejecución?
+P125: Revisión y corrección del script de arranque (launch.bat) y su integración con Electron, por su impacto en la puesta en marcha del entorno de desarrollo (backend Laravel + frontend React).
+P126: Descripción del proceso:(Secuencia lógica de la ejecución de la tarea: operaciones, pasos, sub pasos)
+P132: 6. Se verificó el arranque del frontend con Vite en modo desarrollo (localhost:5173).
+P148: Laravel 12, React 19 + Vite, Electron 28 (electron-builder). Seguridad e higiene industrial/ambiental (ATS, Charla de cinco minutos: SST/SGA)
+P149: Ergonomía del puesto de trabajo (pausas visuales/posturales) y respaldo del código antes de modificar el script. Resultados de la ejecución de la tarea/Recomendaciones (¿Se logró el objetivo que motivó la ejecución de la tarea? Qué recomendaciones sugiere para garantizar la operatividad del bien o s…
+P151: Se cumplió el objetivo de reducir el tiempo de puesta en marcha del entorno de desarrollo local.
+P200: PROPIEDAD INTELECTUAL DE SENATI. PROHIBIDA SU
+P201: REPRODUCCIÓN Y VENTA SIN LA AUTORIZACIÓN
+P202: CORRESPONDIENTE
+
+drawings=8 blips=2

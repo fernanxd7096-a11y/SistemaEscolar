@@ -36,10 +36,22 @@ class Usuario extends Authenticatable
         'estado' => 'boolean',
     ];
 
+    protected $appends = ['foto_url'];
+
+    public function getFotoUrlAttribute(): ?string
+    {
+        return $this->foto ? \Illuminate\Support\Facades\Storage::disk('public')->url($this->foto) : null;
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
             ->logOnly(['nombre', 'apellido', 'email', 'estado'])
             ->logOnlyDirty();
+    }
+
+    public function pushTokens(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(PushToken::class);
     }
 }

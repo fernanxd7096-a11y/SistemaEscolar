@@ -34,3 +34,15 @@ desktop.ini
 # Logs
 *.log
 npm-debug.log*
+
+# Mobile (React Native / Expo)
+/mobile/node_modules/
+/mobile/.expo/
+/mobile/.env
+/mobile/dist/
+
+# Frontend env
+/frontend/.env
+
+# Backups
+*.sql

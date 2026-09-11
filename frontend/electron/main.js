@@ -2,6 +2,7 @@ const { app, BrowserWindow, Tray, Menu, Notification, ipcMain, shell, nativeImag
 const { spawn } = require('child_process')
 const path = require('path')
 const http = require('http')
+const fs = require('fs')
 
 // ─── Variables globales ───────────────────────────────────────────────────────
 let ventanaPrincipal = null
@@ -12,6 +13,24 @@ const PUERTO_API     = 8000
 const URL_DEV        = 'http://localhost:5173'
 const esDev          = process.env.NODE_ENV === 'development'
 
+// Detectar si el frontend está configurado para un API remoto (nube / producción)
+let apiUrl = process.env.VITE_API_URL || ''
+try {
+  const envPath = path.join(__dirname, '..', '.env')
+  if (fs.existsSync(envPath)) {
+    const envContent = fs.readFileSync(envPath, 'utf8')
+    const match = envContent.match(/^VITE_API_URL=(.+)$/m)
+    if (match && match[1]) {
+      apiUrl = match[1].trim()
+    }
+  }
+} catch (e) {}
+
+const esRemoto = Boolean(
+  (apiUrl.startsWith('http://') && !apiUrl.includes('localhost') && !apiUrl.includes('127.0.0.1')) ||
+  apiUrl.startsWith('https://')
+)
+
 // ─── Rutas ───────────────────────────────────────────────────────────────────
 const raizProyecto = esDev
   ? path.join(__dirname, '..', '..', 'backend')
@@ -21,10 +40,15 @@ const phpExe = 'php'
 
 // ─── Iniciar servidor Laravel ─────────────────────────────────────────────────
 function iniciarBackend () {
-  return new Promise((resolve, reject) => {
-    console.log('[Backend] Iniciando Laravel en', raizProyecto)
+  if (esRemoto) {
+    console.log('[Backend] Modo REMOTO en la nube detectado. Conectando a:', apiUrl)
+    return Promise.resolve()
+  }
 
-    procesoPHP = spawn(phpExe, ['artisan', 'serve', '--host=127.0.0.1', `--port=${PUERTO_API}`], {
+  return new Promise((resolve, reject) => {
+    console.log('[Backend] Iniciando Laravel local en', raizProyecto)
+
+    procesoPHP = spawn(phpExe, ['artisan', 'serve', '--host=0.0.0.0', `--port=${PUERTO_API}`], {
       cwd: raizProyecto,
       windowsHide: true,
       env: { ...process.env, APP_ENV: esDev ? 'local' : 'production' }
@@ -67,6 +91,7 @@ function esperarServidor (url, intentosMax = 30) {
 
 // ─── Detener servidor Laravel ─────────────────────────────────────────────────
 function detenerBackend () {
+  if (esRemoto) return
   if (procesoPHP) {
     console.log('[Backend] Deteniendo servidor...')
     if (process.platform === 'win32') {

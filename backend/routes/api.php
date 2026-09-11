@@ -20,6 +20,11 @@ use App\Http\Controllers\PadreControlador;
 use App\Http\Controllers\EventoControlador;
 use App\Http\Controllers\PagoControlador;
 use App\Http\Controllers\RegistroDocenteControlador;
+use App\Http\Controllers\PerfilControlador;
+use App\Http\Controllers\PushTokenControlador;
+use App\Http\Controllers\AgendaHorarioControlador;
+use App\Http\Controllers\HorarioReglaControlador;
+use App\Http\Controllers\HorarioExcepcionControlador;
 use App\Http\Controllers\Movil\MovilControlador;
 
 Route::get('ping', fn () => response()->json([
@@ -44,6 +49,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('dashboard/resumen',         [DashboardControlador::class, 'resumen']);
     Route::get('dashboard/graficos',        [DashboardControlador::class, 'graficos']);
+    Route::get('dashboard/kpis',            [DashboardControlador::class, 'kpis']);
 
     Route::middleware('role:administrador|director')->group(function () {
         Route::apiResource('usuarios', UsuarioControlador::class);
@@ -88,6 +94,22 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('cursos/{curso}', [CursoControlador::class, 'destroy'])->middleware('permission:eliminar-cursos');
 
     // --- Fase 3: horarios ---
+    Route::get('horarios/agenda',      [AgendaHorarioControlador::class, 'agenda'])->middleware('permission:ver-horarios');
+    Route::get('horarios/mi-agenda',   [AgendaHorarioControlador::class, 'miAgenda'])->middleware('permission:ver-horarios');
+
+    Route::get('horarios/reglas',                    [HorarioReglaControlador::class, 'index'])->middleware('permission:ver-horarios');
+    Route::post('horarios/reglas',                   [HorarioReglaControlador::class, 'store'])->middleware('permission:crear-horarios');
+    Route::post('horarios/reglas/verificar',         [HorarioReglaControlador::class, 'verificarConflictos'])->middleware('permission:ver-horarios');
+    Route::get('horarios/reglas/{regla}',            [HorarioReglaControlador::class, 'show'])->middleware('permission:ver-horarios');
+    Route::put('horarios/reglas/{regla}',            [HorarioReglaControlador::class, 'update'])->middleware('permission:editar-horarios');
+    Route::delete('horarios/reglas/{regla}',         [HorarioReglaControlador::class, 'destroy'])->middleware('permission:eliminar-horarios');
+
+    Route::get('horarios/excepciones',               [HorarioExcepcionControlador::class, 'index'])->middleware('permission:ver-horarios');
+    Route::post('horarios/excepciones',              [HorarioExcepcionControlador::class, 'store'])->middleware('permission:crear-horarios');
+    Route::get('horarios/excepciones/{excepcion}',   [HorarioExcepcionControlador::class, 'show'])->middleware('permission:ver-horarios');
+    Route::put('horarios/excepciones/{excepcion}',   [HorarioExcepcionControlador::class, 'update'])->middleware('permission:editar-horarios');
+    Route::delete('horarios/excepciones/{excepcion}', [HorarioExcepcionControlador::class, 'destroy'])->middleware('permission:eliminar-horarios');
+
     Route::get('horarios', [HorarioControlador::class, 'index'])->middleware('permission:ver-horarios');
     Route::post('horarios', [HorarioControlador::class, 'store'])->middleware('permission:crear-horarios');
     Route::get('horarios/{horario}', [HorarioControlador::class, 'show'])->middleware('permission:ver-horarios');
@@ -149,6 +171,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('conceptos-pago/{concepto}', [PagoControlador::class, 'eliminarConcepto'])->middleware('permission:eliminar-pagos');
 
     // --- Pagos ---
+    Route::get('pagos/resumen-metodo', [PagoControlador::class, 'resumenMetodo'])->middleware('permission:ver-pagos');
     Route::get('pagos', [PagoControlador::class, 'index'])->middleware('permission:ver-pagos');
     Route::post('pagos', [PagoControlador::class, 'store'])->middleware('permission:crear-pagos');
     Route::get('pagos/{pago}', [PagoControlador::class, 'show'])->middleware('permission:ver-pagos');
@@ -162,6 +185,17 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // --- Pagos por padre ---
     Route::get('padres/{padre}/pagos', [PagoControlador::class, 'pagosPorPadre'])->middleware('permission:ver-pagos');
+
+    // --- Perfil de usuario (para web y móvil) ---
+    Route::put('perfil',                   [PerfilControlador::class, 'actualizar']);
+    Route::put('perfil/password',          [PerfilControlador::class, 'actualizarPassword']);
+    Route::post('perfil/foto',             [PerfilControlador::class, 'subirFoto']);
+    Route::delete('perfil/foto',           [PerfilControlador::class, 'eliminarFoto']);
+
+    // --- Push Tokens (móvil) ---
+    Route::post('push-tokens',             [PushTokenControlador::class, 'registrar']);
+    Route::delete('push-tokens',           [PushTokenControlador::class, 'eliminar']);
+    Route::post('push-tokens/prueba',      [PushTokenControlador::class, 'enviarPrueba']);
 });
 
 // =============================================

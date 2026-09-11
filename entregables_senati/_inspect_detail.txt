@@ -1,0 +1,281 @@
+
+===== TABLE 2 =====
+-- Row 0 --
+ cell[0] xml_text='DÍA'
+  c0.P0: 'DÍA' runs=["{sz=139700, bold=None, text='DÍA'}"]
+ cell[1] xml_text='ACTIVIDADES/TRABAJOS EFECTUADOS'
+  c1.P0: 'ACTIVIDADES/TRABAJOS EFECTUADOS' runs=["{sz=139700, bold=None, text='ACTIVIDADES/TRABAJOS EFECTUADOS'}"]
+ cell[2] xml_text='HORAS'
+  c2.P0: 'HORAS' runs=["{sz=139700, bold=None, text='HORAS'}"]
+-- Row 1 --
+ cell[0] xml_text='LUNES\n17/08/2026'
+  c0.P0: 'LUNES' runs=["{sz=139700, bold=None, text='LUNES'}"]
+  c0.P1: '17/08/2026' runs=["{sz=139700, bold=None, text='17/08/2026'}"]
+ cell[1] xml_text='Revisión del script de arranque (launch.bat) y del entorno XAMPP + Laravel del Sistema Escolar. '
+  c1.P0: 'Revisión del script de arranque (launch.bat) y del entorno XAMPP + Laravel del Sistema Escolar. ' runs=["{sz=139700, bold=False, text='Revisión del script de arranque (launch.bat) y del entorno XAMPP + Laravel del Sistema Escolar. '}"]
+ cell[2] xml_text=''
+  c2.P0: '' runs=[]
+-- Row 2 --
+ cell[0] xml_text='MARTES 18/08/2026'
+  c0.P0: 'MARTES 18/08/2026' runs=["{sz=139700, bold=None, text='MARTES 18/08/2026'}"]
+ cell[1] xml_text='Prueba de integración de Electron con el frontend React/Vite para el modo escritorio. '
+  c1.P0: 'Prueba de integración de Electron con el frontend React/Vite para el modo escritorio. ' runs=["{sz=139700, bold=False, text='Prueba de integración de Electron con el frontend React/Vite para el modo escritorio. '}"]
+ cell[2] xml_text=''
+  c2.P0: '' runs=[]
+-- Row 3 --
+ cell[0] xml_text='MIÉRCOLES 19/08/2026'
+  c0.P0: 'MIÉRCOLES 19/08/2026' runs=["{sz=139700, bold=None, text='MIÉRCOLES 19/08/2026'}"]
+ cell[1] xml_text='Corrección de rutas del intérprete PHP y variables de entorno usadas por el launcher. '
+  c1.P0: 'Corrección de rutas del intérprete PHP y variables de entorno usadas por el launcher. ' runs=["{sz=139700, bold=False, text='Corrección de rutas del intérprete PHP y variables de entorno usadas por el launcher. '}"]
+ cell[2] xml_text=''
+  c2.P0: '' runs=[]
+-- Row 4 --
+ cell[0] xml_text='JUEVES 20/08/2026'
+  c0.P0: 'JUEVES 20/08/2026' runs=["{sz=139700, bold=None, text='JUEVES 20/08/2026'}"]
+ cell[1] xml_text='Verificación de la comunicación frontend-API (Sanctum) tras el arranque del entorno. '
+  c1.P0: 'Verificación de la comunicación frontend-API (Sanctum) tras el arranque del entorno. ' runs=["{sz=139700, bold=False, text='Verificación de la comunicación frontend-API (Sanctum) tras el arranque del entorno. '}"]
+ cell[2] xml_text=''
+  c2.P0: '' runs=[]
+-- Row 5 --
+ cell[0] xml_text='VIERNES 21/08/2026'
+  c0.P0: 'VIERNES 21/08/2026' runs=["{sz=139700, bold=None, text='VIERNES 21/08/2026'}"]
+ cell[1] xml_text='Pruebas de estabilidad del arranque en un entorno limpio; documentación de cambios. '
+  c1.P0: 'Pruebas de estabilidad del arranque en un entorno limpio; documentación de cambios. ' runs=["{sz=139700, bold=False, text='Pruebas de estabilidad del arranque en un entorno limpio; documentación de cambios. '}"]
+ cell[2] xml_text=''
+  c2.P0: '' runs=[]
+-- Row 6 --
+ cell[0] xml_text='SÁBADO 22/08/2026'
+  c0.P0: 'SÁBADO 22/08/2026' runs=["{sz=139700, bold=None, text='SÁBADO 22/08/2026'}"]
+ cell[1] xml_text='Revisión general de módulos académicos (alumnos, docentes, grados y secciones). '
+  c1.P0: 'Revisión general de módulos académicos (alumnos, docentes, grados y secciones). ' runs=["{sz=139700, bold=False, text='Revisión general de módulos académicos (alumnos, docentes, grados y secciones). '}"]
+ cell[2] xml_text=''
+  c2.P0: '' runs=[]
+-- Row 7 --
+ cell[0] xml_text=''
+  c0.P0: '' runs=[]
+ cell[1] xml_text='TOTAL'
+  c1.P0: 'TOTAL' runs=["{sz=139700, bold=None, text='TOTAL'}"]
+ cell[2] xml_text=''
+  c2.P0: '' runs=[]
+
+===== TABLE 3 =====
+-- Row 0 --
+ cell[0] xml_text='DÍA'
+  c0.P0: 'DÍA' runs=["{sz=139700, bold=None, text='DÍA'}"]
+ cell[1] xml_text='ACTIVIDADES/TRABAJOS EFECTUADOS'
+  c1.P0: 'ACTIVIDADES/TRABAJOS EFECTUADOS' runs=["{sz=139700, bold=None, text='ACTIVIDADES/TRABAJOS EFECTUADOS'}"]
+ cell[2] xml_text='HORAS'
+  c2.P0: 'HORAS' runs=["{sz=139700, bold=None, text='HORAS'}"]
+-- Row 1 --
+ cell[0] xml_text='LUNES ../.../….'
+  c0.P0: 'LUNES ../.../….' runs=["{sz=139700, bold=None, text='LUNES ../.../….'}"]
+ cell[1] xml_text=''
+  c1.P0: '' runs=[]
+ cell[2] xml_text=''
+  c2.P0: '' runs=[]
+-- Row 2 --
+ cell[0] xml_text='MARTES ../.../….'
+  c0.P0: 'MARTES ../.../….' runs=["{sz=139700, bold=None, text='MARTES ../.../….'}"]
+ cell[1] xml_text='\n'
+  c1.P0: '' runs=[]
+  c1.P1: '' runs=[]
+ cell[2] xml_text=''
+  c2.P0: '' runs=[]
+-- Row 3 --
+ cell[0] xml_text='MIÉRCOLES ../.../….'
+  c0.P0: 'MIÉRCOLES ../.../….' runs=["{sz=139700, bold=None, text='MIÉRCOLES ../.../….'}"]
+ cell[1] xml_text='\n'
+  c1.P0: '' runs=[]
+  c1.P1: '' runs=[]
+ cell[2] xml_text=''
+  c2.P0: '' runs=[]
+-- Row 4 --
+ cell[0] xml_text='JUEVES ../.../….'
+  c0.P0: 'JUEVES ../.../….' runs=["{sz=139700, bold=None, text='JUEVES ../.../….'}"]
+ cell[1] xml_text='\n'
+  c1.P0: '' runs=[]
+  c1.P1: '' runs=[]
+ cell[2] xml_text=''
+  c2.P0: '' runs=[]
+-- Row 5 --
+ cell[0] xml_text='VIERNES ../.../….'
+  c0.P0: 'VIERNES ../.../….' runs=["{sz=139700, bold=None, text='VIERNES ../.../….'}"]
+ cell[1] xml_text='\n'
+  c1.P0: '' runs=[]
+  c1.P1: '' runs=[]
+ cell[2] xml_text=''
+  c2.P0: '' runs=[]
+-- Row 6 --
+ cell[0] xml_text='SÁBADO ../.../….'
+  c0.P0: 'SÁBADO ../.../….' runs=["{sz=139700, bold=None, text='SÁBADO ../.../….'}"]
+ cell[1] xml_text='\n'
+  c1.P0: '' runs=[]
+  c1.P1: '' runs=[]
+ cell[2] xml_text=''
+  c2.P0: '' runs=[]
+-- Row 7 --
+ cell[0] xml_text='\n'
+  c0.P0: '' runs=[]
+  c0.P1: '' runs=[]
+ cell[1] xml_text='TOTAL'
+  c1.P0: 'TOTAL' runs=["{sz=139700, bold=None, text='TOTAL'}"]
+ cell[2] xml_text=''
+  c2.P0: '' runs=[]
+
+===== PARAS 118+ =====
+P118: text=''
+     runs=[]
+P119: text=''
+     runs=[]
+P120: text=''
+     runs=[]
+P121: text=''
+     runs=[]
+P122: text='INFORME DE FORMACIÓN PRÁCTICA EN EMPRESA'
+     runs=['[INFORME DE FORMACIÓN PRÁCTICA EN EMPRESA]']
+P123: text=''
+     runs=[]
+P124: text='Tarea más significativa durante las dos semanas: ¿Por qué eligió esta tarea y qué operaciones del PEA cumplió con su ejecución?\t\t\t'
+     runs=['[Tarea más significativa durante las dos semanas: ¿Por qué eligió esta tarea y qué operaciones del PEA cumplió con su ejecución?]', '[\t]', '[\t]', '[\t]']
+P125: text='Revisión y corrección del script de arranque (launch.bat) y su integración con Electron, por su impacto en la puesta en marcha del entorno de desarrollo (backend Laravel + frontend React). '
+     runs=['[Revisión y corrección del script de arranque (launch.bat) y su integración con Electron, por su impacto en la puesta en marcha del entorno de desarrollo (backend Laravel + frontend React). ]']
+P126: text='Descripción del proceso:(Secuencia lógica de la ejecución de la tarea: operaciones, pasos, sub pasos)\t'
+     runs=['[Descripción del proceso:(Secuencia lógica de la ejecución de la tarea: operaciones, pasos, sub pasos)]', '[\t]']
+P127: text='1. Se identificaron los componentes que debe levantar el script: XAMPP (PHP), servidor Vite y proceso Electron. \t'
+     runs=['[1. Se identificaron los componentes que debe levantar el script: XAMPP (PHP), servidor Vite y proceso Electron. ]', '[\t]']
+P128: text='2. Se revisó scripts/launch.bat para verificar las rutas configuradas del intérprete PHP. \t'
+     runs=['[2. Se revisó scripts/launch.bat para verificar las rutas configuradas del intérprete PHP. ]', '[\t]']
+P129: text='3. Se ejecutó el script en un entorno limpio para reproducir el problema reportado. \t'
+     runs=['[3. Se ejecutó el script en un entorno limpio para reproducir el problema reportado. ]', '[\t]']
+P130: text='4. Se identificó el punto donde el proceso no iniciaba correctamente el servidor Laravel. \t'
+     runs=['[4. Se identificó el punto donde el proceso no iniciaba correctamente el servidor Laravel. ]', '[\t]']
+P131: text='5. Se ajustaron las variables de entorno y rutas del ejecutable PHP en el script. \t'
+     runs=['[5. Se ajustaron las variables de entorno y rutas del ejecutable PHP en el script. ]', '[\t]']
+P132: text='6. Se verificó el arranque del frontend con Vite en modo desarrollo (localhost:5173). \t'
+     runs=['[6. Se verificó el arranque del frontend con Vite en modo desarrollo (localhost:5173). ]', '[\t]']
+P133: text='7. Se comprobó la comunicación entre el frontend y la API (localhost:8000/api). \t'
+     runs=['[7. Se comprobó la comunicación entre el frontend y la API (localhost:8000/api). ]', '[\t]']
+P134: text='8. Se probó el empaquetado con electron-builder en modo escritorio (Windows). \t'
+     runs=['[8. Se probó el empaquetado con electron-builder en modo escritorio (Windows). ]', '[\t]']
+P135: text='9. Se documentó el cambio realizado en el script para referencia futura. \t'
+     runs=['[9. Se documentó el cambio realizado en el script para referencia futura. ]', '[\t]']
+P136: text='10. Se repitieron las pruebas de arranque para confirmar la estabilidad del proceso. \t'
+     runs=['[10. Se repitieron las pruebas de arranque para confirmar la estabilidad del proceso. ]', '[\t]']
+P137: text='\t'
+     runs=['[\t]']
+P138: text='Máquinas, equipos, herramientas y materiales (Listar lo utilizado especificando características, medidas, etc)\t'
+     runs=['[Máquinas, equipos, herramientas y materiales (Listar lo utilizado especificando características, medidas, etc)]', '[\t]']
+P139: text='Laptop personal (Windows), XAMPP (Apache/MySQL/PHP 8.2), Node.js y npm. \t'
+     runs=['[Laptop personal (Windows), XAMPP (Apache/MySQL/PHP 8.2), Node.js y npm. ]', '[\t]']
+P140: text='Editor de código Visual Studio Code, Git/GitHub para control de versiones. \t\t\t\t'
+     runs=['[Editor de código Visual Studio Code, Git/GitHub para control de versiones. ]', '[\t]', '[\t]', '[\t]', '[\t]']
+P141: text='Laravel 12, React 19 + Vite, Electron 28 (electron-builder). Seguridad e higiene industrial/ambiental (ATS, Charla de cinco minutos: SST/SGA)\t\t\t\t'
+     runs=['[Laravel 12, React 19 + Vite, Electron 28 (electron-builder). ]', '[Seguridad e higiene industrial/ambiental (ATS, Charla de cinco minutos: SST/SGA)]', '[\t]', '[\t]', '[\t]', '[\t]']
+P142: text='Ergonomía del puesto de trabajo (pausas visuales/posturales) y respaldo del código antes de modificar el script. Resultados de la ejecución de la tarea/Recomendaciones (¿Se logró el objetivo que motivó la ejecución de la tarea? Qué recomendaciones sugiere para garantizar la operatividad del bien o servicio realizado\t\t'
+     runs=['[Ergonomía del puesto de trabajo (pausas visuales/posturales) y respaldo del código antes de modificar el script. ]', '[Resultados de la ejecución de la tarea/Recomendaciones (¿Se logró el objetivo que motivó la ejecución de la tarea? Qué recomendaciones sugiere para garantizar la operatividad del bien o servicio realizado]', '[\t]', '[\t]']
+P143: text='El script de arranque quedó operativo, iniciando XAMPP, el backend Laravel y el frontend en Electron. \t'
+     runs=['[El script de arranque quedó operativo, iniciando XAMPP, el backend Laravel y el frontend en Electron. ]', '[\t]']
+P144: text='Se cumplió el objetivo de reducir el tiempo de puesta en marcha del entorno de desarrollo local. \t'
+     runs=['[Se cumplió el objetivo de reducir el tiempo de puesta en marcha del entorno de desarrollo local. ]', '[\t]']
+P145: text='Recomendación: documentar en el README los requisitos previos (versión de PHP y Node). '
+     runs=['[Recomendación: documentar en el README los requisitos previos (versión de PHP y Node). ]']
+P146: text='Recomendación: automatizar la verificación de dependencias antes de ejecutar el script. '
+     runs=['[Recomendación: automatizar la verificación de dependencias antes de ejecutar el script. ]']
+P147: text=''
+     runs=[]
+P148: text=''
+     runs=[]
+P149: text=''
+     runs=[]
+P150: text=''
+     runs=[]
+P151: text=''
+     runs=[]
+P152: text=''
+     runs=[]
+P153: text=''
+     runs=[]
+P154: text=''
+     runs=[]
+P155: text=''
+     runs=[]
+P156: text=''
+     runs=[]
+P157: text=''
+     runs=[]
+P158: text=''
+     runs=[]
+P159: text=''
+     runs=[]
+P160: text=''
+     runs=[]
+P161: text=''
+     runs=[]
+P162: text=''
+     runs=[]
+P163: text=''
+     runs=[]
+P164: text=''
+     runs=[]
+P165: text=''
+     runs=[]
+P166: text=''
+     runs=[]
+P167: text=''
+     runs=[]
+P168: text=''
+     runs=[]
+P169: text=''
+     runs=[]
+P170: text=''
+     runs=[]
+P171: text=''
+     runs=[]
+P172: text=''
+     runs=[]
+P173: text=''
+     runs=[]
+P174: text=''
+     runs=[]
+P175: text=''
+     runs=[]
+P176: text=''
+     runs=[]
+P177: text=''
+     runs=[]
+P178: text=''
+     runs=[]
+P179: text=''
+     runs=[]
+P180: text=''
+     runs=['[]']
+P181: text=''
+     runs=[]
+P182: text='PROPIEDAD INTELECTUAL DE SENATI. PROHIBIDA SU '
+     runs=['[PROPIEDAD INTELECTUAL DE SENATI. PROHIBIDA SU ]']
+P183: text='REPRODUCCIÓN Y VENTA SIN LA AUTORIZACIÓN '
+     runs=['[REPRODUCCIÓN Y VENTA SIN LA AUTORIZACIÓN ]']
+P184: text='CORRESPONDIENTE'
+     runs=['[CORRESPONDIENTE]']
+P185: text=''
+     runs=[]
+P186: text=''
+     runs=[]
+P187: text=''
+     runs=[]
+P188: text=''
+     runs=[]
+P189: text=''
+     runs=[]
+P190: text=''
+     runs=[]
+P191: text=''
+     runs=[]
+P192: text=''
+     runs=[]
+P193: text=''
+     runs=[]
+P194: text=''
+     runs=[]
+IMG 01_Registro_Semanal_Floro.png size=77085
+IMG 02_Diagrama_Arranque_SistemaEscolar.png size=76717

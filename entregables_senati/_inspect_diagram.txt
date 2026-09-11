@@ -1,0 +1,10 @@
+table4 rows=2
+R0C0 text='HACER ESQUEMA, DIBUJO O DIAGRAMA\n' paras=2
+  P0 text='HACER ESQUEMA, DIBUJO O DIAGRAMA' drawings=0
+  P1 text='' drawings=1
+R1C0 text='' paras=1
+  P0 text='' drawings=0
+media: word/media/hdphoto1.wdp 5634
+media: word/media/image2.png 1702
+media: word/media/image1.png 2463
+media: word/media/image3.png 76717
