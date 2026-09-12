@@ -33,6 +33,24 @@ Route::get('ping', fn () => response()->json([
     'version' => '1.0.0',
 ]));
 
+Route::get('db-check', function () {
+    try {
+        \Illuminate\Support\Facades\DB::connection()->getPdo();
+        $tables = \Illuminate\Support\Facades\DB::select("SELECT table_name FROM information_schema.tables WHERE table_schema='public'");
+        return response()->json([
+            'status' => 'connected',
+            'tables' => count($tables),
+            'database' => \Illuminate\Support\Facades\DB::connection()->getDatabaseName()
+        ]);
+    } catch (\Throwable $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => $e->getMessage(),
+            'trace' => $e->getFile() . ':' . $e->getLine()
+        ], 500);
+    }
+});
+
 Route::prefix('auth')->group(function () {
     Route::post('login',                    [AutenticacionControlador::class, 'login']);
     Route::post('password/enviar-enlace',   [PasswordControlador::class, 'enviarEnlace']);
