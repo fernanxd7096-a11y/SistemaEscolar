@@ -23,7 +23,10 @@
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png",
@@ -49,6 +52,13 @@
           "cameraPermission": "Se usa para tomarte una foto de perfil con la cámara."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "157f115a-8880-4894-be8e-c83514f88c89"
+      }
+    },
+    "owner": "ferxxoo2000"
   }
 }
