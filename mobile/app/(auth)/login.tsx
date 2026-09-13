@@ -20,6 +20,7 @@ export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [mostrandoAvisoNube, setMostrandoAvisoNube] = useState(false);
 
   const manejarLogin = async () => {
     setError(null);
@@ -27,6 +28,12 @@ export default function LoginScreen() {
       setError('Ingresa tu correo y contraseña.');
       return;
     }
+
+    setMostrandoAvisoNube(false);
+    const temporizadorNube = setTimeout(() => {
+      setMostrandoAvisoNube(true);
+    }, 4000);
+
     try {
       await login(email.trim(), password);
     } catch (err: any) {
@@ -35,6 +42,9 @@ export default function LoginScreen() {
         err?.response?.data?.message ??
         'No se pudo iniciar sesión. Verifica tus credenciales.';
       setError(mensaje);
+    } finally {
+      clearTimeout(temporizadorNube);
+      setMostrandoAvisoNube(false);
     }
   };
 
@@ -92,6 +102,14 @@ export default function LoginScreen() {
                 <Text style={estilos.botonTexto}>Ingresar</Text>
               )}
             </Pressable>
+
+            {cargando && mostrandoAvisoNube && (
+              <View style={estilos.avisoNube}>
+                <Text style={estilos.avisoNubeTexto}>
+                  Conectando con el servidor en la nube, un momento por favor...
+                </Text>
+              </View>
+            )}
           </View>
         </View>
       </KeyboardAvoidingView>
@@ -143,4 +161,20 @@ const estilos = StyleSheet.create({
   },
   botonPresionado: { backgroundColor: colores.primarioOscuro },
   botonTexto: { color: '#fff', fontSize: 15, fontWeight: '700' },
+  avisoNube: {
+    marginTop: 14,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    backgroundColor: '#eff6ff',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#bfdbfe',
+    alignItems: 'center',
+  },
+  avisoNubeTexto: {
+    color: '#1d4ed8',
+    fontSize: 13,
+    textAlign: 'center',
+    fontWeight: '500',
+  },
 });
