@@ -1,6 +1,6 @@
 @echo off
 chcp 65001 >nul
-set "PROJECT_DIR=%~dp0.."
+set "PROJECT_DIR=%~dp0..\.."
 set "PATH=C:\xampp\php;C:\Program Files\nodejs;%PATH%"
 
 :: Matar procesos previos en puertos 8000 y 5173
