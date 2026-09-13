@@ -14,7 +14,8 @@ import { notificarSesionExpirada, tokenActual } from './sesion';
 //   `notificarSesionExpirada()`, que termina llamando a `cerrarSesionLocal()` del
 //   store para limpiar el estado y SecureStore; la navegación a /login la hace el
 //   layout raíz al detectar `estaAutenticado === false`.
-const baseURL = process.env.EXPO_PUBLIC_API_URL;
+const baseURL =
+  process.env.EXPO_PUBLIC_API_URL || 'https://sistema-escolar-sjt.onrender.com/api';
 
 const cliente = axios.create({
   baseURL,
