@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Plus, Search, Pencil, Trash2, X } from 'lucide-react';
+import { Plus, Search, Pencil, Trash2, X, FileText, Loader2 } from 'lucide-react';
+import { toast } from 'react-toastify';
 import {
   actualizarAlumno,
   crearAlumno,
@@ -7,6 +8,7 @@ import {
   listarAlumnos,
 } from '../../api/alumnos';
 import { listarSecciones } from '../../api/grados';
+import { descargarBoletaPdf } from '../../api/reportes';
 import type { Alumno, Seccion } from '../../tipos';
 import { usePermiso } from '../../hooks/usePermiso';
 
@@ -37,6 +39,20 @@ export const ListaAlumnos = () => {
   const [editando, setEditando] = useState<Alumno | null>(null);
   const [form, setForm] = useState(vacio);
   const [guardando, setGuardando] = useState(false);
+  const [descargandoId, setDescargandoId] = useState<number | null>(null);
+
+  const handleDescargarBoleta = async (alumno: Alumno) => {
+    setDescargandoId(alumno.id);
+    try {
+      const seccionId = alumno.secciones?.[0]?.id;
+      await descargarBoletaPdf(alumno.id, seccionId);
+      toast.success(`Boleta de ${alumno.apellidos} descargada correctamente.`);
+    } catch {
+      toast.error('Error al descargar la boleta del alumno.');
+    } finally {
+      setDescargandoId(null);
+    }
+  };
 
   const cargar = async (termino = buscar) => {
     setCargando(true);
@@ -187,11 +203,23 @@ export const ListaAlumnos = () => {
                     </span>
                   </td>
                   <td className="px-4 py-3 text-right space-x-1">
+                    <button
+                      onClick={() => handleDescargarBoleta(a)}
+                      disabled={descargandoId === a.id}
+                      className="btn-icono text-blue-600 hover:text-blue-800 disabled:opacity-50"
+                      title="Descargar boleta PDF"
+                    >
+                      {descargandoId === a.id ? (
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                      ) : (
+                        <FileText className="w-4 h-4" />
+                      )}
+                    </button>
                     {puedeEditar && (
-                      <button onClick={() => abrirEditar(a)} className="btn-icono text-primario-600"><Pencil className="w-4 h-4" /></button>
+                      <button onClick={() => abrirEditar(a)} className="btn-icono text-primario-600" title="Editar"><Pencil className="w-4 h-4" /></button>
                     )}
                     {puedeEliminar && (
-                      <button onClick={() => borrar(a)} className="btn-icono text-red-500"><Trash2 className="w-4 h-4" /></button>
+                      <button onClick={() => borrar(a)} className="btn-icono text-red-500" title="Eliminar"><Trash2 className="w-4 h-4" /></button>
                     )}
                   </td>
                 </tr>

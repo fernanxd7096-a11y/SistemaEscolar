@@ -54,11 +54,13 @@
         }
         .recom-body { padding: 6px 10px; font-size: 8px; text-align: center; min-height: 25px; color: #333; }
 
-        .firmas-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        .firmas-table td { border: none; width: 50%; text-align: center; }
+        .firmas-table { width: 100%; border-collapse: collapse; margin-top: 25px; }
+        .firmas-table td { border: none; width: 50%; text-align: center; vertical-align: bottom; }
+        .linea-firma { width: 170px; margin: 0 auto 4px auto; border-bottom: 1px dotted #8B1A2B; height: 35px; }
+        .firma-nombre { font-size: 8px; font-weight: bold; color: #333; text-transform: uppercase; margin-top: 2px; }
         .firma-btn {
-            background-color: #8B1A2B; color: #FFF; font-size: 9px;
-            font-weight: bold; padding: 3px 20px; letter-spacing: 1px;
+            background-color: #8B1A2B; color: #FFF; font-size: 8px;
+            font-weight: bold; padding: 2px 14px; letter-spacing: 1px; display: inline-block;
         }
     </style>
 </head>
@@ -69,14 +71,14 @@
         <tr>
             <td style="width: 65px; text-align: center;">
                 @if($logoBase64)
-                <img src="{{ $logoBase64 }}">
+                <img src="{{ $logoBase64 }}" style="width: 55px; height: 55px; object-fit: contain;">
                 @endif
             </td>
             <td>
-                <div class="inst-label">INSTITUCION EDUCATIVA PRIVADA</div>
-                <div class="inst-name">MILAGROSO SAN JUDAS TADEO</div>
-                <div class="inst-sub">UGEL 05 S.J.L. - R.D. 05069 - R.D. 003839</div>
-                <div class="inst-sub">Coop. Sagrada Familia Mz. K lote 11 - S.J.L. - Telf.: 962359860</div>
+                <div class="inst-label">INSTITUCIÓN EDUCATIVA PRIVADA</div>
+                <div class="inst-name">{{ mb_strtoupper($nombreColegio ?? 'MILAGROSO SAN JUDAS TADEO') }}</div>
+                <div class="inst-sub">{{ $resolucionDirectoral ?? 'UGEL 05 S.J.L. - R.D. 05069 - R.D. 003839' }}</div>
+                <div class="inst-sub">{{ $direccionColegio ?? 'Coop. Sagrada Familia Mz. K lote 11 - S.J.L.' }} - Telf.: {{ $telefonoColegio ?? '962359860' }}</div>
             </td>
             <td style="width: 65px;"></td>
         </tr>
@@ -161,8 +163,16 @@
     <!-- FIRMAS -->
     <table class="firmas-table">
         <tr>
-            <td><span class="firma-btn">TUTOR</span></td>
-            <td><span class="firma-btn">DIRECCION</span></td>
+            <td>
+                <div class="linea-firma"></div>
+                <span class="firma-btn">TUTOR</span>
+                <div class="firma-nombre">{{ $tutor !== '-' ? $tutor : 'Docente Tutor' }}</div>
+            </td>
+            <td>
+                <div class="linea-firma"></div>
+                <span class="firma-btn">DIRECCIÓN GENERAL</span>
+                <div class="firma-nombre">{{ $directorNombre ?? 'Dirección' }}</div>
+            </td>
         </tr>
     </table>
 

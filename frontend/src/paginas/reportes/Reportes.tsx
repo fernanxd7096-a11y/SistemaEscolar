@@ -47,7 +47,15 @@ export const Reportes = () => {
   // Boleta
   const [alumnos, setAlumnos] = useState<Alumno[]>([]);
   const [alumnoId, setAlumnoId] = useState('');
+  const [filtroBoletaGrado, setFiltroBoletaGrado] = useState('');
+  const [filtroBoletaSeccion, setFiltroBoletaSeccion] = useState('');
+  const [buscarBoleta, setBuscarBoleta] = useState('');
   const [boleta, setBoleta] = useState<Awaited<ReturnType<typeof obtenerBoleta>> | null>(null);
+
+  const seccionesBoleta = useMemo(
+    () => (filtroBoletaGrado ? secciones.filter((s) => s.grado_id === Number(filtroBoletaGrado)) : secciones),
+    [secciones, filtroBoletaGrado]
+  );
 
   // Asistencia
   const [fechaDesde, setFechaDesde] = useState(new Date(Date.now() - 30 * 86400000).toISOString().slice(0, 10));
@@ -85,12 +93,26 @@ export const Reportes = () => {
     }
   }, [tab]);
 
-  // Cargar alumnos para boleta
+  // Cargar alumnos para boleta con filtros y sin límite restrictivo
   useEffect(() => {
     if (tab === 'boleta') {
-      listarAlumnos({ page: 1 }).then((r) => setAlumnos(r.data)).catch(() => {});
+      const params: any = { all: true, estado: true };
+      if (filtroBoletaSeccion) params.seccion_id = Number(filtroBoletaSeccion);
+      if (buscarBoleta) params.buscar = buscarBoleta;
+
+      listarAlumnos(params)
+        .then((r) => {
+          const list = Array.isArray(r) ? r : (r?.data || []);
+          setAlumnos(list);
+          if (list.length > 0 && !list.some((a: Alumno) => String(a.id) === alumnoId)) {
+            setAlumnoId(String(list[0].id));
+          } else if (list.length === 0) {
+            setAlumnoId('');
+          }
+        })
+        .catch(() => setAlumnos([]));
     }
-  }, [tab]);
+  }, [tab, filtroBoletaSeccion, buscarBoleta]);
 
   const cargarBoleta = async () => {
     if (!alumnoId) return;
@@ -179,17 +201,80 @@ export const Reportes = () => {
       {tab === 'boleta' && (
         <div className="space-y-4">
           <div className="tarjeta p-4 dark:bg-gray-800 dark:border-gray-700">
-            <div className="flex flex-col sm:flex-row gap-3 items-end">
-              <div className="flex-1">
-                <label className="etiqueta dark:text-gray-300">Alumno</label>
-                <select className="campo dark:bg-gray-900 dark:border-gray-600 dark:text-white" value={alumnoId} onChange={(e) => setAlumnoId(e.target.value)}>
-                  <option value="">Seleccionar alumno...</option>
-                  {alumnos.map((a) => <option key={a.id} value={a.id}>{a.apellidos}, {a.nombres} — {a.dni}</option>)}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 items-end">
+              <div>
+                <label className="etiqueta dark:text-gray-300">Grado</label>
+                <select
+                  className="campo dark:bg-gray-900 dark:border-gray-600 dark:text-white text-sm"
+                  value={filtroBoletaGrado}
+                  onChange={(e) => {
+                    setFiltroBoletaGrado(e.target.value);
+                    setFiltroBoletaSeccion('');
+                  }}
+                >
+                  <option value="">Todos los grados</option>
+                  {grados.map((g) => (
+                    <option key={g.id} value={g.id}>
+                      {g.nombre} ({g.nivel})
+                    </option>
+                  ))}
                 </select>
               </div>
-              <button onClick={cargarBoleta} disabled={!alumnoId || cargando} className="btn-primario">
-                <Search className="w-4 h-4" /> {cargando ? 'Cargando...' : 'Generar boleta'}
-              </button>
+
+              <div>
+                <label className="etiqueta dark:text-gray-300">Sección</label>
+                <select
+                  className="campo dark:bg-gray-900 dark:border-gray-600 dark:text-white text-sm"
+                  value={filtroBoletaSeccion}
+                  onChange={(e) => setFiltroBoletaSeccion(e.target.value)}
+                >
+                  <option value="">Todas las secciones</option>
+                  {seccionesBoleta.map((s) => (
+                    <option key={s.id} value={s.id}>
+                      {s.grado ? `${s.grado.nombre} "${s.nombre}"` : s.nombre}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="etiqueta dark:text-gray-300">Buscar por nombre o DNI</label>
+                <input
+                  type="text"
+                  className="campo dark:bg-gray-900 dark:border-gray-600 dark:text-white text-sm"
+                  placeholder="DNI, apellidos o nombres..."
+                  value={buscarBoleta}
+                  onChange={(e) => setBuscarBoleta(e.target.value)}
+                />
+              </div>
+
+              <div className="flex gap-2">
+                <div className="flex-1">
+                  <label className="etiqueta dark:text-gray-300">
+                    Alumno ({alumnos.length})
+                  </label>
+                  <select
+                    className="campo dark:bg-gray-900 dark:border-gray-600 dark:text-white text-sm"
+                    value={alumnoId}
+                    onChange={(e) => setAlumnoId(e.target.value)}
+                  >
+                    <option value="">Seleccionar alumno...</option>
+                    {alumnos.map((a) => (
+                      <option key={a.id} value={a.id}>
+                        {a.apellidos}, {a.nombres} — {a.dni}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <button
+                  onClick={cargarBoleta}
+                  disabled={!alumnoId || cargando}
+                  className="btn-primario shrink-0"
+                  title="Generar boleta"
+                >
+                  <Search className="w-4 h-4" />
+                </button>
+              </div>
             </div>
           </div>
           {boleta && (
@@ -205,10 +290,14 @@ export const Reportes = () => {
                     onClick={async () => {
                       setDescargando(true);
                       try {
-                        await descargarBoletaPdf(Number(alumnoId), filtroSeccion ? Number(filtroSeccion) : undefined);
+                        const seccionIdParam = filtroBoletaSeccion ? Number(filtroBoletaSeccion) : undefined;
+                        await descargarBoletaPdf(Number(alumnoId), seccionIdParam);
                         toast.success('Boleta descargada correctamente.');
-                      } catch { toast.error('Error al descargar la boleta.'); }
-                      finally { setDescargando(false); }
+                      } catch {
+                        toast.error('Error al descargar la boleta.');
+                      } finally {
+                        setDescargando(false);
+                      }
                     }}
                     disabled={descargando}
                     className="btn-primario text-xs"

@@ -19,7 +19,8 @@ import { tokenActual } from './sesion';
  * JS, como pasaría con axios y `responseType: 'arraybuffer'`.
  */
 
-const BASE_URL = process.env.EXPO_PUBLIC_API_URL;
+const BASE_URL =
+  process.env.EXPO_PUBLIC_API_URL || 'https://sistema-escolar-sjt.onrender.com/api';
 
 /** Subcarpeta de caché para no mezclar las boletas con otros archivos temporales. */
 const CARPETA_BOLETAS = 'boletas';

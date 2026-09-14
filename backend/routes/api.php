@@ -171,16 +171,22 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('padres/{padre}/vincular', [PadreControlador::class, 'vincularAlumno'])->middleware('permission:editar-padres');
     Route::delete('padres/{padre}/desvincular/{alumno}', [PadreControlador::class, 'desvincularAlumno'])->middleware('permission:editar-padres');
 
-    // --- Fase 7: reportes ---
+    // --- Fase 7: reportes y boletas ---
     Route::get('reportes/resumen', [ReporteControlador::class, 'resumenGeneral'])->middleware('permission:ver-reportes');
-    Route::get('reportes/boleta/{alumno}', [ReporteControlador::class, 'boletaAlumno'])->middleware('permission:ver-reportes');
+    Route::get('reportes/boleta/{alumno}', [ReporteControlador::class, 'boletaAlumno']);
+    Route::get('reportes/boleta/{alumno}/observaciones', [ReporteControlador::class, 'obtenerObservacionesBoleta']);
+    Route::post('reportes/boleta/{alumno}/observaciones', [ReporteControlador::class, 'guardarObservacionesBoleta']);
     Route::get('reportes/consolidado-asistencia', [ReporteControlador::class, 'consolidadoAsistencia'])->middleware('permission:ver-reportes');
     Route::get('reportes/consolidado-notas', [ReporteControlador::class, 'consolidadoNotas'])->middleware('permission:ver-reportes');
 
     // --- PDF Exports ---
-    Route::get('reportes/boleta/{alumno}/pdf', [ReporteControlador::class, 'boletaPdf'])->middleware('permission:ver-reportes');
+    Route::get('reportes/boleta/{alumno}/pdf', [ReporteControlador::class, 'boletaPdf']);
     Route::get('reportes/consolidado-asistencia/pdf', [ReporteControlador::class, 'consolidadoAsistenciaPdf'])->middleware('permission:ver-reportes');
     Route::get('reportes/consolidado-notas/pdf', [ReporteControlador::class, 'consolidadoNotasPdf'])->middleware('permission:ver-reportes');
+
+    // --- Configuración institucional ---
+    Route::get('configuracion', [\App\Http\Controllers\ConfiguracionControlador::class, 'index']);
+    Route::put('configuracion', [\App\Http\Controllers\ConfiguracionControlador::class, 'update'])->middleware('permission:ver-configuracion');
 
     // --- Conceptos de pago ---
     Route::get('conceptos-pago', [PagoControlador::class, 'conceptos'])->middleware('permission:ver-pagos');

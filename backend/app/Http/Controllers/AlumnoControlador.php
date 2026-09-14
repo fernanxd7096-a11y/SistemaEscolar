@@ -25,7 +25,19 @@ class AlumnoControlador extends Controller
             $query->where('estado', $request->boolean('estado'));
         }
 
-        return response()->json($query->orderBy('apellidos')->orderBy('nombres')->paginate(15));
+        if ($request->filled('seccion_id')) {
+            $seccionId = $request->input('seccion_id');
+            $query->whereHas('secciones', function ($q) use ($seccionId) {
+                $q->where('secciones.id', $seccionId);
+            });
+        }
+
+        if ($request->boolean('all')) {
+            return response()->json($query->orderBy('apellidos')->orderBy('nombres')->get());
+        }
+
+        $perPage = (int) $request->input('per_page', 15);
+        return response()->json($query->orderBy('apellidos')->orderBy('nombres')->paginate($perPage));
     }
 
     public function store(Request $request)

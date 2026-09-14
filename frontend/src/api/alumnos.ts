@@ -1,11 +1,14 @@
 import cliente from './cliente';
-import type { Alumno, Paginacion } from '../tipos';
+import type { Alumno } from '../tipos';
 
 export const listarAlumnos = async (params?: {
   buscar?: string;
   estado?: boolean;
+  seccion_id?: number;
+  all?: boolean;
   page?: number;
-}): Promise<Paginacion<Alumno>> => {
+  per_page?: number;
+}): Promise<any> => {
   const { data } = await cliente.get('/alumnos', { params });
   return data;
 };
