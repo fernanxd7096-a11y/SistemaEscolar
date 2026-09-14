@@ -121,6 +121,12 @@ class PagoControlador extends Controller
         $datos['registrado_por'] = $request->user()->id;
         $datos['estado'] = $datos['estado'] ?? 'pagado';
 
+        // Compatibilidad con columnas existentes del esquema PostgreSQL
+        $conceptoModel = ConceptoPago::find($datos['concepto_pago_id']);
+        $datos['concepto'] = $conceptoModel?->nombre ?? 'Pensión Escolar';
+        $datos['fecha'] = $datos['fecha_pago'];
+        $datos['referencia'] = $datos['referencia_pago'] ?? $request->input('referencia') ?? null;
+
         $pago = Pago::create($datos);
 
         // Generar comprobante automáticamente

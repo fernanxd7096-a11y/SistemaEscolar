@@ -13,7 +13,8 @@ class Pago extends Model
     protected $fillable = [
         'alumno_id', 'concepto_pago_id', 'evento_id',
         'monto', 'fecha_pago', 'metodo_pago',
-        'referencia_pago', 'observacion', 'evidencia', 'registrado_por', 'estado',
+        'referencia_pago', 'referencia', 'concepto', 'fecha',
+        'observacion', 'evidencia', 'registrado_por', 'estado',
     ];
 
     protected $casts = [
