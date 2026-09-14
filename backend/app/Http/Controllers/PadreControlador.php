@@ -41,10 +41,11 @@ class PadreControlador extends Controller
             'relacion'  => 'required|in:padre,madre,tutor,apoderado',
             'telefono'  => 'nullable|string|max:20',
             'email'     => 'nullable|email|max:100',
+            'usuario_id'=> 'nullable|exists:usuarios,id',
         ]);
 
         $padre = Padre::create($request->only([
-            'dni', 'nombres', 'apellidos', 'relacion', 'telefono', 'email',
+            'dni', 'nombres', 'apellidos', 'relacion', 'telefono', 'email', 'usuario_id',
         ]));
 
         return response()->json($padre, 201);
