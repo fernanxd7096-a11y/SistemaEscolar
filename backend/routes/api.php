@@ -29,10 +29,12 @@ use App\Http\Controllers\Movil\MovilControlador;
 use App\Http\Controllers\ConfiguracionControlador;
 
 Route::get('ping', fn () => response()->json([
-    'estado'  => 'ok',
-    'sistema' => 'Milagroso San Judas Tadeo',
-    'version' => '2.0.0-fase2',
-]));
+    'estado'    => 'ok',
+    'sistema'   => 'Milagroso San Judas Tadeo',
+    'version'   => '2.0.0-produccion',
+    'entorno'   => config('app.env', 'production'),
+    'timestamp' => now()->toIso8601String(),
+])->header('Cache-Control', 'no-cache, no-store, must-revalidate'));
 
 Route::get('configuracion', [ConfiguracionControlador::class, 'index']);
 

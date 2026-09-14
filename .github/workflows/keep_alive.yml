@@ -1,0 +1,57 @@
+name: Keep-Alive Servidor Render (San Judas Tadeo)
+
+on:
+  schedule:
+    # Ejecutar cada 10 minutos para evitar que el contenedor gratuito de Render se duerma (límite: 15 min)
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+    inputs:
+      motivo:
+        description: 'Motivo del ping manual'
+        required: false
+        default: 'Verificación manual de disponibilidad'
+
+jobs:
+  keep-alive:
+    name: Ping Preventivo a Render
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Registrar hora de ejecución
+        id: time
+        run: |
+          echo "FECHA=$(date -u +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_OUTPUT
+
+      - name: Enviar Ping HTTP a /api/ping
+        run: |
+          URL="https://sistema-escolar-sjt.onrender.com/api/ping"
+          echo "======================================================="
+          echo "Enviando ping preventivo a: $URL"
+          echo "Hora: ${{ steps.time.outputs.FECHA }}"
+          echo "======================================================="
+
+          # Ejecutar curl capturando status HTTP, tiempo y body
+          RESPUESTA_RAW=$(curl -s -w "\nHTTP_STATUS:%{http_code}\nTIME_TOTAL:%{time_total}" -m 60 "$URL")
+
+          BODY=$(echo "$RESPUESTA_RAW" | sed -e '/HTTP_STATUS:/,$d')
+          HTTP_STATUS=$(echo "$RESPUESTA_RAW" | grep "HTTP_STATUS:" | cut -d':' -f2)
+          TIME_TOTAL=$(echo "$RESPUESTA_RAW" | grep "TIME_TOTAL:" | cut -d':' -f2)
+
+          echo "Código HTTP: $HTTP_STATUS"
+          echo "Tiempo de respuesta: ${TIME_TOTAL}s"
+          echo "Respuesta del servidor:"
+          echo "$BODY"
+
+          if [ "$HTTP_STATUS" -ne 200 ]; then
+            echo "::error::El servidor respondió con código HTTP $HTTP_STATUS (esperado: 200)."
+            exit 1
+          fi
+
+          # Evaluar si el servidor estaba en cold start (>15 segundos)
+          COLD_START=$(awk -v t="$TIME_TOTAL" 'BEGIN {print (t > 15) ? "1" : "0"}')
+          if [ "$COLD_START" -eq 1 ]; then
+            echo "::warning::El servidor tardó ${TIME_TOTAL}s en responder. Posible cold start recuperado con éxito."
+          else
+            echo "Servidor activo y caliente (latencia óptima: ${TIME_TOTAL}s)."
+          fi

@@ -2,14 +2,16 @@ const { app, BrowserWindow, Tray, Menu, Notification, ipcMain, shell, nativeImag
 const { spawn } = require('child_process')
 const path = require('path')
 const http = require('http')
+const https = require('https')
 const fs = require('fs')
 
 // ─── Variables globales ───────────────────────────────────────────────────────
-let ventanaPrincipal = null
-let ventanaSplash    = null
-let bandeja          = null
-let procesoPHP       = null
-const PUERTO_API     = 8000
+let ventanaPrincipal   = null
+let ventanaSplash      = null
+let bandeja            = null
+let procesoPHP         = null
+let intervaloKeepAlive = null
+const PUERTO_API       = 8000
 const URL_DEV        = 'http://localhost:5173'
 const esDev          = process.env.NODE_ENV === 'development'
 
@@ -38,10 +40,46 @@ const raizProyecto = esDev
 
 const phpExe = 'php'
 
+// ─── Utilidad Keep-Alive para servidores en la nube (Render) ──────────────────
+function pingServidorRemoto (urlBase) {
+  if (!urlBase) return
+  const pingUrl = urlBase.replace(/\/+$/, '') + '/ping'
+  const clienteHttp = pingUrl.startsWith('https://') ? https : http
+
+  try {
+    const peticion = clienteHttp.get(pingUrl, { timeout: 25000 }, (res) => {
+      console.log(`[Keep-Alive] Ping enviado a ${pingUrl} — HTTP ${res.statusCode}`)
+      res.resume() // Consumir cuerpo para liberar sockets de memoria
+    })
+
+    peticion.on('error', (err) => {
+      console.warn(`[Keep-Alive] Aviso al conectar con ${pingUrl}:`, err.message)
+    })
+
+    peticion.on('timeout', () => {
+      peticion.destroy()
+      console.warn(`[Keep-Alive] Tiempo de espera agotado al conectar con ${pingUrl} (despertando servidor)`)
+    })
+  } catch (err) {
+    console.warn('[Keep-Alive] Error en ejecución de ping:', err.message)
+  }
+}
+
 // ─── Iniciar servidor Laravel ─────────────────────────────────────────────────
 function iniciarBackend () {
   if (esRemoto) {
     console.log('[Backend] Modo REMOTO en la nube detectado. Conectando a:', apiUrl)
+
+    // Pre-calentamiento asíncrono preventivo al abrir la aplicación
+    pingServidorRemoto(apiUrl)
+
+    // Iniciar ciclo de keep-alive cada 10 minutos (600,000 ms) mientras la app esté abierta
+    if (!intervaloKeepAlive) {
+      intervaloKeepAlive = setInterval(() => {
+        pingServidorRemoto(apiUrl)
+      }, 10 * 60 * 1000)
+    }
+
     return Promise.resolve()
   }
 
@@ -91,6 +129,10 @@ function esperarServidor (url, intentosMax = 30) {
 
 // ─── Detener servidor Laravel ─────────────────────────────────────────────────
 function detenerBackend () {
+  if (intervaloKeepAlive) {
+    clearInterval(intervaloKeepAlive)
+    intervaloKeepAlive = null
+  }
   if (esRemoto) return
   if (procesoPHP) {
     console.log('[Backend] Deteniendo servidor...')
