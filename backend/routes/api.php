@@ -205,6 +205,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('pagos/{pago}', [PagoControlador::class, 'destroy'])->middleware('permission:eliminar-pagos');
     Route::post('pagos/{pago}/evidencia', [PagoControlador::class, 'subirEvidencia'])->middleware('permission:crear-pagos|editar-pagos');
     Route::delete('pagos/{pago}/evidencia', [PagoControlador::class, 'eliminarEvidencia'])->middleware('permission:crear-pagos|editar-pagos|eliminar-pagos');
+    Route::post('pagos/notificar-pendientes', [PagoControlador::class, 'notificarPendientes'])->middleware('permission:crear-pagos|editar-pagos');
+    Route::post('pagos/{pago}/notificar', [PagoControlador::class, 'notificarPadre'])->middleware('permission:crear-pagos|editar-pagos');
 
     // --- Pagos por evento ---
     Route::get('eventos/{evento}/pagos', [PagoControlador::class, 'pagosPorEvento'])->middleware('permission:ver-pagos');

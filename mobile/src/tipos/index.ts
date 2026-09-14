@@ -332,8 +332,68 @@ export interface AsistenciaDia {
   porcentaje: number;
 }
 
+export interface ClaseHoyDashboard {
+  curso: string;
+  docente: string | null;
+  hora_inicio: string;
+  hora_fin: string;
+  aula?: string | null;
+}
+
+export interface HijoDashboard {
+  id: number;
+  nombres: string;
+  apellidos: string;
+  dni: string;
+  foto?: string | null;
+  grado: string;
+  nivel: string;
+  seccion: string;
+  seccion_id?: number;
+  asistencia_hoy?: {
+    estado: 'presente' | 'tardanza' | 'falta' | 'justificado';
+    observacion?: string | null;
+  } | null;
+  asistencia_mes?: {
+    porcentaje: number;
+    presentes: number;
+    tardanzas: number;
+    faltas: number;
+    total: number;
+  };
+  promedio_general?: number | null;
+  clases_hoy?: ClaseHoyDashboard[];
+}
+
+export interface PagoPendienteDashboard {
+  id: number;
+  concepto: string;
+  alumno_id: number;
+  alumno_nombre: string;
+  monto: number;
+  fecha_pago: string;
+  metodo_pago?: string | null;
+}
+
+export interface ComunicadoRecienteDashboard {
+  id: number;
+  titulo: string;
+  contenido: string;
+  tipo: string;
+  fecha: string;
+}
+
+export interface PadreDashboard {
+  id: number;
+  nombre_completo: string;
+  hijos: HijoDashboard[];
+  pagos_pendientes: PagoPendienteDashboard[];
+  total_deuda: number;
+  comunicados_recientes: ComunicadoRecienteDashboard[];
+}
+
 export interface KpisDashboard {
-  rol_vista: 'global' | 'docente';
+  rol_vista: 'global' | 'docente' | 'padre';
   fecha_actual: string;
   'año_escolar_actual': string;
   totales?: {
@@ -369,6 +429,7 @@ export interface KpisDashboard {
     es_no_lectivo: boolean;
     bloques_hoy: AgendaBloque[];
   } | null;
+  padre?: PadreDashboard | null;
 }
 
 // --- Pagos -------------------------------------------------------------------

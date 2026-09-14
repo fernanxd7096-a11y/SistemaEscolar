@@ -54,3 +54,31 @@ export const eliminarFotoPerfil = async (): Promise<Usuario> => {
   const { data } = await cliente.delete('/perfil/foto');
   return data;
 };
+
+export interface PerfilPadreRespuesta {
+  padre: {
+    id: number;
+    nombres: string;
+    apellidos: string;
+    dni: string;
+    relacion: string;
+    telefono: string | null;
+    email: string | null;
+  };
+  hijos: Array<{
+    id: number;
+    nombres: string;
+    apellidos: string;
+    dni: string;
+    foto: string | null;
+    grado: string | null;
+    nivel: string | null;
+    seccion: string | null;
+    seccion_id: number | null;
+  }>;
+}
+
+export const obtenerPerfilPadre = async (): Promise<PerfilPadreRespuesta> => {
+  const { data } = await cliente.get('/movil/perfil');
+  return data;
+};

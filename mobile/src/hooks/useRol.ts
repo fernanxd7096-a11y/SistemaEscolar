@@ -20,5 +20,6 @@ export const useRol = () => {
     tieneRol,
     esAdministrativo: tieneRol('administrador', 'director'),
     esDocente: tieneRol('docente'),
+    esPadre: tieneRol('padre'),
   };
 };

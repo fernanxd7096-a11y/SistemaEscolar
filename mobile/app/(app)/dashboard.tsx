@@ -6,12 +6,15 @@ import {
   ScrollView,
   RefreshControl,
   Pressable,
+  ActivityIndicator,
+  Alert,
   type LayoutChangeEvent,
 } from 'react-native';
 import { router } from 'expo-router';
 import { useQuery } from '@tanstack/react-query';
 import { Ionicons } from '@expo/vector-icons';
 import { obtenerKpis } from '@/api/dashboard';
+import { compartirBoletaPdf } from '@/api/boletas';
 import { useAuthStore } from '@/tienda/auth';
 import { useRol } from '@/hooks/useRol';
 import { BannerEstado } from '@/componentes/BannerEstado';
@@ -25,14 +28,15 @@ import { colores } from '@/utils/colores';
  * Inicio: KPIs y gráficos según el rol.
  *
  * El backend (GET /dashboard/kpis) decide qué manda: administrador, director y
- * secretario reciben los totales del colegio; el docente recibe solo su carga y
- * sus clases de hoy. La pantalla se guía por `rol_vista` para no pintar tarjetas
- * vacías a quien no tiene esos datos.
+ * secretario reciben los totales del colegio; el docente recibe su carga y
+ * sus clases de hoy; el padre recibe las métricas de sus hijos, boleta y pagos.
  */
 export default function DashboardScreen() {
   const usuario = useAuthStore((state) => state.usuario);
-  const { esAdministrativo } = useRol();
+  const { esAdministrativo, esPadre } = useRol();
   const [anchoGrafico, setAnchoGrafico] = useState(0);
+  const [hijoSeleccionadoId, setHijoSeleccionadoId] = useState<number | null>(null);
+  const [descargandoBoletaId, setDescargandoBoletaId] = useState<number | null>(null);
 
   const { data, isLoading, refetch, isRefetching } = useQuery({
     queryKey: ['dashboard-kpis'],
@@ -45,7 +49,28 @@ export default function DashboardScreen() {
   const totales = data?.totales;
   const asistenciaHoy = data?.asistencia_hoy;
   const docente = data?.docente;
+  const padre = data?.padre;
   const vistaGlobal = data?.rol_vista === 'global';
+  const vistaPadre = data?.rol_vista === 'padre' || (!vistaGlobal && !docente && !!padre);
+
+  const hijos = padre?.hijos ?? [];
+  const hijoActivo = hijos.find((h) => h.id === hijoSeleccionadoId) ?? hijos[0];
+
+  const handleCompartirBoleta = async (alumnoId: number, nombreAlumno: string) => {
+    try {
+      setDescargandoBoletaId(alumnoId);
+      await compartirBoletaPdf(alumnoId, {
+        nombreArchivo: `boleta-${nombreAlumno.toLowerCase().replace(/\s+/g, '-')}.pdf`,
+      });
+    } catch (err: any) {
+      Alert.alert(
+        'No se pudo obtener la boleta',
+        err?.response?.data?.mensaje ?? 'Ocurrió un error al descargar la boleta oficial.'
+      );
+    } finally {
+      setDescargandoBoletaId(null);
+    }
+  };
 
   const clasesDeHoy = (docente?.bloques_hoy ?? []).filter((bloque) => !bloque.cancelado);
 
@@ -56,7 +81,7 @@ export default function DashboardScreen() {
         contentContainerStyle={estilos.scroll}
         refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} />}
       >
-        <Text style={estilos.saludo}>Hola, {usuario?.nombre ?? 'docente'} 👋</Text>
+        <Text style={estilos.saludo}>Hola, {usuario?.nombre ?? (esPadre ? 'padre' : 'docente')} 👋</Text>
         <Text style={estilos.fecha}>{data?.fecha_actual ?? '—'}</Text>
 
         {/* --- Vista global: administrador, director, secretario --- */}
@@ -210,6 +235,218 @@ export default function DashboardScreen() {
           </>
         )}
 
+        {/* --- Vista Padre de Familia --- */}
+        {vistaPadre && padre && (
+          <>
+            {hijos.length === 0 ? (
+              <View style={estilos.panel}>
+                <Ionicons name="information-circle-outline" size={32} color={colores.advertencia} />
+                <Text style={estilos.sinClases}>No tiene hijos vinculados en el sistema actualmente.</Text>
+              </View>
+            ) : (
+              <>
+                {/* Selector de hijos si hay más de 1 */}
+                {hijos.length > 1 && (
+                  <ScrollView
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={estilos.selectorHijos}
+                  >
+                    {hijos.map((hijo) => {
+                      const activo = hijo.id === hijoActivo?.id;
+                      return (
+                        <Pressable
+                          key={hijo.id}
+                          style={[estilos.tabHijo, activo && estilos.tabHijoActivo]}
+                          onPress={() => setHijoSeleccionadoId(hijo.id)}
+                        >
+                          <Ionicons
+                            name="person"
+                            size={14}
+                            color={activo ? '#fff' : colores.textoSecundario}
+                          />
+                          <Text style={[estilos.tabHijoTexto, activo && estilos.tabHijoTextoActivo]}>
+                            {hijo.nombres.split(' ')[0]}
+                          </Text>
+                        </Pressable>
+                      );
+                    })}
+                  </ScrollView>
+                )}
+
+                {/* Tarjeta del hijo seleccionado */}
+                {hijoActivo && (
+                  <>
+                    <View style={estilos.tarjetaAlumnoHeader}>
+                      <View style={estilos.avatarHijo}>
+                        <Ionicons name="school" size={20} color="#fff" />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={estilos.hijoNombre}>
+                          {hijoActivo.nombres} {hijoActivo.apellidos}
+                        </Text>
+                        <Text style={estilos.hijoDetalle}>
+                          {hijoActivo.grado} · Sección {hijoActivo.seccion} ({hijoActivo.nivel})
+                        </Text>
+                      </View>
+                    </View>
+
+                    {/* KPIs del hijo */}
+                    <View style={estilos.tarjetas}>
+                      <TarjetaKpi
+                        icono="checkmark-circle-outline"
+                        etiqueta="Asistencia hoy"
+                        valor={
+                          hijoActivo.asistencia_hoy?.estado
+                            ? hijoActivo.asistencia_hoy.estado.toUpperCase()
+                            : 'Sin registro'
+                        }
+                        color={
+                          hijoActivo.asistencia_hoy?.estado === 'presente'
+                            ? colores.exito
+                            : hijoActivo.asistencia_hoy?.estado === 'tardanza'
+                            ? colores.advertencia
+                            : hijoActivo.asistencia_hoy?.estado === 'falta'
+                            ? colores.peligro
+                            : colores.info
+                        }
+                      />
+                      <TarjetaKpi
+                        icono="calendar-outline"
+                        etiqueta="Asistencia mes"
+                        valor={`${hijoActivo.asistencia_mes?.porcentaje ?? 100}%`}
+                        color={colores.primario}
+                        detalle={
+                          hijoActivo.asistencia_mes
+                            ? `${hijoActivo.asistencia_mes.presentes}P / ${hijoActivo.asistencia_mes.tardanzas}T / ${hijoActivo.asistencia_mes.faltas}F`
+                            : undefined
+                        }
+                      />
+                      <TarjetaKpi
+                        icono="ribbon-outline"
+                        etiqueta="Promedio"
+                        valor={
+                          hijoActivo.promedio_general !== null && hijoActivo.promedio_general !== undefined
+                            ? Number(hijoActivo.promedio_general).toFixed(1)
+                            : '—'
+                        }
+                        color={
+                          (hijoActivo.promedio_general ?? 0) >= 14
+                            ? colores.exito
+                            : (hijoActivo.promedio_general ?? 0) >= 11
+                            ? colores.advertencia
+                            : colores.peligro
+                        }
+                        detalle="Calificación"
+                      />
+                    </View>
+
+                    {/* Botón Destacado Boleta de Notas */}
+                    <Pressable
+                      style={estilos.botonBoleta}
+                      onPress={() =>
+                        handleCompartirBoleta(
+                          hijoActivo.id,
+                          `${hijoActivo.nombres} ${hijoActivo.apellidos}`
+                        )
+                      }
+                      disabled={descargandoBoletaId === hijoActivo.id}
+                    >
+                      {descargandoBoletaId === hijoActivo.id ? (
+                        <ActivityIndicator color="#fff" size="small" />
+                      ) : (
+                        <Ionicons name="document-text-outline" size={20} color="#fff" />
+                      )}
+                      <Text style={estilos.botonBoletaTexto}>
+                        {descargandoBoletaId === hijoActivo.id
+                          ? 'Descargando boleta oficial...'
+                          : 'Ver / Compartir Boleta Oficial'}
+                      </Text>
+                      <Ionicons name="share-social-outline" size={18} color="rgba(255,255,255,0.8)" />
+                    </Pressable>
+
+                    {/* Horario de hoy del hijo */}
+                    <View style={estilos.panel}>
+                      <View style={estilos.panelCabecera}>
+                        <Text style={estilos.panelTitulo}>Horario de clases de hoy</Text>
+                      </View>
+                      {(hijoActivo.clases_hoy?.length ?? 0) === 0 ? (
+                        <Text style={estilos.sinClases}>No hay clases programadas para hoy.</Text>
+                      ) : (
+                        hijoActivo.clases_hoy?.map((clase, idx) => (
+                          <View key={idx} style={estilos.filaClase}>
+                            <View style={estilos.horaClaseBox}>
+                              <Text style={estilos.horaClase}>{clase.hora_inicio}</Text>
+                              <Text style={estilos.horaClaseFin}>{clase.hora_fin}</Text>
+                            </View>
+                            <View style={estilos.infoClase}>
+                              <Text style={estilos.cursoClase}>{clase.curso}</Text>
+                              <Text style={estilos.docenteClase}>
+                                {clase.docente ? `Prof. ${clase.docente}` : 'Docente por asignar'}
+                                {clase.aula ? ` · Aula ${clase.aula}` : ''}
+                              </Text>
+                            </View>
+                          </View>
+                        ))
+                      )}
+                    </View>
+                  </>
+                )}
+
+                {/* Pagos pendientes */}
+                {(padre.pagos_pendientes?.length ?? 0) > 0 && (
+                  <View style={[estilos.panel, { borderColor: colores.advertencia }]}>
+                    <View style={estilos.panelCabecera}>
+                      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                        <Ionicons name="alert-circle" size={18} color={colores.peligro} />
+                        <Text style={[estilos.panelTitulo, { marginBottom: 0, color: colores.peligro }]}>
+                          Pagos Pendientes
+                        </Text>
+                      </View>
+                      <Text style={estilos.totalDeudaTexto}>
+                        Total: S/ {Number(padre.total_deuda).toFixed(2)}
+                      </Text>
+                    </View>
+                    <View style={{ marginTop: 8 }}>
+                      {padre.pagos_pendientes.map((pago) => (
+                        <View key={pago.id} style={estilos.filaPago}>
+                          <View style={{ flex: 1 }}>
+                            <Text style={estilos.conceptoPago}>{pago.concepto}</Text>
+                            <Text style={estilos.alumnoPago}>{pago.alumno_nombre}</Text>
+                          </View>
+                          <View style={{ alignItems: 'flex-end' }}>
+                            <Text style={estilos.montoPago}>S/ {Number(pago.monto).toFixed(2)}</Text>
+                            <Text style={estilos.fechaPago}>{pago.fecha_pago}</Text>
+                          </View>
+                        </View>
+                      ))}
+                    </View>
+                  </View>
+                )}
+
+                {/* Comunicados recientes */}
+                {(padre.comunicados_recientes?.length ?? 0) > 0 && (
+                  <View style={estilos.panel}>
+                    <Text style={estilos.panelTitulo}>Avisos y Comunicados</Text>
+                    {padre.comunicados_recientes.map((c) => (
+                      <View key={c.id} style={estilos.comunicadoItem}>
+                        <Ionicons name="megaphone-outline" size={16} color={colores.primario} />
+                        <View style={{ flex: 1 }}>
+                          <Text style={estilos.comunicadoTitulo}>{c.titulo}</Text>
+                          <Text style={estilos.comunicadoFecha}>{c.fecha}</Text>
+                          <Text style={estilos.comunicadoContenido} numberOfLines={2}>
+                            {c.contenido}
+                          </Text>
+                        </View>
+                      </View>
+                    ))}
+                  </View>
+                )}
+              </>
+            )}
+          </>
+        )}
+
         {/* --- Carga del docente (también se muestra a un admin que sea docente) --- */}
         {docente && (
           <>
@@ -265,13 +502,8 @@ export default function DashboardScreen() {
           </>
         )}
 
-        {/*
-          Acceso al horario para quien no tiene tarjeta de docente (esa ya trae su
-          propio enlace "Ver semana"). El destino depende del rol: el personal
-          administrativo va al calendario de gestión, y el resto a "Mi horario",
-          que además vive fuera de la barra de pestañas y no tendría otra entrada.
-        */}
-        {!docente && (
+        {/* Acceso al horario solo si no es docente ni padre (docente tiene su panel y padre ve el de su hijo) */}
+        {!docente && !vistaPadre && (
           <Pressable
             style={estilos.accesoHorario}
             onPress={() =>
@@ -366,4 +598,179 @@ const estilos = StyleSheet.create({
   rolesTitulo: { fontSize: 13, fontWeight: '600', color: colores.textoSecundario },
   rolesTexto: { fontSize: 15, color: colores.texto, marginTop: 4, textTransform: 'capitalize' },
   anioEscolar: { fontSize: 12, color: colores.textoSecundario, marginTop: 8 },
+
+  /* --- Estilos para vista de Padre --- */
+  selectorHijos: {
+    flexDirection: 'row',
+    gap: 8,
+    marginBottom: 12,
+  },
+  tabHijo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingVertical: 7,
+    paddingHorizontal: 14,
+    borderRadius: 20,
+    backgroundColor: colores.tarjeta,
+    borderWidth: 1,
+    borderColor: colores.borde,
+  },
+  tabHijoActivo: {
+    backgroundColor: colores.primario,
+    borderColor: colores.primario,
+  },
+  tabHijoTexto: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: colores.textoSecundario,
+  },
+  tabHijoTextoActivo: {
+    color: '#fff',
+  },
+
+  tarjetaAlumnoHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    backgroundColor: colores.tarjeta,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: colores.borde,
+    padding: 14,
+    marginBottom: 10,
+  },
+  avatarHijo: {
+    width: 42,
+    height: 42,
+    borderRadius: 21,
+    backgroundColor: colores.primario,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  hijoNombre: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: colores.texto,
+  },
+  hijoDetalle: {
+    fontSize: 12,
+    color: colores.textoSecundario,
+    marginTop: 2,
+  },
+
+  botonBoleta: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 10,
+    backgroundColor: colores.primario,
+    borderRadius: 12,
+    paddingVertical: 13,
+    paddingHorizontal: 16,
+    marginTop: 6,
+    marginBottom: 6,
+    shadowColor: colores.primario,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  botonBoletaTexto: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '700',
+  },
+
+  filaClase: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    paddingVertical: 9,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f3f8',
+  },
+  horaClaseBox: {
+    width: 52,
+    alignItems: 'center',
+  },
+  horaClase: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: colores.primario,
+  },
+  horaClaseFin: {
+    fontSize: 10,
+    color: colores.textoSecundario,
+  },
+  infoClase: {
+    flex: 1,
+  },
+  cursoClase: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: colores.texto,
+  },
+  docenteClase: {
+    fontSize: 11,
+    color: colores.textoSecundario,
+    marginTop: 2,
+  },
+
+  totalDeudaTexto: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: colores.peligro,
+  },
+  filaPago: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f9f0f0',
+  },
+  conceptoPago: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: colores.texto,
+  },
+  alumnoPago: {
+    fontSize: 11,
+    color: colores.textoSecundario,
+    marginTop: 2,
+  },
+  montoPago: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: colores.peligro,
+  },
+  fechaPago: {
+    fontSize: 10,
+    color: colores.textoSecundario,
+    marginTop: 2,
+  },
+
+  comunicadoItem: {
+    flexDirection: 'row',
+    gap: 10,
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f3f8',
+  },
+  comunicadoTitulo: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: colores.texto,
+  },
+  comunicadoFecha: {
+    fontSize: 10,
+    color: colores.textoSecundario,
+    marginTop: 1,
+  },
+  comunicadoContenido: {
+    fontSize: 12,
+    color: colores.textoSecundario,
+    marginTop: 3,
+  },
 });

@@ -8,6 +8,11 @@ use App\Models\Docente;
 use App\Models\Seccion;
 use App\Models\Curso;
 use App\Models\Comunicado;
+use App\Models\Padre;
+use App\Models\Pago;
+use App\Models\Asistencia;
+use App\Models\Nota;
+use App\Models\Horario;
 use App\Services\AgendaHorarioServicio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -192,11 +197,21 @@ class DashboardControlador extends Controller
     {
         $usuario = $request->user();
         $esGlobal = $usuario->hasAnyRole(['administrador', 'director', 'secretario']);
+        $padre = Padre::where('usuario_id', $usuario->id)->first();
+        $esPadre = $usuario->hasRole('padre') || ($padre !== null && !$esGlobal && !$usuario->hasRole('docente'));
 
         $hoy = CarbonImmutable::today();
 
+        if ($esGlobal) {
+            $rolVista = 'global';
+        } elseif ($esPadre) {
+            $rolVista = 'padre';
+        } else {
+            $rolVista = 'docente';
+        }
+
         $respuesta = [
-            'rol_vista'          => $esGlobal ? 'global' : 'docente',
+            'rol_vista'          => $rolVista,
             'fecha_actual'       => Carbon::now()->locale('es')->isoFormat('dddd, D [de] MMMM [de] YYYY'),
             'año_escolar_actual' => $this->anioEscolar(),
         ];
@@ -213,9 +228,157 @@ class DashboardControlador extends Controller
             ];
         }
 
-        $respuesta['docente'] = $this->cargaDelDocente($usuario, $hoy);
+        if ($esPadre && $padre) {
+            $respuesta['padre'] = $this->datosPadre($padre, $hoy);
+        }
+
+        if (!$esPadre || $usuario->hasRole('docente')) {
+            $respuesta['docente'] = $this->cargaDelDocente($usuario, $hoy);
+        }
 
         return response()->json($respuesta);
+    }
+
+    /**
+     * Datos contextuales y métricas de los hijos para la vista de padre de familia.
+     * @return array<string, mixed>
+     */
+    private function datosPadre(Padre $padre, CarbonImmutable $hoy): array
+    {
+        $padre->load(['alumnos' => function ($q) {
+            $q->where('estado', true)
+              ->with(['secciones' => function ($sq) {
+                  $sq->with('grado')->latest('alumno_seccion.created_at');
+              }]);
+        }]);
+
+        $inicioMes = Carbon::now()->startOfMonth();
+        $diaHoy = Carbon::now()->locale('es')->dayName;
+        $diasMap = [
+            'lunes' => 'lunes', 'martes' => 'martes', 'miércoles' => 'miercoles',
+            'jueves' => 'jueves', 'viernes' => 'viernes',
+        ];
+        $diaSemana = $diasMap[$diaHoy] ?? null;
+
+        $hijos = $padre->alumnos->map(function ($alumno) use ($inicioMes, $hoy, $diaSemana) {
+            $seccionActual = $alumno->secciones->first();
+
+            // 1. Asistencia de hoy
+            $asistenciaHoy = Asistencia::where('alumno_id', $alumno->id)
+                ->whereDate('fecha', $hoy->toDateString())
+                ->first();
+
+            // 2. Asistencia del mes
+            $asistenciaMes = Asistencia::where('alumno_id', $alumno->id)
+                ->whereDate('fecha', '>=', $inicioMes)
+                ->selectRaw("
+                    COUNT(*) as total,
+                    SUM(CASE WHEN estado = 'presente' THEN 1 ELSE 0 END) as presentes,
+                    SUM(CASE WHEN estado = 'tardanza' THEN 1 ELSE 0 END) as tardanzas,
+                    SUM(CASE WHEN estado = 'falta' THEN 1 ELSE 0 END) as faltas,
+                    SUM(CASE WHEN estado = 'justificado' THEN 1 ELSE 0 END) as justificados
+                ")
+                ->first();
+
+            $totalAsist = (int) ($asistenciaMes?->total ?? 0);
+            $presentes = (int) ($asistenciaMes?->presentes ?? 0);
+            $tardanzas = (int) ($asistenciaMes?->tardanzas ?? 0);
+            $faltas = (int) ($asistenciaMes?->faltas ?? 0);
+            $porcentajeAsist = $totalAsist > 0
+                ? round(($presentes + $tardanzas) / $totalAsist * 100, 1)
+                : 100;
+
+            // 3. Promedio general de notas
+            $promedio = Nota::where('alumno_id', $alumno->id)->avg('calificacion');
+
+            // 4. Clases de hoy
+            $horarioHoy = [];
+            if ($seccionActual && $diaSemana) {
+                $horarioHoy = Horario::where('seccion_id', $seccionActual->id)
+                    ->where('dia_semana', $diaSemana)
+                    ->where('estado', true)
+                    ->with('curso', 'docente')
+                    ->orderBy('hora_inicio')
+                    ->get()
+                    ->map(fn ($h) => [
+                        'curso'       => $h->curso?->nombre ?? 'Curso',
+                        'docente'     => $h->docente ? "{$h->docente->nombres} {$h->docente->apellidos}" : null,
+                        'hora_inicio' => substr($h->hora_inicio, 0, 5),
+                        'hora_fin'    => substr($h->hora_fin, 0, 5),
+                        'aula'        => $h->aula,
+                    ])
+                    ->all();
+            }
+
+            return [
+                'id'               => $alumno->id,
+                'nombres'          => $alumno->nombres,
+                'apellidos'        => $alumno->apellidos,
+                'dni'              => $alumno->dni,
+                'foto'             => $alumno->foto ?? null,
+                'grado'            => $seccionActual?->grado?->nombre ?? 'Sin grado',
+                'nivel'            => $seccionActual?->grado?->nivel ?? 'Secundaria',
+                'seccion'          => $seccionActual?->nombre ?? 'A',
+                'seccion_id'       => $seccionActual?->id,
+                'asistencia_hoy'   => $asistenciaHoy ? [
+                    'estado'      => $asistenciaHoy->estado,
+                    'observacion' => $asistenciaHoy->observacion,
+                ] : null,
+                'asistencia_mes'   => [
+                    'porcentaje' => $porcentajeAsist,
+                    'presentes'  => $presentes,
+                    'tardanzas'  => $tardanzas,
+                    'faltas'     => $faltas,
+                    'total'      => $totalAsist,
+                ],
+                'promedio_general' => $promedio !== null ? round((float)$promedio, 1) : null,
+                'clases_hoy'       => $horarioHoy,
+            ];
+        })->values()->all();
+
+        // Pagos pendientes de los hijos
+        $alumnoIds = $padre->alumnos->pluck('id');
+        $pagosPendientes = Pago::whereIn('alumno_id', $alumnoIds)
+            ->where('estado', 'pendiente')
+            ->with(['conceptoPago:id,nombre', 'alumno:id,nombres,apellidos', 'evento:id,titulo'])
+            ->orderBy('fecha_pago')
+            ->get()
+            ->map(fn ($p) => [
+                'id'            => $p->id,
+                'concepto'      => $p->conceptoPago?->nombre ?? ($p->evento?->titulo ?? 'Pago escolar'),
+                'alumno_id'     => $p->alumno_id,
+                'alumno_nombre' => $p->alumno ? "{$p->alumno->nombres} {$p->alumno->apellidos}" : '',
+                'monto'         => (float) $p->monto,
+                'fecha_pago'    => $p->fecha_pago,
+                'metodo_pago'   => $p->metodo_pago,
+            ])
+            ->all();
+
+        $totalDeuda = array_sum(array_column($pagosPendientes, 'monto'));
+
+        // Comunicados recientes dirigidos a la comunidad o padres
+        $comunicados = Comunicado::where('estado', true)
+            ->whereIn('tipo', ['general', 'academico', 'urgente'])
+            ->orderByDesc('created_at')
+            ->limit(5)
+            ->get()
+            ->map(fn ($c) => [
+                'id'        => $c->id,
+                'titulo'    => $c->titulo,
+                'contenido' => $c->contenido,
+                'tipo'      => $c->tipo,
+                'fecha'     => $c->created_at?->locale('es')->isoFormat('D MMM YYYY'),
+            ])
+            ->all();
+
+        return [
+            'id'                    => $padre->id,
+            'nombre_completo'       => "{$padre->nombres} {$padre->apellidos}",
+            'hijos'                 => $hijos,
+            'pagos_pendientes'      => $pagosPendientes,
+            'total_deuda'           => $totalDeuda,
+            'comunicados_recientes' => $comunicados,
+        ];
     }
 
     /** @return array<string, int> */

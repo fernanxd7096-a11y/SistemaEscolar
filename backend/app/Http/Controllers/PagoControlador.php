@@ -333,4 +333,136 @@ class PagoControlador extends Controller
             'deposito'      => $vacio('deposito'),
         ]);
     }
+
+    /* ==================== NOTIFICACIONES PUSH DE PAGOS PENDIENTES ==================== */
+
+    /**
+     * Enviar notificación push a los padres con pagos pendientes.
+     * POST /api/pagos/notificar-pendientes
+     */
+    public function notificarPendientes(Request $request, \App\Services\ExpoPushService $expo)
+    {
+        $pagosPendientes = Pago::where('estado', 'pendiente')
+            ->with(['alumno.padres.usuario.pushTokens', 'conceptoPago', 'evento'])
+            ->get();
+
+        if ($pagosPendientes->isEmpty()) {
+            return response()->json([
+                'mensaje'           => 'No hay pagos pendientes para notificar.',
+                'total_notificados' => 0,
+                'pagos_pendientes'  => 0,
+            ]);
+        }
+
+        // Agrupar pagos por padre
+        $padresNotificar = [];
+        foreach ($pagosPendientes as $pago) {
+            $alumno = $pago->alumno;
+            if (!$alumno) continue;
+
+            $conceptoNombre = $pago->conceptoPago?->nombre ?? ($pago->evento?->titulo ?? 'Cuota escolar');
+
+            foreach ($alumno->padres as $padre) {
+                $usuario = $padre->usuario;
+                if (!$usuario) continue;
+
+                $tokens = $usuario->pushTokens->pluck('token')->all();
+                if (empty($tokens)) continue;
+
+                if (!isset($padresNotificar[$padre->id])) {
+                    $padresNotificar[$padre->id] = [
+                        'padre'      => $padre,
+                        'tokens'     => $tokens,
+                        'totalDeuda' => 0,
+                        'detalles'   => [],
+                    ];
+                }
+
+                $padresNotificar[$padre->id]['totalDeuda'] += (float) $pago->monto;
+                $padresNotificar[$padre->id]['detalles'][] = "{$conceptoNombre} (S/ {$pago->monto})";
+            }
+        }
+
+        $enviados = 0;
+        foreach ($padresNotificar as $registro) {
+            $padre = $registro['padre'];
+            $total = number_format($registro['totalDeuda'], 2);
+            $primerConcepto = $registro['detalles'][0] ?? 'pensiones/conceptos';
+            $mas = count($registro['detalles']) > 1 ? ' y otros' : '';
+
+            $titulo = 'Recordatorio de Pago — San Judas Tadeo';
+            $cuerpo = "Estimado(a) {$padre->nombres}, tiene pagos pendientes ({$primerConcepto}{$mas}) por un total de S/ {$total}.";
+
+            $res = $expo->enviar(
+                $registro['tokens'],
+                $titulo,
+                $cuerpo,
+                [
+                    'tipo'     => 'pago_pendiente',
+                    'padre_id' => $padre->id,
+                ]
+            );
+
+            if (!empty($res)) {
+                $enviados++;
+            }
+        }
+
+        return response()->json([
+            'mensaje'           => "Se enviaron notificaciones a {$enviados} padre(s) de familia.",
+            'total_notificados' => $enviados,
+            'pagos_pendientes'  => $pagosPendientes->count(),
+        ]);
+    }
+
+    /**
+     * Enviar notificación push para un pago pendiente individual.
+     * POST /api/pagos/{pago}/notificar
+     */
+    public function notificarPadre(Pago $pago, \App\Services\ExpoPushService $expo)
+    {
+        $pago->load(['alumno.padres.usuario.pushTokens', 'conceptoPago', 'evento']);
+
+        $alumno = $pago->alumno;
+        if (!$alumno || $alumno->padres->isEmpty()) {
+            return response()->json([
+                'error' => 'No se encontraron padres vinculados a este alumno.',
+            ], 422);
+        }
+
+        $conceptoNombre = $pago->conceptoPago?->nombre ?? ($pago->evento?->titulo ?? 'Cuota escolar');
+        $monto = number_format((float) $pago->monto, 2);
+        $enviados = 0;
+
+        foreach ($alumno->padres as $padre) {
+            $usuario = $padre->usuario;
+            if (!$usuario) continue;
+
+            $tokens = $usuario->pushTokens->pluck('token')->all();
+            if (empty($tokens)) continue;
+
+            $titulo = 'Recordatorio de Pago — San Judas Tadeo';
+            $cuerpo = "Estimado(a) {$padre->nombres}, le recordamos el pago pendiente de {$conceptoNombre} por S/ {$monto} de {$alumno->nombres}.";
+
+            $res = $expo->enviar(
+                $tokens,
+                $titulo,
+                $cuerpo,
+                [
+                    'tipo'      => 'pago_pendiente',
+                    'pago_id'   => $pago->id,
+                    'alumno_id' => $alumno->id,
+                ]
+            );
+
+            if (!empty($res)) {
+                $enviados++;
+            }
+        }
+
+        return response()->json([
+            'mensaje'           => "Notificación enviada a {$enviados} dispositivo(s).",
+            'total_notificados' => $enviados,
+        ]);
+    }
 }
