@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { 
   LayoutDashboard, Users, GraduationCap, BookOpen, 
@@ -6,6 +6,8 @@ import {
   Bell, CalendarDays, BarChart2, Settings, ChevronLeft, ChevronRight,
   UsersRound, DollarSign
 } from 'lucide-react';
+import { useAuth } from '../../contexto/AuthContexto';
+import { obtenerConfiguracion } from '../../api/configuracion';
 import logo from '../../assets/logo.png';
 
 interface SidebarProps {
@@ -29,10 +31,28 @@ const navItems = [
   { path: '/eventos', label: 'Eventos', icon: CalendarDays },
   { path: '/pagos', label: 'Pagos', icon: DollarSign },
   { path: '/reportes', label: 'Reportes', icon: BarChart2 },
-  { path: '/configuracion', label: 'Configuración', icon: Settings },
+  { path: '/configuracion', label: 'Configuración', icon: Settings, soloAdmin: true },
 ];
 
 export const Sidebar = ({ collapsed, onToggle, mobileOpen, setMobileOpen }: SidebarProps) => {
+  const { usuario } = useAuth();
+  const [config, setConfig] = useState<{
+    nombre_colegio?: string;
+    resolucion_directoral?: string;
+    logo_url?: string | null;
+  }>({});
+
+  useEffect(() => {
+    obtenerConfiguracion().then(setConfig).catch(() => {});
+  }, []);
+
+  const puedeVerConfig = 
+    usuario?.roles?.some((r) => ['administrador', 'director'].includes(r.name)) ||
+    usuario?.permisos?.includes('ver-configuracion') ||
+    usuario?.permisos?.includes('editar-configuracion');
+
+  const itemsVisibles = navItems.filter((item) => !item.soloAdmin || puedeVerConfig);
+
   return (
     <>
       {/* Mobile overlay */}
@@ -50,16 +70,23 @@ export const Sidebar = ({ collapsed, onToggle, mobileOpen, setMobileOpen }: Side
         <div className={`flex items-center justify-center border-b border-white/10 shrink-0 ${collapsed ? 'h-16 px-2' : 'h-[4.5rem] px-4'}`}>
           <div className={`flex items-center ${collapsed ? 'justify-center' : 'gap-3 w-full'}`}>
             <img
-              src={logo}
-              alt="MSJT"
+              src={config.logo_url || logo}
+              alt="Logo"
               className={`object-contain shrink-0 drop-shadow-md ${collapsed ? 'w-10 h-10' : 'w-12 h-12'}`}
               draggable={false}
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = logo;
+              }}
             />
             {!collapsed && (
               <div className="flex flex-col truncate text-white min-w-0">
                 <span className="text-[10px] text-acento-400 font-semibold tracking-wider uppercase">I.E.P.</span>
-                <span className="text-sm font-bold truncate leading-tight">San Judas Tadeo</span>
-                <span className="text-[10px] text-white/50 truncate">UGEL 05 — S.J.L.</span>
+                <span className="text-sm font-bold truncate leading-tight" title={config.nombre_colegio || 'San Judas Tadeo'}>
+                  {config.nombre_colegio || 'San Judas Tadeo'}
+                </span>
+                <span className="text-[10px] text-white/50 truncate" title={config.resolucion_directoral || 'UGEL 05 — S.J.L.'}>
+                  {config.resolucion_directoral || 'UGEL 05 — S.J.L.'}
+                </span>
               </div>
             )}
           </div>
@@ -67,7 +94,7 @@ export const Sidebar = ({ collapsed, onToggle, mobileOpen, setMobileOpen }: Side
 
         <div className="flex-1 overflow-y-auto py-4 custom-scrollbar">
           <nav className="space-y-1 px-3">
-            {navItems.map((item) => (
+            {itemsVisibles.map((item) => (
               <NavLink
                 key={item.path}
                 to={item.path}

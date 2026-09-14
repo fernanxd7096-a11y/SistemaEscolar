@@ -188,7 +188,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('reportes/consolidado-notas/pdf', [ReporteControlador::class, 'consolidadoNotasPdf'])->middleware('permission:ver-reportes');
 
     // --- Configuración institucional ---
-    Route::put('configuracion', [ConfiguracionControlador::class, 'update'])->middleware('permission:ver-configuracion');
+    Route::put('configuracion', [ConfiguracionControlador::class, 'update'])->middleware('permission:ver-configuracion|editar-configuracion');
+    Route::post('configuracion/logo', [ConfiguracionControlador::class, 'subirLogo'])->middleware('permission:ver-configuracion|editar-configuracion');
 
     // --- Conceptos de pago ---
     Route::get('conceptos-pago', [PagoControlador::class, 'conceptos'])->middleware('permission:ver-pagos');

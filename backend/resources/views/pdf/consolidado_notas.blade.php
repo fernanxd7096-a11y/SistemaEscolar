@@ -30,9 +30,12 @@
 </head>
 <body>
     <div class="header">
-        <h1>I.E.P. Milagroso San Judas Tadeo</h1>
+        @if(!empty($logoBase64))
+        <img src="{{ $logoBase64 }}" style="max-height: 44px; max-width: 120px; margin-bottom: 4px; display: inline-block;" alt="Logo" />
+        @endif
+        <h1>{{ $nombreColegio ?? 'I.E.P. Milagroso San Judas Tadeo' }}</h1>
         <h2>CONSOLIDADO DE NOTAS</h2>
-        <p>Año Escolar {{ $anioEscolar }}</p>
+        <p>Año Escolar {{ $anioEscolar }} @if(!empty($resolucionDirectoral)) · {{ $resolucionDirectoral }} @endif</p>
     </div>
 
     <div class="info-box">

@@ -248,35 +248,14 @@ class ReporteControlador extends Controller
         }
 
         // Configuraciones institucionales desde la BD
-        $configs = [];
-        try {
-            if (\Illuminate\Support\Facades\Schema::hasTable('configuraciones')) {
-                $configs = DB::table('configuraciones')->pluck('valor', 'clave')->toArray();
-            }
-        } catch (\Throwable $e) {}
-
-        $anioEscolar          = $configs['anio_escolar'] ?? date('Y');
-        $nombreColegio        = $configs['nombre_colegio'] ?? 'Colegio Milagroso San Judas Tadeo';
-        $directorNombre       = $configs['director'] ?? 'Fernando Martínez';
-        $direccionColegio     = $configs['direccion'] ?? 'Coop. Sagrada Familia Mz. K lote 11 - S.J.L.';
-        $telefonoColegio      = $configs['telefono'] ?? '962359860';
-        $resolucionDirectoral = $configs['ugel'] ?? 'UGEL 05 S.J.L. - R.D. 05069 - R.D. 003839';
-
-        // Logo institucional (búsqueda robusta en resources, public o frontend)
-        $logoBase64 = null;
-        $candidatos = [
-            resource_path('images/logo.png'),
-            public_path('images/logo.png'),
-            base_path('resources/images/logo.png'),
-            base_path('public/images/logo.png'),
-            base_path('../frontend/src/assets/logo.png'),
-        ];
-        foreach ($candidatos as $path) {
-            if (file_exists($path)) {
-                $logoBase64 = 'data:image/png;base64,' . base64_encode(file_get_contents($path));
-                break;
-            }
-        }
+        $inst = $this->obtenerConfiguracionInstitucional();
+        $anioEscolar          = $inst['anioEscolar'];
+        $nombreColegio        = $inst['nombreColegio'];
+        $directorNombre       = $inst['directorNombre'];
+        $direccionColegio     = $inst['direccionColegio'];
+        $telefonoColegio      = $inst['telefonoColegio'];
+        $resolucionDirectoral = $inst['resolucionDirectoral'];
+        $logoBase64           = $inst['logoBase64'];
 
         // Buscar observaciones y conducta registradas
         $obs = null;
@@ -409,19 +388,18 @@ class ReporteControlador extends Controller
             ];
         })->toArray();
 
-        $anioEscolar = date('Y');
-        try {
-            $config = DB::table('configuraciones')->where('clave', 'anio_escolar')->first();
-            if ($config) $anioEscolar = $config->valor;
-        } catch (\Exception $e) {}
+        $institucional = $this->obtenerConfiguracionInstitucional();
 
         $pdf = Pdf::loadView('pdf.consolidado_asistencia', [
-            'seccion'         => $seccion,
-            'alumnos'         => $alumnos,
-            'fechaDesde'      => $desde,
-            'fechaHasta'      => $hasta,
-            'anioEscolar'     => $anioEscolar,
-            'fechaGeneracion' => Carbon::now()->locale('es')->isoFormat('D [de] MMMM [de] YYYY, HH:mm'),
+            'seccion'              => $seccion,
+            'alumnos'              => $alumnos,
+            'fechaDesde'           => $desde,
+            'fechaHasta'           => $hasta,
+            'anioEscolar'          => $institucional['anioEscolar'],
+            'nombreColegio'        => $institucional['nombreColegio'],
+            'logoBase64'           => $institucional['logoBase64'],
+            'resolucionDirectoral' => $institucional['resolucionDirectoral'],
+            'fechaGeneracion'      => Carbon::now()->locale('es')->isoFormat('D [de] MMMM [de] YYYY, HH:mm'),
         ]);
 
         $pdf->setPaper('A4', 'portrait');
@@ -471,19 +449,18 @@ class ReporteControlador extends Controller
             ];
         })->toArray();
 
-        $anioEscolar = date('Y');
-        try {
-            $config = DB::table('configuraciones')->where('clave', 'anio_escolar')->first();
-            if ($config) $anioEscolar = $config->valor;
-        } catch (\Exception $e) {}
+        $institucional = $this->obtenerConfiguracionInstitucional();
 
         $pdf = Pdf::loadView('pdf.consolidado_notas', [
-            'seccion'         => $seccion,
-            'cursos'          => $cursos,
-            'alumnosData'     => $alumnosData,
-            'bimestre'        => $bimestre,
-            'anioEscolar'     => $anioEscolar,
-            'fechaGeneracion' => Carbon::now()->locale('es')->isoFormat('D [de] MMMM [de] YYYY, HH:mm'),
+            'seccion'              => $seccion,
+            'cursos'               => $cursos,
+            'alumnosData'          => $alumnosData,
+            'bimestre'             => $bimestre,
+            'anioEscolar'          => $institucional['anioEscolar'],
+            'nombreColegio'        => $institucional['nombreColegio'],
+            'logoBase64'           => $institucional['logoBase64'],
+            'resolucionDirectoral' => $institucional['resolucionDirectoral'],
+            'fechaGeneracion'      => Carbon::now()->locale('es')->isoFormat('D [de] MMMM [de] YYYY, HH:mm'),
         ]);
 
         $pdf->setPaper('A4', 'landscape');
@@ -617,6 +594,59 @@ class ReporteControlador extends Controller
         return response()->json([
             'mensaje' => 'Observaciones y conducta guardadas correctamente.',
         ]);
+    }
+
+    /**
+     * Obtener configuraciones institucionales y logo en Base64.
+     * @return array<string, mixed>
+     */
+    private function obtenerConfiguracionInstitucional(): array
+    {
+        $configs = [];
+        try {
+            if (\Illuminate\Support\Facades\Schema::hasTable('configuraciones')) {
+                $configs = DB::table('configuraciones')->pluck('valor', 'clave')->toArray();
+            }
+        } catch (\Throwable $e) {}
+
+        $anioEscolar          = $configs['anio_escolar'] ?? date('Y');
+        $nombreColegio        = $configs['nombre_colegio'] ?? 'Colegio Milagroso San Judas Tadeo';
+        $directorNombre       = $configs['director'] ?? 'Fernando Martínez';
+        $direccionColegio     = $configs['direccion'] ?? 'Coop. Sagrada Familia Mz. K lote 11 - S.J.L.';
+        $telefonoColegio      = $configs['telefono'] ?? '962359860';
+        $emailColegio         = $configs['email'] ?? 'secretaria@sanjudastadeo.edu.pe';
+        $lemaColegio          = $configs['lema'] ?? 'Educando con valores para la vida';
+        $resolucionDirectoral = $configs['ugel'] ?? ($configs['resolucion_directoral'] ?? 'UGEL 05 S.J.L. - R.D. 05069 - R.D. 003839');
+
+        // Logo institucional (prioridad: base64 en BD -> archivos en disco)
+        $logoBase64 = $configs['logo_base64'] ?? null;
+        if (!$logoBase64) {
+            $candidatos = [
+                resource_path('images/logo.png'),
+                public_path('images/logo.png'),
+                base_path('resources/images/logo.png'),
+                base_path('public/images/logo.png'),
+                base_path('../frontend/src/assets/logo.png'),
+            ];
+            foreach ($candidatos as $path) {
+                if (file_exists($path)) {
+                    $logoBase64 = 'data:image/png;base64,' . base64_encode(file_get_contents($path));
+                    break;
+                }
+            }
+        }
+
+        return [
+            'anioEscolar'          => $anioEscolar,
+            'nombreColegio'        => $nombreColegio,
+            'directorNombre'       => $directorNombre,
+            'direccionColegio'     => $direccionColegio,
+            'telefonoColegio'      => $telefonoColegio,
+            'emailColegio'         => $emailColegio,
+            'lemaColegio'          => $lemaColegio,
+            'resolucionDirectoral' => $resolucionDirectoral,
+            'logoBase64'           => $logoBase64,
+        ];
     }
 }
 

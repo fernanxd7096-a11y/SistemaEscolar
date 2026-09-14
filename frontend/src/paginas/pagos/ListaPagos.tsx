@@ -13,6 +13,7 @@ import {
   eliminarEvidenciaPago,
 } from '../../api/pagos';
 import { listarAlumnos } from '../../api/alumnos';
+import { obtenerConfiguracion } from '../../api/configuracion';
 import type { Pago, ConceptoPago, Alumno } from '../../tipos';
 import { usePermiso } from '../../hooks/usePermiso';
 
@@ -87,8 +88,18 @@ export const ListaPagos = () => {
     }
   };
 
+  const [anioActivo, setAnioActivo] = useState(String(new Date().getFullYear()));
+
   useEffect(() => { cargar(); }, [pagina, filtroEstado]);
-  useEffect(() => { cargarConceptos(); }, []);
+  useEffect(() => {
+    cargarConceptos();
+    obtenerConfiguracion().then((cfg) => {
+      if (cfg?.anio_escolar) {
+        setAnioActivo(cfg.anio_escolar);
+        setFormConcepto((prev) => ({ ...prev, año_escolar: cfg.anio_escolar }));
+      }
+    }).catch(() => {});
+  }, []);
 
   const buscarAlumnos = async () => {
     if (!buscarAlumno.trim()) return;
@@ -127,7 +138,7 @@ export const ListaPagos = () => {
         año_escolar: formConcepto.año_escolar || null,
         estado: true,
       });
-      setFormConcepto(vacioConcepto);
+      setFormConcepto({ ...vacioConcepto, año_escolar: anioActivo });
       await cargarConceptos();
     } catch (err: unknown) {
       const data = (err as { response?: { data?: { mensaje?: string; message?: string; errors?: Record<string, string[]> } } })?.response?.data;

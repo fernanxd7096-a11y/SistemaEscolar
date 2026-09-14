@@ -28,7 +28,8 @@ class ConfiguracionControlador extends Controller
             'email'                 => $configs->get('email')?->valor ?? 'secretaria@sanjudastadeo.edu.pe',
             'anio_escolar'          => $configs->get('anio_escolar')?->valor ?? date('Y'),
             'lema'                  => $configs->get('lema')?->valor ?? 'Educando con valores para la vida',
-            'resolucion_directoral' => $configs->get('ugel')?->valor ?? 'UGEL 05 S.J.L. - R.D. 05069 - R.D. 003839',
+            'resolucion_directoral' => $configs->get('ugel')?->valor ?? ($configs->get('resolucion_directoral')?->valor ?? 'UGEL 05 S.J.L. - R.D. 05069 - R.D. 003839'),
+            'logo_url'              => $configs->get('logo_url')?->valor ?? ($configs->get('logo_base64')?->valor ?? null),
         ]);
     }
 
@@ -75,5 +76,64 @@ class ConfiguracionControlador extends Controller
         }
 
         return $this->index();
+    }
+
+    /**
+     * Subir y actualizar el logo institucional.
+     * POST /api/configuracion/logo
+     */
+    public function subirLogo(Request $request)
+    {
+        $request->validate([
+            'logo' => 'required|image|mimes:jpeg,png,jpg,webp,svg|max:4096',
+        ]);
+
+        $archivo = $request->file('logo');
+        if (!$archivo) {
+            return response()->json(['error' => 'No se recibió ningún archivo de imagen.'], 422);
+        }
+
+        // 1. Convertir a Data URI Base64 para persistencia garantizada en la BD PostgreSQL
+        $mime = $archivo->getMimeType() ?: 'image/png';
+        $base64 = 'data:' . $mime . ';base64,' . base64_encode(file_get_contents($archivo->getRealPath()));
+
+        // 2. Guardar en almacenamiento público
+        $nombreArchivo = 'logo_' . time() . '.' . $archivo->getClientOriginalExtension();
+        $path = $archivo->storeAs('configuracion', $nombreArchivo, 'public');
+        $url = asset('storage/' . $path);
+
+        // 3. Replicar también en resources/images/logo.png y public/images/logo.png para DomPDF
+        try {
+            $destinos = [
+                public_path('images'),
+                resource_path('images'),
+            ];
+            foreach ($destinos as $dir) {
+                if (!is_dir($dir)) {
+                    @mkdir($dir, 0755, true);
+                }
+                @copy($archivo->getRealPath(), $dir . DIRECTORY_SEPARATOR . 'logo.png');
+            }
+        } catch (\Throwable $e) {
+            // Continuar normalmente si el entorno tiene restricciones
+        }
+
+        // 4. Guardar en base de datos
+        if (Schema::hasTable('configuraciones')) {
+            DB::table('configuraciones')->updateOrInsert(
+                ['clave' => 'logo_base64'],
+                ['valor' => $base64, 'descripcion' => 'Logo institucional en Base64', 'updated_at' => now()]
+            );
+            DB::table('configuraciones')->updateOrInsert(
+                ['clave' => 'logo_url'],
+                ['valor' => $url, 'descripcion' => 'URL pública del logo', 'updated_at' => now()]
+            );
+        }
+
+        return response()->json([
+            'mensaje'     => 'Logo institucional actualizado correctamente.',
+            'logo_url'    => $url,
+            'logo_base64' => $base64,
+        ]);
     }
 }

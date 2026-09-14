@@ -9,6 +9,7 @@ import {
 } from '../../api/alumnos';
 import { listarSecciones } from '../../api/grados';
 import { descargarBoletaPdf } from '../../api/reportes';
+import { obtenerConfiguracion } from '../../api/configuracion';
 import type { Alumno, Seccion } from '../../tipos';
 import { usePermiso } from '../../hooks/usePermiso';
 
@@ -67,14 +68,19 @@ export const ListaAlumnos = () => {
     }
   };
 
+  const [anioActivo, setAnioActivo] = useState(String(new Date().getFullYear()));
+
   useEffect(() => {
     cargar();
     listarSecciones().then(setSecciones).catch(() => setSecciones([]));
+    obtenerConfiguracion().then((cfg) => {
+      if (cfg?.anio_escolar) setAnioActivo(cfg.anio_escolar);
+    }).catch(() => {});
   }, []);
 
   const abrirCrear = () => {
     setEditando(null);
-    setForm(vacio);
+    setForm({ ...vacio, año_escolar: anioActivo });
     setModalAbierto(true);
   };
 
@@ -91,7 +97,7 @@ export const ListaAlumnos = () => {
       direccion: alumno.direccion ?? '',
       estado: alumno.estado,
       seccion_id: seccionActual ? String(seccionActual.id) : '',
-      año_escolar: seccionActual?.pivot?.año_escolar ?? String(new Date().getFullYear()),
+      año_escolar: seccionActual?.pivot?.año_escolar ?? anioActivo,
     });
     setModalAbierto(true);
   };

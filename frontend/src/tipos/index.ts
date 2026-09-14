@@ -281,7 +281,18 @@ export interface Pago {
   alumno?: { id: number; nombres: string; apellidos: string; dni: string };
   concepto_pago?: ConceptoPago;
   evento?: { id: number; titulo: string } | null;
-  comprobante?: Comprobante | null;
   created_at?: string;
+}
+
+export interface ConfiguracionInstitucional {
+  nombre_colegio: string;
+  director: string;
+  direccion: string;
+  telefono: string;
+  email: string;
+  anio_escolar: string;
+  lema: string;
+  resolucion_directoral: string;
+  logo_url?: string | null;
 }
 

@@ -12,6 +12,7 @@ import {
 } from '../../api/reportes';
 import { listarGrados, listarSecciones } from '../../api/grados';
 import { listarAlumnos } from '../../api/alumnos';
+import { obtenerConfiguracion } from '../../api/configuracion';
 import type { Grado, Seccion, Alumno } from '../../tipos';
 
 type Tab = 'resumen' | 'boleta' | 'asistencia' | 'notas';
@@ -57,6 +58,9 @@ export const Reportes = () => {
     [secciones, filtroBoletaGrado]
   );
 
+  // Año escolar institucional
+  const [anioActivo, setAnioActivo] = useState<string>(String(new Date().getFullYear()));
+
   // Asistencia
   const [fechaDesde, setFechaDesde] = useState(new Date(Date.now() - 30 * 86400000).toISOString().slice(0, 10));
   const [fechaHasta, setFechaHasta] = useState(new Date().toISOString().slice(0, 10));
@@ -74,6 +78,17 @@ export const Reportes = () => {
   useEffect(() => {
     listarGrados().then(setGrados).catch(() => {});
     listarSecciones().then(setSecciones).catch(() => {});
+    obtenerConfiguracion().then((cfg) => {
+      if (cfg?.anio_escolar) {
+        setAnioActivo(cfg.anio_escolar);
+        const anioNum = parseInt(cfg.anio_escolar, 10);
+        const hoy = new Date();
+        if (hoy.getFullYear() !== anioNum) {
+          setFechaDesde(`${cfg.anio_escolar}-03-01`);
+          setFechaHasta(`${cfg.anio_escolar}-12-20`);
+        }
+      }
+    }).catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -154,7 +169,9 @@ export const Reportes = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h2 className="text-2xl font-bold text-gray-800 dark:text-white">Reportes</h2>
-          <p className="text-gray-500 dark:text-gray-400 text-sm">Estadísticas, boletas y consolidados</p>
+          <p className="text-gray-500 dark:text-gray-400 text-sm">
+            Estadísticas, boletas y consolidados · Año Escolar {anioActivo}
+          </p>
         </div>
       </div>
 
