@@ -24,7 +24,7 @@ class MovilControlador extends Controller
     {
         $usuario = $request->user();
 
-        $padre = Padre::where('usuario_id', $usuario->id)->first();
+        $padre = $this->obtenerPadreAutenticado($usuario);
 
         if (!$padre) {
             return response()->json([
@@ -360,10 +360,26 @@ class MovilControlador extends Controller
             return;
         }
 
-        $padre = Padre::where('usuario_id', $usuario->id)->first();
+        $padre = $this->obtenerPadreAutenticado($usuario);
 
         if (!$padre || !$padre->alumnos()->where('alumnos.id', $alumno->id)->exists()) {
             abort(403, 'No tienes permiso para ver la información de este alumno.');
         }
+    }
+
+    /**
+     * Resolver padre autenticado por usuario_id o por email institucional.
+     */
+    private function obtenerPadreAutenticado($usuario): ?Padre
+    {
+        $padre = Padre::where('usuario_id', $usuario->id)->first();
+        if (!$padre && $usuario->email) {
+            $padre = Padre::where('email', $usuario->email)->first();
+            if ($padre && !$padre->usuario_id) {
+                $padre->usuario_id = $usuario->id;
+                $padre->save();
+            }
+        }
+        return $padre;
     }
 }

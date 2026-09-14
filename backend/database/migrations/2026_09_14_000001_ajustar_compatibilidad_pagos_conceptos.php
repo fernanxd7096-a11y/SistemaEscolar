@@ -25,6 +25,10 @@ return new class extends Migration
         try {
             DB::statement("ALTER TABLE conceptos_pago ADD COLUMN IF NOT EXISTS año_escolar VARCHAR(20)");
         } catch (\Throwable $e) {}
+
+        try {
+            DB::statement("UPDATE padres SET usuario_id = usuarios.id FROM usuarios WHERE LOWER(padres.email) = LOWER(usuarios.email) AND padres.usuario_id IS NULL");
+        } catch (\Throwable $e) {}
     }
 
     public function down(): void
