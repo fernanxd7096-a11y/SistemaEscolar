@@ -13,6 +13,9 @@ sed -i "s/listen [0-9]\+;/listen ${PORT};/g" /etc/nginx/http.d/default.conf
 # Crear enlace simbólico de almacenamiento público (evita 404 en evidencias y archivos)
 php artisan storage:link || true
 
+# Ejecutar migraciones en cada despliegue
+php artisan migrate --force || true
+
 if [ -n "$APP_KEY" ]; then
     php artisan config:clear || true
     php artisan route:clear || true

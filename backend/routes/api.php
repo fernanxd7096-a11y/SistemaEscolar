@@ -26,12 +26,15 @@ use App\Http\Controllers\AgendaHorarioControlador;
 use App\Http\Controllers\HorarioReglaControlador;
 use App\Http\Controllers\HorarioExcepcionControlador;
 use App\Http\Controllers\Movil\MovilControlador;
+use App\Http\Controllers\ConfiguracionControlador;
 
 Route::get('ping', fn () => response()->json([
     'estado'  => 'ok',
     'sistema' => 'Milagroso San Judas Tadeo',
-    'version' => '1.0.0',
+    'version' => '2.0.0-fase2',
 ]));
+
+Route::get('configuracion', [ConfiguracionControlador::class, 'index']);
 
 Route::get('db-check', function () {
     try {
@@ -185,8 +188,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('reportes/consolidado-notas/pdf', [ReporteControlador::class, 'consolidadoNotasPdf'])->middleware('permission:ver-reportes');
 
     // --- Configuración institucional ---
-    Route::get('configuracion', [\App\Http\Controllers\ConfiguracionControlador::class, 'index']);
-    Route::put('configuracion', [\App\Http\Controllers\ConfiguracionControlador::class, 'update'])->middleware('permission:ver-configuracion');
+    Route::put('configuracion', [ConfiguracionControlador::class, 'update'])->middleware('permission:ver-configuracion');
 
     // --- Conceptos de pago ---
     Route::get('conceptos-pago', [PagoControlador::class, 'conceptos'])->middleware('permission:ver-pagos');
