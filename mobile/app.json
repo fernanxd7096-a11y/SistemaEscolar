@@ -10,6 +10,12 @@
     "experiments": {
       "typedRoutes": true
     },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/35cab220-950e-404c-ab40-21652a8e7d34"
+    },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "pe.edu.sanjudastadeo.mobile"
@@ -23,7 +29,10 @@
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png",
@@ -49,6 +58,13 @@
           "cameraPermission": "Se usa para tomarte una foto de perfil con la cámara."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "35cab220-950e-404c-ab40-21652a8e7d34"
+      }
+    },
+    "owner": "mrseks-team"
   }
 }
