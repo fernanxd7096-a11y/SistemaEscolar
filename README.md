@@ -60,6 +60,16 @@ UI en `http://localhost:5173`
 | API móvil para padres | ✅ |
 | Roles y permisos (6 roles, 54 permisos) | ✅ |
 
+## 📚 Documentación y Entregables del Proyecto
+
+Toda la documentación académica, técnica y entregables para evaluación se encuentran centralizados en la carpeta [`documentacion/`](./documentacion/README.md):
+
+- [**Documentación General e Índice**](./documentacion/README.md): Resumen estructurado para revisores y jurado.
+- [**Tesis y Avances del Proyecto**](./documentacion/tesis/): Avance de tesis (`.docx` y `.md`), informe ejecutivo de avances y base maestra.
+- [**Entregables Oficiales SENATI**](./documentacion/senati/): Informe de Formación Práctica en Empresa (FPE), cuadernos semanales y diagramas de arquitectura.
+- [**Boletas y Reportes Académicos**](./documentacion/boletas/): Ejemplos de boletas generadas con cálculo automático y plantilla institucional.
+- [**Respaldos de Base de Datos**](./documentacion/backups/): Volcado SQL de la base de datos PostgreSQL.
+
 ## Stack
 
 - **Backend:** Laravel 12, Sanctum, Spatie Permission, DomPDF
