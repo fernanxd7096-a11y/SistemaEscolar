@@ -1,0 +1,55 @@
+name: Respaldo Diario de Base de Datos PostgreSQL
+
+on:
+  schedule:
+    # Ejecutar todos los días a las 04:00 UTC (23:00 hora de Perú)
+    - cron: '0 4 * * *'
+  workflow_dispatch:
+    inputs:
+      motivo:
+        description: 'Motivo del respaldo manual'
+        required: false
+        default: 'Respaldo manual solicitado'
+
+jobs:
+  backup:
+    name: Generar y Resguardar Backup PostgreSQL
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Obtener fecha y hora actual
+        id: timestamp
+        run: |
+          echo "FECHA=$(date +'%Y%m%d_%H%M%S')" >> $GITHUB_OUTPUT
+          echo "FECHA_HUMANA=$(date +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_OUTPUT
+
+      - name: Instalar cliente de PostgreSQL
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq postgresql-client-16 || sudo apt-get install -y -qq postgresql-client
+
+      - name: Ejecutar pg_dump y comprimir
+        env:
+          DATABASE_URL: ${{ secrets.RENDER_DB_URL || secrets.DATABASE_URL }}
+        run: |
+          if [ -z "$DATABASE_URL" ]; then
+            echo "::error::El secreto RENDER_DB_URL o DATABASE_URL no está configurado en GitHub Secrets."
+            exit 1
+          fi
+
+          mkdir -p backups
+          NOMBRE_ARCHIVO="backup_sjt_${{ steps.timestamp.outputs.FECHA }}.sql.gz"
+
+          echo "Iniciando volcado de la base de datos de producción..."
+          pg_dump "$DATABASE_URL" --no-owner --no-privileges | gzip -9 > "backups/$NOMBRE_ARCHIVO"
+
+          TAMANO=$(du -h "backups/$NOMBRE_ARCHIVO" | cut -f1)
+          echo "Backup generado con éxito: $NOMBRE_ARCHIVO ($TAMANO)"
+
+      - name: Subir artefacto seguro a GitHub
+        uses: actions/upload-artifact@v4
+        with:
+          name: backup-postgresql-${{ steps.timestamp.outputs.FECHA }}
+          path: backups/backup_sjt_*.sql.gz
+          retention-days: 60
+          if-no-files-found: error

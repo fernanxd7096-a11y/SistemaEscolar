@@ -179,6 +179,20 @@ class PagoControlador extends Controller
 
     /* ==================== EVIDENCIA (captura / foto) ==================== */
 
+    private function discoEvidencias(): string
+    {
+        $custom = env('FILESYSTEM_EVIDENCIAS_DISK');
+        if ($custom && config("filesystems.disks.{$custom}")) {
+            return $custom;
+        }
+
+        if (config('filesystems.disks.s3.key') && config('filesystems.disks.s3.bucket')) {
+            return 's3';
+        }
+
+        return 'public';
+    }
+
     public function subirEvidencia(Request $request, Pago $pago)
     {
         $request->validate([
@@ -189,11 +203,13 @@ class PagoControlador extends Controller
             'evidencia.max'      => 'El archivo no debe superar 5 MB.',
         ]);
 
+        $disk = $this->discoEvidencias();
+
         if ($pago->evidencia) {
-            \Illuminate\Support\Facades\Storage::disk('public')->delete($pago->evidencia);
+            \Illuminate\Support\Facades\Storage::disk($disk)->delete($pago->evidencia);
         }
 
-        $ruta = $request->file('evidencia')->store('evidencias_pago', 'public');
+        $ruta = $request->file('evidencia')->store('evidencias_pago', $disk);
         $pago->update(['evidencia' => $ruta]);
 
         return response()->json(
@@ -208,8 +224,10 @@ class PagoControlador extends Controller
 
     public function eliminarEvidencia(Pago $pago)
     {
+        $disk = $this->discoEvidencias();
+
         if ($pago->evidencia) {
-            \Illuminate\Support\Facades\Storage::disk('public')->delete($pago->evidencia);
+            \Illuminate\Support\Facades\Storage::disk($disk)->delete($pago->evidencia);
             $pago->update(['evidencia' => null]);
         }
 

@@ -82,8 +82,9 @@ const descargarPdf = async (url: string, params: Record<string, any>, filename: 
     }
 
     // Use fetch directly to avoid axios interceptors interfering with blob
-    const baseUrl = 'http://localhost:8000/api';
-    const fullUrl = `${baseUrl}${url}${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
+    const baseUrl = (import.meta.env.VITE_API_URL || 'https://sistema-escolar-sjt.onrender.com/api').replace(/\/+$/, '');
+    const cleanUrl = url.startsWith('/') ? url : `/${url}`;
+    const fullUrl = `${baseUrl}${cleanUrl}${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
 
     const response = await fetch(fullUrl, {
       method: 'GET',
@@ -119,7 +120,7 @@ const descargarPdf = async (url: string, params: Record<string, any>, filename: 
 export const descargarBoletaPdf = async (alumnoId: number, seccionId?: number): Promise<{ guardadoEn: string; carpeta: string }> => {
   const token = localStorage.getItem('token');
   const params = seccionId ? `?seccion_id=${seccionId}` : '';
-  const baseUrl = 'http://localhost:8000/api';
+  const baseUrl = (import.meta.env.VITE_API_URL || 'https://sistema-escolar-sjt.onrender.com/api').replace(/\/+$/, '');
   const fullUrl = `${baseUrl}/reportes/boleta/${alumnoId}/pdf${params}`;
 
   const response = await fetch(fullUrl, {

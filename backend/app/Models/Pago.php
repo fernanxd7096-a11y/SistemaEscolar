@@ -29,7 +29,21 @@ class Pago extends Model
             return null;
         }
 
-        return url('storage/' . ltrim($this->evidencia, '/'));
+        // Si ya es una URL absoluta (ej. Cloudinary o externa)
+        if (str_starts_with($this->evidencia, 'http://') || str_starts_with($this->evidencia, 'https://')) {
+            return $this->evidencia;
+        }
+
+        $custom = env('FILESYSTEM_EVIDENCIAS_DISK');
+        $disk = ($custom && config("filesystems.disks.{$custom}"))
+            ? $custom
+            : ((config('filesystems.disks.s3.key') && config('filesystems.disks.s3.bucket')) ? 's3' : 'public');
+
+        try {
+            return \Illuminate\Support\Facades\Storage::disk($disk)->url($this->evidencia);
+        } catch (\Throwable $e) {
+            return url('storage/' . ltrim($this->evidencia, '/'));
+        }
     }
 
     public function alumno(): BelongsTo

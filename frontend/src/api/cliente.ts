@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const cliente = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000/api',
+  baseURL: import.meta.env.VITE_API_URL || 'https://sistema-escolar-sjt.onrender.com/api',
   withCredentials: false,
   headers: {
     Accept: 'application/json',
